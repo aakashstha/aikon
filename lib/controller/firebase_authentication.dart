@@ -5,6 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
+// Phone Number = +9779824968839
+// OTP = 123456
+
 class FirebaseAuthenticationController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String verificationId = '';
