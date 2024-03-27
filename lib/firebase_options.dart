@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDmEmadxMwA_59i2SjL5BPZwDW9FKOBkS4',
-    appId: '1:319392336761:android:4283abbc9d57b10e8f3da8',
+    appId: '1:319392336761:android:688cf879e0c17f3c8f3da8',
     messagingSenderId: '319392336761',
     projectId: 'aikon-dev',
     storageBucket: 'aikon-dev.appspot.com',
@@ -59,10 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCUVRa6KteZGkAoUd2afyFPuhWg9sFSKIk',
-    appId: '1:319392336761:ios:69c595df124327458f3da8',
+    appId: '1:319392336761:ios:646594f9ec0f18288f3da8',
     messagingSenderId: '319392336761',
     projectId: 'aikon-dev',
     storageBucket: 'aikon-dev.appspot.com',
-    iosBundleId: 'com.example.aikon',
+    iosBundleId: 'com.marketplace1.aikon',
   );
 }

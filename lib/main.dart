@@ -1,8 +1,12 @@
+import 'package:aikon/controller/firebase_authentication.dart';
 import 'package:aikon/controller/firebase_crud_controller.dart';
 import 'package:aikon/firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,20 +34,35 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   HomePage({super.key});
   final FirebaseController _firebaseController = Get.put(FirebaseController());
+  final FirebaseAuthenticationController _firebaseAuth =
+      Get.put(FirebaseAuthenticationController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: InkWell(
-          child: const Text(
-            "press me",
-            style: TextStyle(fontSize: 30),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          InkWell(
+            child: const Text(
+              "Send OTP",
+              style: TextStyle(fontSize: 30),
+            ),
+            onTap: () {
+              _firebaseAuth.sendOTP();
+            },
           ),
-          onTap: () {
-            _firebaseController.addOffer();
-          },
-        ),
+          const SizedBox(height: 50),
+          InkWell(
+            child: const Text(
+              "verify OTP",
+              style: TextStyle(fontSize: 30),
+            ),
+            onTap: () {
+              _firebaseAuth.verifyOTP();
+            },
+          ),
+        ],
       ),
     );
   }
