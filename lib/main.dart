@@ -1,5 +1,8 @@
 import 'package:aikon/firebase_options.dart';
 import 'package:aikon/screens/authentication/login.dart';
+import 'package:aikon/screens/authentication/otp.dart';
+import 'package:aikon/screens/home/tabbar_navigation.dart';
+import 'package:aikon/utilities/storage_getx.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -7,6 +10,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  StorageGetX.initializeStorageGetX();
 
   runApp(const MyApp());
 }
@@ -22,7 +26,8 @@ class MyApp extends StatelessWidget {
       //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       //   useMaterial3: true,
       // ),
-      home: Login(),
+      home: TabBarNavigation(),
+      // home: OTPScreen(),
     );
   }
 }
