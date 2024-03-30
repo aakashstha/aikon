@@ -2,7 +2,7 @@ import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/screens/home/channel.dart';
 import 'package:aikon/screens/home/offer_for_you.dart';
-import 'package:aikon/screens/home/offer_listings_your.dart';
+import 'package:aikon/screens/home/offer_your_listings.dart';
 import 'package:aikon/screens/others/add_offer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,50 +56,50 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
               icon: Icon(Icons.more_vert, color: AppColors.white),
             )
           ],
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(kToolbarHeight),
-            child: TabBar(
-              // labelPadding: EdgeInsets.symmetric(horizontal: 18.0),
-              tabAlignment: TabAlignment.center,
-              isScrollable: true,
-              indicatorColor: AppColors.white,
-              indicatorSize: TabBarIndicatorSize.tab,
-              tabs: <Widget>[
-                Tab(
-                  icon: Icon(
-                    Icons.call,
-                    color: AppColors.white,
-                  ),
+          bottom: TabBar(
+            labelPadding: EdgeInsets.symmetric(horizontal: 8.0),
+            labelStyle: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+            labelColor: Colors.black,
+            indicatorColor: AppColors.blueYonder,
+            indicatorSize: TabBarIndicatorSize.tab,
+            tabs: <Widget>[
+              Tab(
+                icon: Icon(
+                  Icons.call,
+                  color: AppColors.white,
                 ),
-                Tab(
-                  icon: Icon(
-                    Icons.people,
-                    color: AppColors.white,
-                  ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.people,
+                  color: AppColors.white,
                 ),
-                Text(
-                  "Messages",
+              ),
+              Text(
+                "Messages",
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.white,
+                ),
+              ),
+              Tab(
+                child: Text(
+                  "Offers",
                   style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
                     color: AppColors.white,
                   ),
                 ),
-                Tab(
-                  child: Text(
-                    "Offers",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.white,
-                    ),
-                  ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.tune,
+                  color: AppColors.white,
                 ),
-                Tab(
-                  icon: Icon(
-                    Icons.tune,
-                    color: AppColors.white,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         body: TabBarView(
@@ -136,7 +136,7 @@ class NestedOfferTabBar extends StatefulWidget {
 class _NestedOfferTabBarState extends State<NestedOfferTabBar>
     with TickerProviderStateMixin {
   late final TabController _tabController;
-  final _addOffersTabBarController = Get.find<TabBarController>();
+  final _addOffersTabBarController = Get.put(TabBarController());
 
   @override
   void initState() {

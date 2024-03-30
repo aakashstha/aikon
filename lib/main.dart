@@ -1,3 +1,4 @@
+import 'package:aikon/constants/colors.dart';
 import 'package:aikon/firebase_options.dart';
 import 'package:aikon/screens/authentication/login.dart';
 import 'package:aikon/screens/authentication/otp.dart';
@@ -22,10 +23,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      // theme: ThemeData(
-      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      //   useMaterial3: true,
-      // ),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blueYonder),
+        useMaterial3: true,
+      ),
       home: TabBarNavigation(),
       // home: OTPScreen(),
     );
