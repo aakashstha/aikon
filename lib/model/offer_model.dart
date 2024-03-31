@@ -1,32 +1,28 @@
 import 'dart:convert';
 
 class OfferModel {
-  final String id;
-  final String userId;
+  String? id;
+  final bool isSell;
   final String title;
   final String subtitle;
-  final bool isBuying;
-  final String country;
-  final String city;
-  final int color;
-  final String pieces;
-  final List<dynamic> images;
-  final String channel;
+  final String description;
+  final String countryName;
+  final String cityName;
+  final List<dynamic> imagesList;
+  final List channelList;
   final bool isAnonymous;
   final dynamic createdAt;
 
   OfferModel({
-    required this.id,
-    required this.userId,
+    this.id,
+    required this.isSell,
     required this.title,
     required this.subtitle,
-    required this.isBuying,
-    required this.country,
-    required this.city,
-    required this.color,
-    required this.pieces,
-    required this.images,
-    required this.channel,
+    required this.description,
+    required this.countryName,
+    required this.cityName,
+    required this.imagesList,
+    required this.channelList,
     required this.isAnonymous,
     required this.createdAt,
   });
@@ -34,16 +30,14 @@ class OfferModel {
   factory OfferModel.fromJson(Map<String, dynamic> json) {
     return OfferModel(
       id: json["id"],
-      userId: json["userId"],
+      isSell: json["isSell"],
       title: json["title"],
       subtitle: json["subtitle"],
-      isBuying: json["isBuying"],
-      country: json["country"],
-      city: json["city"],
-      color: json["color"],
-      pieces: json["pieces"],
-      images: List<dynamic>.from(json["images"].map((x) => x)),
-      channel: json["channel"],
+      description: json["description"],
+      countryName: json["countryName"],
+      cityName: json["cityName"],
+      imagesList: json["imagesList"],
+      channelList: json["channelList"],
       isAnonymous: json["isAnonymous"],
       createdAt: json["createdAt"],
     );
@@ -53,18 +47,16 @@ class OfferModel {
     final Map<String, dynamic> data = <String, dynamic>{};
 
     data["id"] = id;
-    data["userId"] = userId;
+    data["isSell"] = isSell;
     data["title"] = title;
     data["subtitle"] = subtitle;
-    data["isBuying"] = isBuying;
-    data["country"] = country;
-    data["city"] = city;
-    data["color"] = color;
-    data["pieces"] = pieces;
-    data["images"] = List<dynamic>.from(images.map((x) => x));
-    data["channel"] = channel;
-    data["anonymous"] = isAnonymous;
-    data["createdAt"] = createdAt;
+    data["description"] = description;
+    data["countryName"] = countryName;
+    data["cityName"] = cityName;
+    data["imagesList"] = imagesList;
+    data["channelList"] = channelList;
+    data["isAnonymous"] = isAnonymous;
+    data["created_at"] = createdAt;
 
     return data;
   }

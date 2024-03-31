@@ -2,8 +2,10 @@ import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/screens/home/channel.dart';
 import 'package:aikon/screens/home/offer_for_you.dart';
-import 'package:aikon/screens/home/offer_your_listings.dart';
-import 'package:aikon/screens/others/add_offer.dart';
+import 'package:aikon/screens/home/offer_my_listings.dart';
+import 'package:aikon/screens/others/post_offer.dart';
+import 'package:aikon/screens/others/settings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,7 +18,12 @@ class TabBarNavigation extends StatefulWidget {
   State<TabBarNavigation> createState() => _TabBarNavigationState();
 }
 
+enum Options { search, upload, copy, exit }
+
 class _TabBarNavigationState extends State<TabBarNavigation> {
+  var _popupMenuItemIndex = 0;
+  Color _changeColorAccordingToMenuItem = Colors.red;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -24,7 +31,6 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
       length: 5,
       child: Scaffold(
         appBar: AppBar(
-          // title: const Text('TabBar Sample'),
           backgroundColor: AppColors.blueYonder,
           title: Row(
             children: [
@@ -51,9 +57,31 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
           actions: [
             IconButton(
               onPressed: () {
-                print("Setting");
+                print("Add Offer");
+                Get.to(AddOffer());
               },
-              icon: Icon(Icons.more_vert, color: AppColors.white),
+              icon: Icon(Icons.add, color: AppColors.white),
+            ),
+            PopupMenuButton(
+              iconColor: AppColors.white,
+              onSelected: (value) {
+                print(value);
+                int val = value as int;
+                setState(() {
+                  if (val == 0) {
+                    Get.to(OfferListingsYour());
+                  } else if (val == 1) {
+                    Get.to(SettingScreen());
+                  }
+                });
+              },
+              offset: Offset(0.0, AppBar().preferredSize.height),
+              itemBuilder: (ctx) => [
+                _buildPopupMenuItem(
+                    'My Listings', Icons.search, Icons.chevron_right, 0),
+                _buildPopupMenuItem(
+                    'Settings', Icons.settings, Icons.chevron_right, 1),
+              ],
             )
           ],
           bottom: TabBar(
@@ -78,7 +106,7 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
               Text(
                 "Messages",
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: AppColors.white,
                 ),
@@ -87,7 +115,7 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
                 child: Text(
                   "Offers",
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 12,
                     fontWeight: FontWeight.w700,
                     color: AppColors.white,
                   ),
@@ -113,65 +141,30 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
             Center(
               child: Text("It's sunny here"),
             ),
-            NestedOfferTabBar(
-              "Offers",
-            ),
+            OfferForYou(),
             Channel()
           ],
         ),
       ),
     );
   }
-}
 
-class NestedOfferTabBar extends StatefulWidget {
-  const NestedOfferTabBar(this.outerTab, {super.key});
-
-  final String outerTab;
-
-  @override
-  State<NestedOfferTabBar> createState() => _NestedOfferTabBarState();
-}
-
-class _NestedOfferTabBarState extends State<NestedOfferTabBar>
-    with TickerProviderStateMixin {
-  late final TabController _tabController;
-  final _addOffersTabBarController = Get.put(TabBarController());
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => Column(
-        children: <Widget>[
-          TabBar.secondary(
-            controller: _tabController,
-            tabs: const <Widget>[
-              Tab(text: 'For You'),
-              Tab(text: 'Your listings'),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: <Widget>[
-                OfferForYou(),
-                _addOffersTabBarController.isAddOfferButton.value
-                    ? AddOffer()
-                    : OfferListingsYour(),
-              ],
-            ),
+  PopupMenuItem _buildPopupMenuItem(String title, IconData iconData,
+      IconData trailingIconData, int position) {
+    return PopupMenuItem(
+      value: position,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // Icon(
+          //   iconData,
+          //   color: Colors.black,
+          // ),
+          Text(title),
+          const Spacer(),
+          Icon(
+            trailingIconData,
+            color: Colors.black,
           ),
         ],
       ),

@@ -1,6 +1,6 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
-import 'package:aikon/screens/others/add_offer.dart';
+import 'package:aikon/screens/others/post_offer.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +100,7 @@ class _OfferForYouState extends State<OfferForYou> {
                         ),
                       ),
                       IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.delete)),
+                          onPressed: () {}, icon: const Icon(Icons.archive)),
                     ],
                   ),
                   const Divider(

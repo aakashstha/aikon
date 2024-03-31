@@ -1,6 +1,6 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
-import 'package:aikon/screens/others/add_offer.dart';
+import 'package:aikon/screens/others/post_offer.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,40 +22,12 @@ class _OfferListingsYourState extends State<OfferListingsYour> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: ListView(
           children: [
-            const SizedBox(height: 10),
-            // top section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // const Spacer(),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.star_rounded,
-                          size: 30,
-                        ),
-                      ),
-                      IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.delete)),
-                    ],
-                  ),
-                  const Divider(
-                    color: AppColors.searchBackground,
-                    thickness: 1,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 20),
 
             // Offers List
             addOffers()
@@ -65,6 +37,7 @@ class _OfferListingsYourState extends State<OfferListingsYour> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _tabBarController.isAddOfferButton.value = true;
+          Get.to(AddOffer());
         },
         backgroundColor: AppColors.blueYonder,
         child: const Icon(

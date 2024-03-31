@@ -2,6 +2,7 @@ import 'package:aikon/constants/colors.dart';
 import 'package:aikon/firebase_options.dart';
 import 'package:aikon/screens/authentication/login.dart';
 import 'package:aikon/screens/authentication/otp.dart';
+import 'package:aikon/screens/authentication/user_info.dart';
 import 'package:aikon/screens/home/tabbar_navigation.dart';
 import 'package:aikon/utilities/storage_getx.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: TabBarNavigation(),
-      // home: OTPScreen(),
+      // home: Login(),
     );
   }
 }

@@ -1,37 +1,34 @@
-import 'dart:ffi';
-
+import 'package:aikon/controller/post_offer_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
-class FirebaseController extends GetxController {
-  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+final _postOfferController = Get.find<PostOfferController>();
+
+class FirebaseCRUDService {
+  static final FirebaseFirestore _firebaseFirestore =
+      FirebaseFirestore.instance;
   var locationDetailsLenght = 0.obs;
 
-  String firebaseCollectionName = "offers";
+  static String offerCollection = "offers";
 
-  // Add Location Details
-  Future<void> addOffer() async {
-    var colletion = OfferModel(
-      id: "1",
-      userId: "1",
-      title: "title",
-      subtitle: "subtitle",
-      isBuying: true,
-      country: "country",
-      city: "city",
-      color: 1,
-      pieces: "pieces",
-      images: [],
-      channel: "channel",
-      isAnonymous: true,
+  // Add Offer
+  static Future<void> createOffer() async {
+    var offer = OfferModel(
+      isSell: _postOfferController.isSell.value,
+      title: _postOfferController.titleController.text,
+      subtitle: _postOfferController.subTitleController.text,
+      description: _postOfferController.descriptionController.text,
+      countryName: _postOfferController.countryNameController.text,
+      cityName: _postOfferController.cityNameController.text,
+      imagesList: _postOfferController.imagesList,
+      channelList: _postOfferController.channelList,
+      isAnonymous: _postOfferController.postAnonymously.value,
       createdAt: DateTime.now(),
     );
 
     try {
-      await _firebaseFirestore
-          .collection(firebaseCollectionName)
-          .add(colletion.toJson());
+      await _firebaseFirestore.collection(offerCollection).add(offer.toJson());
     } catch (e) {
       print("ERROR: + e.message");
     }

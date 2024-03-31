@@ -1,7 +1,8 @@
 import 'package:aikon/constants/colors.dart';
-import 'package:aikon/controller/firebase_auth_service.dart';
-import 'package:aikon/controller/firebase_crud_service.dart';
+import 'package:aikon/controller/firebase/firebase_auth_service.dart';
+import 'package:aikon/controller/firebase/firebase_crud_service.dart';
 import 'package:aikon/controller/auth_controller.dart';
+import 'package:aikon/screens/authentication/user_info.dart';
 import 'package:aikon/utilities/storage_getx.dart';
 import 'package:aikon/utilities/validator.dart';
 import 'package:flutter/material.dart';
@@ -88,9 +89,9 @@ class OTPScreen extends StatelessWidget {
                     onPressed: () async {
                       // if (_formKey.currentState!.validate()) {
                       // Get.to(Home());
-                      await FirebaseAuthService.verifyOTP(
-                          smsCode: _authController.smsCode);
-                      print("object");
+                      // await FirebaseAuthService.verifyOTP(
+                      //     smsCode: _authController.smsCode);
+                      Get.to(UserInfo());
                       // }
                     },
                     style: TextButton.styleFrom(
@@ -105,7 +106,7 @@ class OTPScreen extends StatelessWidget {
                     ),
                     child: const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 28),
-                      child: Text("Proceed"),
+                      child: Text("Next"),
                     ),
                   ),
                 ),

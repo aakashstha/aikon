@@ -10,11 +10,16 @@ Widget customTextField({
   int? maxLine = 1,
   TextCapitalization textCapitalization = TextCapitalization.none,
   double textFieldTopHeight = 15,
+  double prefixWidth = 0,
+  final void Function()? onTap,
+  bool isReadOnly = false,
 }) {
   return TextFormField(
+    readOnly: isReadOnly,
     autovalidateMode: AutovalidateMode.onUserInteraction,
     controller: controller,
     validator: validate,
+    onTap: onTap,
     obscureText: obscureText,
     keyboardType: keyboardType,
     maxLines: maxLine,
@@ -23,6 +28,7 @@ Widget customTextField({
       border: const UnderlineInputBorder(
           borderRadius: BorderRadius.all(Radius.zero)),
       hintText: hintText,
+      prefix: SizedBox(width: prefixWidth),
       filled: true,
       isDense: true,
       contentPadding: EdgeInsets.fromLTRB(0, textFieldTopHeight, 10, 0),

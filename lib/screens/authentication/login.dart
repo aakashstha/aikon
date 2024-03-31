@@ -1,8 +1,9 @@
 import 'package:aikon/constants/colors.dart';
-import 'package:aikon/controller/firebase_auth_service.dart';
-import 'package:aikon/controller/firebase_crud_service.dart';
+import 'package:aikon/controller/firebase/firebase_auth_service.dart';
+import 'package:aikon/controller/firebase/firebase_crud_service.dart';
 import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/screens/authentication/otp.dart';
+import 'package:aikon/screens/authentication/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -33,19 +34,25 @@ class Login extends StatelessWidget {
 
                 // InternationalPhoneNumberInput widget for phone number input
                 InternationalPhoneNumberInput(
+                  // autoFocus: true,
+
+                  countrySelectorScrollControlled: true,
+                  spaceBetweenSelectorAndTextField: 0,
                   initialValue: PhoneNumber(isoCode: 'NP'),
                   onInputChanged: (PhoneNumber number) {
                     _authController.phoneNumber = number.phoneNumber!;
                     print(number.phoneNumber!);
                     print(_authController.phoneNumber);
                   },
-                  ignoreBlank: false,
                   autoValidateMode: AutovalidateMode.onUserInteraction,
                   selectorTextStyle: const TextStyle(color: Colors.black),
                   textFieldController: TextEditingController(),
                   // Configuration for the country selector
                   selectorConfig: const SelectorConfig(
-                    selectorType: PhoneInputSelectorType.DIALOG,
+                    // selectorType: PhoneInputSelectorType.DIALOG,
+                    selectorType: PhoneInputSelectorType.DROPDOWN,
+                    // setSelectorButtonAsPrefixIcon: true,
+                    // useBottomSheetSafeArea: true,
                   ),
                   // Decoration for the input field
                   inputDecoration: const InputDecoration(
@@ -62,11 +69,11 @@ class Login extends StatelessWidget {
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        await FirebaseAuthService.sendOTP(
-                            phoneNumber: _authController.phoneNumber);
-                        Get.to(OTPScreen());
-                      }
+                      // if (_formKey.currentState!.validate()) {
+                      //   await FirebaseAuthService.sendOTP(
+                      //       phoneNumber: _authController.phoneNumber);
+                      Get.to(OTPScreen());
+                      // }
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
