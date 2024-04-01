@@ -56,7 +56,7 @@ class _SelectChannelState extends State<SelectChannel> {
                   shape: const BeveledRectangleBorder(),
                 ),
                 onPressed: () async {
-                  Get.to(TabBarNavigation());
+                  Get.to(() =>TabBarNavigation());
                 },
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 15),

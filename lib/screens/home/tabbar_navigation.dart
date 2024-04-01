@@ -2,7 +2,7 @@ import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/screens/home/channel.dart';
 import 'package:aikon/screens/home/offer_for_you.dart';
-import 'package:aikon/screens/home/offer_my_listings.dart';
+import 'package:aikon/screens/others/offer_my_listings.dart';
 import 'package:aikon/screens/others/post_offer.dart';
 import 'package:aikon/screens/others/settings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,7 +58,7 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
             IconButton(
               onPressed: () {
                 print("Add Offer");
-                Get.to(AddOffer());
+                Get.to(() => AddOffer());
               },
               icon: Icon(Icons.add, color: AppColors.white),
             ),
@@ -69,9 +69,9 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
                 int val = value as int;
                 setState(() {
                   if (val == 0) {
-                    Get.to(OfferListingsYour());
+                    Get.to(() => OfferListingsYour());
                   } else if (val == 1) {
-                    Get.to(SettingScreen());
+                    Get.to(() => SettingScreen());
                   }
                 });
               },

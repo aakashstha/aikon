@@ -1,9 +1,9 @@
-import 'package:aikon/controller/post_offer_controller.dart';
+import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
-final _postOfferController = Get.find<PostOfferController>();
+final OfferController _offerController = Get.put(OfferController());
 
 class FirebaseCRUDService {
   static final FirebaseFirestore _firebaseFirestore =
@@ -15,15 +15,15 @@ class FirebaseCRUDService {
   // Add Offer
   static Future<void> createOffer() async {
     var offer = OfferModel(
-      isSell: _postOfferController.isSell.value,
-      title: _postOfferController.titleController.text,
-      subtitle: _postOfferController.subTitleController.text,
-      description: _postOfferController.descriptionController.text,
-      countryName: _postOfferController.countryNameController.text,
-      cityName: _postOfferController.cityNameController.text,
-      imagesList: _postOfferController.imagesList,
-      channelList: _postOfferController.channelList,
-      isAnonymous: _postOfferController.postAnonymously.value,
+      isSell: _offerController.isSell.value,
+      title: _offerController.titleController.text,
+      subtitle: _offerController.subTitleController.text,
+      description: _offerController.descriptionController.text,
+      countryName: _offerController.countryNameController.text,
+      cityName: _offerController.cityNameController.text,
+      imagesList: _offerController.imagesList,
+      channelList: _offerController.channelList,
+      isAnonymous: _offerController.postAnonymously.value,
       createdAt: DateTime.now(),
     );
 
@@ -34,31 +34,24 @@ class FirebaseCRUDService {
     }
   }
 
-//   // Get all Location Details
-//   Future<void> getAllOffers() async {
-//     await FirebaseFirestore.instance
-//         .collection('locationDetails')
-//         .get()
-//         .then((QuerySnapshot querySnapshot) {
-//       _mapController.allLocationDetails.clear();
+  // Get all Offers Details
+  static Future<void> getAllOffers() async {
+    _offerController.allOffers.clear();
 
-//       for (var doc in querySnapshot.docs) {
-//         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-//         data['id'] = doc.id;
+    await _firebaseFirestore
+        .collection(offerCollection)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        data['id'] = doc.id;
 
-//         // convert 24 format time to 12 format
-//         data["openingTime"] = data["openingTime"].isEmpty
-//             ? ""
-//             : convert24To12(data["openingTime"]);
-//         data["closingTime"] = data["closingTime"].isEmpty
-//             ? ""
-//             : convert24To12(data["closingTime"]);
+        _offerController.allOffers.add(OfferModel.fromJson(data));
+      }
 
-//         _mapController.allLocationDetails
-//             .add(AddLocationDetailsModel.fromJson(data));
-//       }
-//     });
-//   }
+      print(_offerController.allOffers);
+    });
+  }
 
 // // Update Location Details
 //   Future<void> updateLocationDetails(String id) async {

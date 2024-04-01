@@ -1,5 +1,8 @@
 import 'package:aikon/constants/colors.dart';
+import 'package:aikon/controller/firebase/firebase_crud_service.dart';
+import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
+import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/post_offer.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,26 +21,59 @@ class OfferListingsYour extends StatefulWidget {
 
 class _OfferListingsYourState extends State<OfferListingsYour> {
   final TabBarController _tabBarController = Get.put(TabBarController());
+  final OfferController _offerController = Get.put(OfferController());
+
   bool toggleState = false;
+
+  @override
+  void initState() {
+    // _offerController.allOffers.clear();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: AppColors.blueYonder,
+        title: const Text("My Listings"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.white),
+          onPressed: () => Get.back(),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: ListView(
           children: [
             const SizedBox(height: 20),
 
+            InkWell(
+              onTap: () async {
+                await FirebaseCRUDService.getAllOffers();
+                print(_offerController.allOffers.length);
+              },
+              child: const Text("Press Me"),
+            ),
+            const SizedBox(height: 20),
+
             // Offers List
-            addOffers()
+            ...List.generate(
+              _offerController.allOffers.length,
+              (index) {
+                OfferModel offer = _offerController.allOffers[index];
+
+                return addOffers(offer);
+                // return Text("hey");
+              },
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _tabBarController.isAddOfferButton.value = true;
-          Get.to(AddOffer());
+          Get.to(() => AddOffer());
         },
         backgroundColor: AppColors.blueYonder,
         child: const Icon(
@@ -49,7 +85,7 @@ class _OfferListingsYourState extends State<OfferListingsYour> {
   }
 }
 
-Widget addOffers() {
+Widget addOffers(OfferModel offer) {
   return Column(
     children: [
       IntrinsicHeight(
@@ -67,7 +103,7 @@ Widget addOffers() {
                   ),
                   child: Center(
                     child: Text(
-                      "WTS",
+                      offer.isSell ? "WTS" : "WTB",
                       style: GoogleFonts.poppins(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
@@ -95,7 +131,7 @@ Widget addOffers() {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Samsung S23 Ultra 256+12",
+                    offer.title,
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -103,7 +139,7 @@ Widget addOffers() {
                     ),
                   ),
                   Text(
-                    "3 Colors | Latam | 400 pcs",
+                    offer.subtitle,
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -114,7 +150,7 @@ Widget addOffers() {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    "Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been in the name all the ways me with very good guy",
+                    offer.description,
                     style: GoogleFonts.poppins(
                       fontSize: 11,
                       fontWeight: FontWeight.w400,
@@ -127,7 +163,7 @@ Widget addOffers() {
                   Row(
                     children: [
                       Text(
-                        "USA > Miami > David Campbell",
+                        "${offer.countryName} > ${offer.cityName} > David Campbell",
                         style: GoogleFonts.poppins(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,

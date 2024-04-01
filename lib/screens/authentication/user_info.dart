@@ -99,7 +99,7 @@ class _UserInfoState extends State<UserInfo> {
                       shape: const BeveledRectangleBorder(),
                     ),
                     onPressed: () async {
-                      Get.to(SelectChannel());
+                      Get.to(() =>SelectChannel());
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15),

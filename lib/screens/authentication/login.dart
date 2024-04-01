@@ -72,7 +72,7 @@ class Login extends StatelessWidget {
                       // if (_formKey.currentState!.validate()) {
                       //   await FirebaseAuthService.sendOTP(
                       //       phoneNumber: _authController.phoneNumber);
-                      Get.to(OTPScreen());
+                      Get.to(() => OTPScreen());
                       // }
                     },
                     style: TextButton.styleFrom(

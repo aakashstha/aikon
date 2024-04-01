@@ -56,7 +56,7 @@ class OfferModel {
     data["imagesList"] = imagesList;
     data["channelList"] = channelList;
     data["isAnonymous"] = isAnonymous;
-    data["created_at"] = createdAt;
+    data["createdAt"] = createdAt;
 
     return data;
   }

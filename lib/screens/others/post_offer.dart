@@ -1,6 +1,6 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/firebase/firebase_crud_service.dart';
-import 'package:aikon/controller/post_offer_controller.dart';
+import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/screens/widgets/dropdown_channel.dart';
 import 'package:aikon/screens/widgets/text_field.dart';
@@ -23,8 +23,7 @@ class AddOffer extends StatefulWidget {
 }
 
 class _AddOfferState extends State<AddOffer> {
-  final PostOfferController _postOfferController =
-      Get.put(PostOfferController());
+  final OfferController _offerController = Get.put(OfferController());
 
   bool toggleState = false;
 
@@ -44,7 +43,7 @@ class _AddOfferState extends State<AddOffer> {
 
               // InkWell(
               //   onTap: () {
-              //     print(_postOfferController.cityNameController.text);
+              //     print(_offerController.cityNameController.text);
               //   },
               //   child: const Text("Press Me"),
               // ),
@@ -90,10 +89,10 @@ class _AddOfferState extends State<AddOffer> {
                       ),
                       activeColor: AppColors.white,
                       activeToggleColor: AppColors.wantToSell,
-                      value: _postOfferController.isSell.value,
+                      value: _offerController.isSell.value,
                       onToggle: (value) {
                         setState(() {
-                          _postOfferController.isSell.value = value;
+                          _offerController.isSell.value = value;
                         });
                       },
                     ),
@@ -126,15 +125,15 @@ class _AddOfferState extends State<AddOffer> {
                   children: [
                     customTextField(
                       hintText: "Title",
-                      controller: _postOfferController.titleController,
+                      controller: _offerController.titleController,
                     ),
                     customTextField(
                       hintText: "Subtitle",
-                      controller: _postOfferController.subTitleController,
+                      controller: _offerController.subTitleController,
                     ),
                     customTextField(
                       hintText: "Description....",
-                      controller: _postOfferController.descriptionController,
+                      controller: _offerController.descriptionController,
                       maxLine: 5,
                     ),
                     const SizedBox(height: 15),
@@ -157,8 +156,7 @@ class _AddOfferState extends State<AddOffer> {
                       child: customTextField(
                           hintText: "Country",
                           isReadOnly: true,
-                          controller:
-                              _postOfferController.countryNameController,
+                          controller: _offerController.countryNameController,
                           textFieldTopHeight: 0,
                           onTap: () {
                             showCountryPicker(
@@ -167,8 +165,8 @@ class _AddOfferState extends State<AddOffer> {
                               context: context,
                               showPhoneCode: false,
                               onSelect: (Country country) {
-                                _postOfferController
-                                    .countryNameController.text = country.name;
+                                _offerController.countryNameController.text =
+                                    country.name;
                               },
                             );
                           }),
@@ -185,7 +183,7 @@ class _AddOfferState extends State<AddOffer> {
                       ),
                       child: customTextField(
                         hintText: "City",
-                        controller: _postOfferController.cityNameController,
+                        controller: _offerController.cityNameController,
                         textFieldTopHeight: 0,
                       ),
                     ),
@@ -295,13 +293,13 @@ class _AddOfferState extends State<AddOffer> {
                         name: 'Accessories', value: "accessories"),
                   ],
                   onChanged: (val) {
-                    _postOfferController.channelList.clear();
+                    _offerController.channelList.clear();
 
                     for (int i = 0; i < val.length; i++) {
-                      _postOfferController.channelList.add(val[i].value);
+                      _offerController.channelList.add(val[i].value);
                     }
 
-                    print(_postOfferController.channelList);
+                    print(_offerController.channelList);
                   },
                 ),
               ),
@@ -310,10 +308,10 @@ class _AddOfferState extends State<AddOffer> {
                   Checkbox(
                     activeColor: AppColors.blueYonder,
                     checkColor: AppColors.white,
-                    value: _postOfferController.postAnonymously.value,
+                    value: _offerController.postAnonymously.value,
                     onChanged: (value) {
                       setState(() {
-                        _postOfferController.postAnonymously.value = value!;
+                        _offerController.postAnonymously.value = value!;
                       });
                     },
                   ),
@@ -331,6 +329,7 @@ class _AddOfferState extends State<AddOffer> {
               // Post Button
               TextButton(
                 onPressed: () async {
+                  print(_offerController.titleController.text);
                   await FirebaseCRUDService.createOffer();
                   // if (_formKeyChangePassword.currentState!.validate()) {
 

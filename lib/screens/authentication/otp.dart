@@ -91,7 +91,7 @@ class OTPScreen extends StatelessWidget {
                       // Get.to(Home());
                       // await FirebaseAuthService.verifyOTP(
                       //     smsCode: _authController.smsCode);
-                      Get.to(UserInfo());
+                      Get.to(() =>UserInfo());
                       // }
                     },
                     style: TextButton.styleFrom(

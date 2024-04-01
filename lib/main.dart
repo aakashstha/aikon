@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blueYonder),
         useMaterial3: true,
       ),
-      home: TabBarNavigation(),
-      // home: Login(),
+      // home: TabBarNavigation(),
+      home: Login(),
     );
   }
 }
