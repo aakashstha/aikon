@@ -55,7 +55,9 @@ class FirebaseAuthService {
       StorageGetX.writeFirebaseToken(token);
 
       print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
       print(verifyId);
+      print(response.user!.refreshToken);
       print(response);
     } catch (e) {
       print(e);

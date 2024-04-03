@@ -1,7 +1,9 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
-import 'package:aikon/screens/others/post_offer.dart';
+import 'package:aikon/screens/others/add_offer.dart';
+import 'package:aikon/utilities/storage_getx.dart';
 import 'package:country_flags/country_flags.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,9 +34,38 @@ class _OfferForYouState extends State<OfferForYou> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 children: [
+                  // Testing Purposes buttons
+                  TextButton(
+                    onPressed: () async {
+                      var a1 = await StorageGetX.readFirebaseToken();
+                      print(a1);
+                      // new token every time
+                      final user = FirebaseAuth.instance.currentUser;
+                      var a = await user!.getIdToken();
+                      var b = user.refreshToken;
+                      print(a);
+                      print(b);
+                      print("object");
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: AppColors.blueYonder,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 28),
+                      child: Text("get token"),
+                    ),
+                  ),
+
                   TextFormField(
                     decoration: InputDecoration(
-                      prefix: Text("  "),
+                      prefix: const SizedBox(width: 2),
                       filled: true,
                       fillColor: AppColors.searchBackground,
                       border: OutlineInputBorder(

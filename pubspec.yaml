@@ -47,6 +47,7 @@ dependencies:
   country_flags: ^2.2.0
   country_picker: ^2.0.25
   dropdown_textfield: ^1.0.8
+  adaptive_action_sheet: ^2.0.3
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/firebase/firebase_crud_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
+import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/widgets/dropdown_channel.dart';
 import 'package:aikon/screens/widgets/text_field.dart';
 import 'package:country_flags/country_flags.dart';
@@ -16,7 +17,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddOffer extends StatefulWidget {
-  const AddOffer({super.key});
+  bool isUpdateOffer = false;
+  int? index;
+  OfferModel? offer;
+  AddOffer({super.key, required this.isUpdateOffer, this.index, this.offer});
 
   @override
   State<AddOffer> createState() => _AddOfferState();
@@ -28,11 +32,51 @@ class _AddOfferState extends State<AddOffer> {
   bool toggleState = false;
 
   @override
+  void initState() {
+    if (widget.isUpdateOffer) {
+      int index = widget.index!;
+
+      _offerController.isSell.value =
+          _offerController.myOffersListings[index].isSell;
+      _offerController.titleController.text =
+          _offerController.myOffersListings[index].title;
+      _offerController.subTitleController.text =
+          _offerController.myOffersListings[index].subtitle;
+      _offerController.descriptionController.text =
+          _offerController.myOffersListings[index].description;
+      _offerController.countryNameController.text =
+          _offerController.myOffersListings[index].countryName;
+      _offerController.cityNameController.text =
+          _offerController.myOffersListings[index].cityName;
+      _offerController.imagesList =
+          _offerController.myOffersListings[index].imagesList;
+      _offerController.channelList =
+          _offerController.myOffersListings[index].channelList;
+      _offerController.postAnonymously.value =
+          _offerController.myOffersListings[index].isAnonymous;
+    }
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.white),
         backgroundColor: AppColors.blueYonder,
+        title: Text(
+          widget.isUpdateOffer ? "Update Offer" : "Add Offer",
+          style: const TextStyle(color: AppColors.white, fontSize: 18),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.white),
+          onPressed: () {
+            _offerController.clearAllFields();
+            Get.back();
+            Get.back();
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -43,9 +87,12 @@ class _AddOfferState extends State<AddOffer> {
 
               // InkWell(
               //   onTap: () {
-              //     print(_offerController.cityNameController.text);
+              //     print(widget.offer!.id);
               //   },
-              //   child: const Text("Press Me"),
+              //   child: const Text(
+              //     "Press Me",
+              //     style: TextStyle(fontSize: 40),
+              //   ),
               // ),
 
               Align(
@@ -326,14 +373,24 @@ class _AddOfferState extends State<AddOffer> {
                 ],
               ),
               const SizedBox(height: 10),
-              // Post Button
+              // Post/Update Button
               TextButton(
                 onPressed: () async {
-                  print(_offerController.titleController.text);
-                  await FirebaseCRUDService.createOffer();
-                  // if (_formKeyChangePassword.currentState!.validate()) {
+                  if (widget.isUpdateOffer) {
+                    // Update Offer
+                    Get.back();
+                    Get.back();
+                    await FirebaseCRUDService.updateOffer(widget.offer!.id!);
+                    await FirebaseCRUDService.getAllOffers();
+                    _offerController.clearAllFields();
 
-                  // }
+                    return;
+                  }
+                  Get.back();
+                  Get.back();
+                  await FirebaseCRUDService.createOffer();
+                  await FirebaseCRUDService.getAllOffers();
+                  _offerController.clearAllFields();
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
@@ -356,7 +413,9 @@ class _AddOfferState extends State<AddOffer> {
                       //           circularIndicator()
                       //         ],
                       //       )
-                      const Text("Post Offer"),
+                      widget.isUpdateOffer
+                          ? const Text("Update Offer")
+                          : const Text("Post Offer"),
                 ),
               ),
               const SizedBox(height: 40),

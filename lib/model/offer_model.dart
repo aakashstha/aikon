@@ -11,6 +11,7 @@ class OfferModel {
   final List<dynamic> imagesList;
   final List channelList;
   final bool isAnonymous;
+  final String userId;
   final dynamic createdAt;
 
   OfferModel({
@@ -24,6 +25,7 @@ class OfferModel {
     required this.imagesList,
     required this.channelList,
     required this.isAnonymous,
+    required this.userId,
     required this.createdAt,
   });
 
@@ -39,6 +41,7 @@ class OfferModel {
       imagesList: json["imagesList"],
       channelList: json["channelList"],
       isAnonymous: json["isAnonymous"],
+      userId: json["userId"],
       createdAt: json["createdAt"],
     );
   }
@@ -56,8 +59,8 @@ class OfferModel {
     data["imagesList"] = imagesList;
     data["channelList"] = channelList;
     data["isAnonymous"] = isAnonymous;
+    data["userId"] = userId;
     data["createdAt"] = createdAt;
-
     return data;
   }
 }

@@ -18,7 +18,7 @@ class Login extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Form(
-          key: _formKey,
+          key: _formKey, 
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
@@ -69,11 +69,11 @@ class Login extends StatelessWidget {
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () async {
-                      // if (_formKey.currentState!.validate()) {
-                      //   await FirebaseAuthService.sendOTP(
-                      //       phoneNumber: _authController.phoneNumber);
-                      Get.to(() => OTPScreen());
-                      // }
+                      if (_formKey.currentState!.validate()) {
+                        await FirebaseAuthService.sendOTP(
+                            phoneNumber: _authController.phoneNumber);
+                        Get.to(() => OTPScreen());
+                      }
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,

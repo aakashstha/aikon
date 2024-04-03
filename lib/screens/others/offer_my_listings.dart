@@ -3,7 +3,9 @@ import 'package:aikon/controller/firebase/firebase_crud_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
-import 'package:aikon/screens/others/post_offer.dart';
+import 'package:aikon/screens/home/tabbar_navigation.dart';
+import 'package:aikon/screens/others/add_offer.dart';
+import 'package:aikon/screens/widgets/bottom_sheet.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,23 +14,27 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class OfferListingsYour extends StatefulWidget {
-  const OfferListingsYour({super.key});
+class OfferMyListing extends StatefulWidget {
+  const OfferMyListing({super.key});
 
   @override
-  State<OfferListingsYour> createState() => _OfferListingsYourState();
+  State<OfferMyListing> createState() => _OfferMyListingState();
 }
 
-class _OfferListingsYourState extends State<OfferListingsYour> {
+class _OfferMyListingState extends State<OfferMyListing> {
   final TabBarController _tabBarController = Get.put(TabBarController());
-  final OfferController _offerController = Get.put(OfferController());
-
-  bool toggleState = false;
+  // while not using permanent = true then the controller get deleted
+  final OfferController _offerController =
+      Get.put(OfferController(), permanent: true);
 
   @override
   void initState() {
-    // _offerController.allOffers.clear();
+    initialize();
     super.initState();
+  }
+
+  void initialize() async {
+    await FirebaseCRUDService.getAllOffers();
   }
 
   @override
@@ -36,44 +42,55 @@ class _OfferListingsYourState extends State<OfferListingsYour> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.blueYonder,
-        title: const Text("My Listings"),
+        title: const Text(
+          "My Listings",
+          style: TextStyle(color: AppColors.white, fontSize: 18),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.white),
-          onPressed: () => Get.back(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: ListView(
-          children: [
-            const SizedBox(height: 20),
+      body: Obx(
+        () => _offerController.loading.value
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 20),
 
-            InkWell(
-              onTap: () async {
-                await FirebaseCRUDService.getAllOffers();
-                print(_offerController.allOffers.length);
-              },
-              child: const Text("Press Me"),
-            ),
-            const SizedBox(height: 20),
+                    // InkWell(
+                    //   onTap: () async {
+                    //     await FirebaseCRUDService.getAllOffers();
+                    //     print(_offerController.myOffersListings.length);
+                    //     print(_offerController.otherOffersListings.length);
+                    //   },
+                    //   child: const Text("Press Me"),
+                    // ),
+                    // const SizedBox(height: 20),
 
-            // Offers List
-            ...List.generate(
-              _offerController.allOffers.length,
-              (index) {
-                OfferModel offer = _offerController.allOffers[index];
+                    // Offers List
+                    ...List.generate(
+                      _offerController.myOffersListings.length,
+                      (index) {
+                        OfferModel offer =
+                            _offerController.myOffersListings[index];
 
-                return addOffers(offer);
-                // return Text("hey");
-              },
-            ),
-          ],
-        ),
+                        return addOffers(offer, index, context);
+                        // return Text("hey");
+                      },
+                    ),
+                  ],
+                ),
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _tabBarController.isAddOfferButton.value = true;
-          Get.to(() => AddOffer());
+          Get.to(() => AddOffer(isUpdateOffer: false));
         },
         backgroundColor: AppColors.blueYonder,
         child: const Icon(
@@ -85,7 +102,7 @@ class _OfferListingsYourState extends State<OfferListingsYour> {
   }
 }
 
-Widget addOffers(OfferModel offer) {
+Widget addOffers(OfferModel offer, int index, BuildContext context) {
   return Column(
     children: [
       IntrinsicHeight(
@@ -98,7 +115,9 @@ Widget addOffers(OfferModel offer) {
                   height: 35,
                   width: 35,
                   decoration: BoxDecoration(
-                    color: AppColors.wantToSell,
+                    color: offer.isSell
+                        ? AppColors.wantToSell
+                        : AppColors.wantToBuy,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Center(
@@ -180,6 +199,16 @@ Widget addOffers(OfferModel offer) {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                InkWell(
+                  onTap: () {
+                    showOfferBottomSheet(index: index, offer: offer);
+                  },
+                  child: const Icon(
+                    Icons.more_horiz,
+                    color: AppColors.blueYonder,
+                  ),
+                ),
+                const Spacer(),
                 Text(
                   "9:44 PM",
                   style: GoogleFonts.poppins(

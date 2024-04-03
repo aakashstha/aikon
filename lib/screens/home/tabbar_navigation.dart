@@ -3,7 +3,7 @@ import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/screens/home/channel.dart';
 import 'package:aikon/screens/home/offer_for_you.dart';
 import 'package:aikon/screens/others/offer_my_listings.dart';
-import 'package:aikon/screens/others/post_offer.dart';
+import 'package:aikon/screens/others/add_offer.dart';
 import 'package:aikon/screens/others/settings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -58,7 +58,9 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
             IconButton(
               onPressed: () {
                 print("Add Offer");
-                Get.to(() => AddOffer());
+                Get.to(() => AddOffer(
+                      isUpdateOffer: false,
+                    ));
               },
               icon: Icon(Icons.add, color: AppColors.white),
             ),
@@ -69,8 +71,10 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
                 int val = value as int;
                 setState(() {
                   if (val == 0) {
-                    Get.to(() => OfferListingsYour());
+                    // Get.toNamed("/OfferMyListing");
+                    Get.to(() => OfferMyListing());
                   } else if (val == 1) {
+                    // Get.toNamed("/SettingScreen");
                     Get.to(() => SettingScreen());
                   }
                 });

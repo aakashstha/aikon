@@ -63,35 +63,14 @@ class OTPScreen extends StatelessWidget {
                   },
                 ),
                 const Spacer(),
-                TextButton(
-                  onPressed: () async {
-                    var a = await StorageGetX.readFirebaseToken();
-                    print(a);
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: AppColors.blueYonder,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                    textStyle: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 28),
-                    child: Text("get token"),
-                  ),
-                ),
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () async {
                       // if (_formKey.currentState!.validate()) {
-                      // Get.to(Home());
-                      // await FirebaseAuthService.verifyOTP(
-                      //     smsCode: _authController.smsCode);
-                      Get.to(() =>UserInfo());
+                      await FirebaseAuthService.verifyOTP(
+                          smsCode: _authController.smsCode);
+                      // Get.to(() => UserInfo());
                       // }
                     },
                     style: TextButton.styleFrom(
