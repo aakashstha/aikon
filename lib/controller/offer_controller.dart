@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OfferController extends GetxController {
-  var loading = false.obs;
+  var loadingMyOffers = false.obs;
+  var loadingOtherOffers = false.obs;
 
   List<OfferModel> myOffersListings = [];
   List<OfferModel> otherOffersListings = [];

@@ -34,7 +34,7 @@ class _OfferMyListingState extends State<OfferMyListing> {
   }
 
   void initialize() async {
-    await FirebaseCRUDService.getAllOffers();
+    await FirebaseCRUDService.getAllMyOffers();
   }
 
   @override
@@ -49,12 +49,12 @@ class _OfferMyListingState extends State<OfferMyListing> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.white),
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
           },
         ),
       ),
       body: Obx(
-        () => _offerController.loading.value
+        () => _offerController.loadingMyOffers.value
             ? const Center(child: CircularProgressIndicator())
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -79,7 +79,7 @@ class _OfferMyListingState extends State<OfferMyListing> {
                         OfferModel offer =
                             _offerController.myOffersListings[index];
 
-                        return addOffers(offer, index, context);
+                        return addOffers(offer, index);
                         // return Text("hey");
                       },
                     ),
@@ -102,7 +102,7 @@ class _OfferMyListingState extends State<OfferMyListing> {
   }
 }
 
-Widget addOffers(OfferModel offer, int index, BuildContext context) {
+Widget addOffers(OfferModel offer, int index) {
   return Column(
     children: [
       IntrinsicHeight(

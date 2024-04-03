@@ -381,7 +381,7 @@ class _AddOfferState extends State<AddOffer> {
                     Get.back();
                     Get.back();
                     await FirebaseCRUDService.updateOffer(widget.offer!.id!);
-                    await FirebaseCRUDService.getAllOffers();
+                    await FirebaseCRUDService.getAllMyOffers();
                     _offerController.clearAllFields();
 
                     return;
@@ -389,7 +389,7 @@ class _AddOfferState extends State<AddOffer> {
                   Get.back();
                   Get.back();
                   await FirebaseCRUDService.createOffer();
-                  await FirebaseCRUDService.getAllOffers();
+                  await FirebaseCRUDService.getAllMyOffers();
                   _offerController.clearAllFields();
                 },
                 style: TextButton.styleFrom(

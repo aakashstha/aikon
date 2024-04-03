@@ -1,5 +1,8 @@
 import 'package:aikon/constants/colors.dart';
+import 'package:aikon/controller/firebase/firebase_crud_service.dart';
+import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
+import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/add_offer.dart';
 import 'package:aikon/utilities/storage_getx.dart';
 import 'package:country_flags/country_flags.dart';
@@ -20,139 +23,168 @@ class OfferForYou extends StatefulWidget {
 
 class _OfferForYouState extends State<OfferForYou> {
   final TabBarController _tabBarController = Get.put(TabBarController());
+  final OfferController _offerController = Get.put(OfferController());
   bool toggleState = false;
+
+  @override
+  void initState() {
+    initialize();
+    super.initState();
+  }
+
+  void initialize() async {
+    await FirebaseCRUDService.getAllOtherOffers();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: ListView(
-          children: [
-            const SizedBox(height: 10),
-            // top section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-                  // Testing Purposes buttons
-                  TextButton(
-                    onPressed: () async {
-                      var a1 = await StorageGetX.readFirebaseToken();
-                      print(a1);
-                      // new token every time
-                      final user = FirebaseAuth.instance.currentUser;
-                      var a = await user!.getIdToken();
-                      var b = user.refreshToken;
-                      print(a);
-                      print(b);
-                      print("object");
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: AppColors.blueYonder,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 28),
-                      child: Text("get token"),
-                    ),
-                  ),
+      body: Obx(
+        () => _offerController.loadingOtherOffers.value
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: ListView(
+                  children: [
+                    const SizedBox(height: 10),
+                    // top section
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        children: [
+                          // Testing Purposes buttons
+                          TextButton(
+                            onPressed: () async {
+                              print(
+                                  _offerController.otherOffersListings.length);
+                              // var a1 = await StorageGetX.readFirebaseToken();
+                              // print(a1);
+                              // // new token every time
+                              // final user = FirebaseAuth.instance.currentUser;
+                              // var a = await user!.getIdToken();
+                              // var b = user.refreshToken;
+                              // print(a);
+                              // print(b);
+                              // print("object");
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: AppColors.blueYonder,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                              textStyle: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 28),
+                              child: Text("get token"),
+                            ),
+                          ),
 
-                  TextFormField(
-                    decoration: InputDecoration(
-                      prefix: const SizedBox(width: 2),
-                      filled: true,
-                      fillColor: AppColors.searchBackground,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide.none,
+                          TextFormField(
+                            decoration: InputDecoration(
+                              prefix: const SizedBox(width: 2),
+                              filled: true,
+                              fillColor: AppColors.searchBackground,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: BorderSide.none,
+                              ),
+                              hintText: "Search",
+                              suffixIcon: const Icon(Icons.search),
+                              suffixIconColor: AppColors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                "WTB",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.wantToBuy,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                child: FlutterSwitch(
+                                  height: 30.0,
+                                  width: 60.0,
+                                  toggleSize: 20.0,
+                                  inactiveSwitchBorder: Border.all(
+                                    color: AppColors.wantToBuy,
+                                    width: 3.0,
+                                  ),
+                                  inactiveColor: AppColors.white,
+                                  inactiveToggleColor: AppColors.wantToBuy,
+                                  activeSwitchBorder: Border.all(
+                                    color: AppColors.wantToSell,
+                                    width: 3.0,
+                                  ),
+                                  activeColor: AppColors.white,
+                                  activeToggleColor: AppColors.wantToSell,
+                                  value: toggleState,
+                                  onToggle: (value) {
+                                    // setState(() {
+                                    //   toggleState = value;
+                                    // });
+                                  },
+                                ),
+                              ),
+                              Text(
+                                "WTS",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.wantToSell,
+                                ),
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.star_rounded,
+                                  size: 30,
+                                ),
+                              ),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.archive)),
+                            ],
+                          ),
+                          const Divider(
+                            color: AppColors.searchBackground,
+                            thickness: 1,
+                          ),
+                        ],
                       ),
-                      hintText: "Search",
-                      suffixIcon: const Icon(Icons.search),
-                      suffixIconColor: AppColors.black,
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Text(
-                        "WTB",
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.wantToBuy,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: FlutterSwitch(
-                          height: 30.0,
-                          width: 60.0,
-                          toggleSize: 20.0,
-                          inactiveSwitchBorder: Border.all(
-                            color: AppColors.wantToBuy,
-                            width: 3.0,
-                          ),
-                          inactiveColor: AppColors.white,
-                          inactiveToggleColor: AppColors.wantToBuy,
-                          activeSwitchBorder: Border.all(
-                            color: AppColors.wantToSell,
-                            width: 3.0,
-                          ),
-                          activeColor: AppColors.white,
-                          activeToggleColor: AppColors.wantToSell,
-                          value: toggleState,
-                          onToggle: (value) {
-                            setState(() {
-                              toggleState = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Text(
-                        "WTS",
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.wantToSell,
-                        ),
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.star_rounded,
-                          size: 30,
-                        ),
-                      ),
-                      IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.archive)),
-                    ],
-                  ),
-                  const Divider(
-                    color: AppColors.searchBackground,
-                    thickness: 1,
-                  ),
-                ],
+                    const SizedBox(height: 15),
+
+                    // Offers List
+                    ...List.generate(
+                      _offerController.otherOffersListings.length,
+                      (index) {
+                        print(_offerController.otherOffersListings.length);
+                        OfferModel offer =
+                            _offerController.otherOffersListings[index];
+
+                        return addOffers(offer);
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 15),
-
-            // Offers List
-            addOffers()
-          ],
-        ),
       ),
     );
   }
 }
 
-Widget addOffers() {
+Widget addOffers(OfferModel offer) {
   return Column(
     children: [
       IntrinsicHeight(
@@ -165,12 +197,14 @@ Widget addOffers() {
                   height: 35,
                   width: 35,
                   decoration: BoxDecoration(
-                    color: AppColors.wantToSell,
+                    color: offer.isSell
+                        ? AppColors.wantToSell
+                        : AppColors.wantToBuy,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Center(
                     child: Text(
-                      "WTS",
+                      offer.isSell ? "WTS" : "WTB",
                       style: GoogleFonts.poppins(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
@@ -198,7 +232,7 @@ Widget addOffers() {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Samsung S23 Ultra 256+12",
+                    offer.title,
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -206,7 +240,7 @@ Widget addOffers() {
                     ),
                   ),
                   Text(
-                    "3 Colors | Latam | 400 pcs",
+                    offer.subtitle,
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -217,7 +251,7 @@ Widget addOffers() {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    "Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been in the name all the ways me with very good guy",
+                    offer.description,
                     style: GoogleFonts.poppins(
                       fontSize: 11,
                       fontWeight: FontWeight.w400,
@@ -230,7 +264,7 @@ Widget addOffers() {
                   Row(
                     children: [
                       Text(
-                        "USA > Miami > David Campbell",
+                        "${offer.countryName} > ${offer.cityName} > David Campbell",
                         style: GoogleFonts.poppins(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,

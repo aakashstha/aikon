@@ -56,7 +56,7 @@ Future<void> showOfferBottomSheet(
               Get.back();
               Get.back();
               await FirebaseCRUDService.deleteOffer(offer.id!);
-              await FirebaseCRUDService.getAllOffers();
+              await FirebaseCRUDService.getAllMyOffers();
             },
             secondButtonTitle: "Cancel",
             secondButton: () {
