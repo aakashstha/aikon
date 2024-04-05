@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/firebase/firebase_crud_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
@@ -5,14 +7,18 @@ import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/add_offer.dart';
 import 'package:aikon/utilities/storage_getx.dart';
+import 'package:aikon/utilities/upload_images.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 class OfferForYou extends StatefulWidget {
   const OfferForYou({super.key});
@@ -53,10 +59,37 @@ class _OfferForYouState extends State<OfferForYou> {
                       child: Column(
                         children: [
                           // Testing Purposes buttons
+
+                          //  Step 1. Pick/Capture an image ✅
+                          //  Step 2. Upload the image to Firebase storage ✅
+                          //  Step 3. Get the URL of the uploaded image
+                          //  Step 4. Store the image URL inside the corresponding document of the database.
+                          //  Step 5. Display the image on the list view.
                           TextButton(
                             onPressed: () async {
-                              print(
-                                  _offerController.otherOffersListings.length);
+                              // Create a reference to the file to delete
+                              // deleteImageFromFirebaseStorage();
+                              print(_offerController
+                                  .otherOffersListings[0].imagesList);
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: AppColors.blueYonder,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                              textStyle: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 28),
+                              child: Text("Upload Image"),
+                            ),
+                          ),
+
+                          TextButton(
+                            onPressed: () async {
                               // var a1 = await StorageGetX.readFirebaseToken();
                               // print(a1);
                               // // new token every time

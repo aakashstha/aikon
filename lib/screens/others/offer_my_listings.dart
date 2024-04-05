@@ -5,6 +5,7 @@ import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/home/tabbar_navigation.dart';
 import 'package:aikon/screens/others/add_offer.dart';
+import 'package:aikon/screens/others/offer.individual.dart';
 import 'package:aikon/screens/widgets/bottom_sheet.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/cupertino.dart';
@@ -87,145 +88,150 @@ class _OfferMyListingState extends State<OfferMyListing> {
                 ),
               ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _tabBarController.isAddOfferButton.value = true;
-          Get.to(() => AddOffer(isUpdateOffer: false));
-        },
-        backgroundColor: AppColors.blueYonder,
-        child: const Icon(
-          Icons.add,
-          color: AppColors.white,
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     _tabBarController.isAddOfferButton.value = true;
+      //     Get.to(() => AddOffer(isUpdateOffer: false));
+      //   },
+      //   backgroundColor: AppColors.blueYonder,
+      //   child: const Icon(
+      //     Icons.add,
+      //     color: AppColors.white,
+      //   ),
+      // ),
     );
   }
 }
 
 Widget addOffers(OfferModel offer, int index) {
-  return Column(
-    children: [
-      IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              children: [
-                Container(
-                  height: 35,
-                  width: 35,
-                  decoration: BoxDecoration(
-                    color: offer.isSell
-                        ? AppColors.wantToSell
-                        : AppColors.wantToBuy,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Center(
-                    child: Text(
-                      offer.isSell ? "WTS" : "WTB",
-                      style: GoogleFonts.poppins(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ClipOval(
-                  clipBehavior: Clip.hardEdge,
-                  child: CountryFlag.fromCountryCode(
-                    'AT',
+  return InkWell(
+    onTap: () {
+      Get.to(() => OfferIndividual(offer: offer));
+    },
+    child: Column(
+      children: [
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Container(
                     height: 35,
                     width: 35,
-                    borderRadius: 8,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    offer.title,
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.black,
+                    decoration: BoxDecoration(
+                      color: offer.isSell
+                          ? AppColors.wantToSell
+                          : AppColors.wantToBuy,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                  ),
-                  Text(
-                    offer.subtitle,
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.subtitleGrey,
-                      height: 1,
-                      letterSpacing: 0,
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    offer.description,
-                    style: GoogleFonts.poppins(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.black,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 3),
-                  Row(
-                    children: [
-                      Text(
-                        "${offer.countryName} > ${offer.cityName} > David Campbell",
+                    child: Center(
+                      child: Text(
+                        offer.isSell ? "WTS" : "WTB",
                         style: GoogleFonts.poppins(
                           fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.subtitleGrey,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.black,
                         ),
                       ),
-                    ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ClipOval(
+                    clipBehavior: Clip.hardEdge,
+                    child: CountryFlag.fromCountryCode(
+                      'AT',
+                      height: 35,
+                      width: 35,
+                      borderRadius: 8,
+                    ),
                   ),
                 ],
               ),
-            ),
-            // time column
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                InkWell(
-                  onTap: () {
-                    showOfferBottomSheet(index: index, offer: offer);
-                  },
-                  child: const Icon(
-                    Icons.more_horiz,
-                    color: AppColors.blueYonder,
-                  ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      offer.title,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black,
+                      ),
+                    ),
+                    Text(
+                      offer.subtitle,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.subtitleGrey,
+                        height: 1,
+                        letterSpacing: 0,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      offer.description,
+                      style: GoogleFonts.poppins(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.black,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 3),
+                    Row(
+                      children: [
+                        Text(
+                          "${offer.countryName} > ${offer.cityName} > David Campbell",
+                          style: GoogleFonts.poppins(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.subtitleGrey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                const Spacer(),
-                Text(
-                  "9:44 PM",
-                  style: GoogleFonts.poppins(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.timeGrey,
+              ),
+              // time column
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      showOfferBottomSheet(index: index, offer: offer);
+                    },
+                    child: const Icon(
+                      Icons.more_horiz,
+                      color: AppColors.blueYonder,
+                    ),
                   ),
-                ),
-              ],
-            )
-          ],
+                  const Spacer(),
+                  Text(
+                    "9:44 PM",
+                    style: GoogleFonts.poppins(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.timeGrey,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
-      ),
-      const Divider(
-        color: AppColors.subtitleGrey,
-        thickness: 1,
-      ),
-    ],
+        const Divider(
+          color: AppColors.subtitleGrey,
+          thickness: 1,
+        ),
+      ],
+    ),
   );
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/firebase/firebase_crud_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
@@ -5,6 +7,7 @@ import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/widgets/dropdown_channel.dart';
 import 'package:aikon/screens/widgets/text_field.dart';
+import 'package:aikon/utilities/upload_images.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -33,6 +36,7 @@ class _AddOfferState extends State<AddOffer> {
 
   @override
   void initState() {
+    // For the Update Offer
     if (widget.isUpdateOffer) {
       int index = widget.index!;
 
@@ -48,8 +52,8 @@ class _AddOfferState extends State<AddOffer> {
           _offerController.myOffersListings[index].countryName;
       _offerController.cityNameController.text =
           _offerController.myOffersListings[index].cityName;
-      _offerController.imagesList =
-          _offerController.myOffersListings[index].imagesList;
+      // _offerController.selectedImageList =
+      //     _offerController.myOffersListings[index].imagesList;
       _offerController.channelList =
           _offerController.myOffersListings[index].channelList;
       _offerController.postAnonymously.value =
@@ -238,69 +242,111 @@ class _AddOfferState extends State<AddOffer> {
                 ],
               ),
               const SizedBox(height: 15),
+              // Container(
+              //         padding: const EdgeInsets.symmetric(
+              //             horizontal: 34, vertical: 34),
+              //         decoration: BoxDecoration(
+              //           color: AppColors.searchBackground,
+              //           borderRadius: BorderRadius.circular(10),
+              //         ),
+              //         child: Column(
+              //           children: [
+              //             const Icon(Icons.upload),
+              //             Text("Upload"),
+              //           ],
+              //         ),
+              //       ),
+              //       const SizedBox(height: 5),
+              //       Row(
+              //         mainAxisSize: MainAxisSize.min,
+              //         children: [
+              //           Text(
+              //             "Private",
+              //             style: GoogleFonts.poppins(
+              //               fontSize: 11,
+              //               fontWeight: FontWeight.bold,
+              //               color: AppColors.channelSubtitle,
+              //             ),
+              //           ),
+              //           const SizedBox(width: 10),
+              //           FlutterSwitch(
+              //             height: 25.0,
+              //             width: 42.0,
+              //             toggleSize: 10.0,
+              //             inactiveSwitchBorder: Border.all(
+              //               color: AppColors.subtitleGrey,
+              //               width: 4.0,
+              //             ),
+              //             inactiveColor: AppColors.white,
+              //             inactiveToggleColor: AppColors.subtitleGrey,
+              //             activeSwitchBorder: Border.all(
+              //               color: AppColors.blueYonder,
+              //               width: 4.0,
+              //             ),
+              //             activeColor: AppColors.white,
+              //             activeToggleColor: AppColors.blueYonder,
+              //             value: toggleState,
+              //             onToggle: (value) {
+              //               setState(() {
+              //                 toggleState = value;
+              //               });
+              //             },
+              //           ),
+              //         ],
+              //       ),
 
               // Upload Images from Gallery
               Wrap(
                 spacing: 10,
                 runSpacing: 10,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 34, vertical: 34),
-                        decoration: BoxDecoration(
-                          color: AppColors.searchBackground,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          children: [
-                            const Icon(Icons.upload),
-                            Text("Upload"),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
+                  ...List.generate(
+                    _offerController.selectedImageList.length,
+                    (index) {
+                      return Stack(
                         children: [
-                          Text(
-                            "Private",
-                            style: GoogleFonts.poppins(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.channelSubtitle,
+                          SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: Image.file(
+                              File(_offerController
+                                  .selectedImageList[index].path),
+                              fit: BoxFit.fill,
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          FlutterSwitch(
-                            height: 25.0,
-                            width: 42.0,
-                            toggleSize: 10.0,
-                            inactiveSwitchBorder: Border.all(
-                              color: AppColors.subtitleGrey,
-                              width: 4.0,
+                          Positioned(
+                            right: 0,
+                            child: InkWell(
+                              onTap: () {
+                                _offerController.selectedImageList
+                                    .removeAt(index);
+                              },
+                              child: Icon(Icons.close),
                             ),
-                            inactiveColor: AppColors.white,
-                            inactiveToggleColor: AppColors.subtitleGrey,
-                            activeSwitchBorder: Border.all(
-                              color: AppColors.blueYonder,
-                              width: 4.0,
-                            ),
-                            activeColor: AppColors.white,
-                            activeToggleColor: AppColors.blueYonder,
-                            value: toggleState,
-                            onToggle: (value) {
-                              setState(() {
-                                toggleState = value;
-                              });
-                            },
-                          ),
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      await pickSelectedImage();
+                      print(_offerController.selectedImageList);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 34, vertical: 34),
+                      decoration: BoxDecoration(
+                        color: AppColors.searchBackground,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Column(
+                        children: [
+                          Icon(Icons.upload),
+                          Text("Upload"),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
@@ -376,18 +422,19 @@ class _AddOfferState extends State<AddOffer> {
               // Post/Update Button
               TextButton(
                 onPressed: () async {
-                  if (widget.isUpdateOffer) {
-                    // Update Offer
-                    Get.back();
-                    Get.back();
-                    await FirebaseCRUDService.updateOffer(widget.offer!.id!);
-                    await FirebaseCRUDService.getAllMyOffers();
-                    _offerController.clearAllFields();
+                  // if (widget.isUpdateOffer) {
+                  //   // Update Offer
+                  //   Get.back();
+                  //   Get.back();
+                  //   await FirebaseCRUDService.updateOffer(widget.offer!.id!);
+                  //   await FirebaseCRUDService.getAllMyOffers();
+                  //   _offerController.clearAllFields();
 
-                    return;
-                  }
+                  //   return;
+                  // }
                   Get.back();
                   Get.back();
+                  await uploadImagesToFirebaseStorage();
                   await FirebaseCRUDService.createOffer();
                   await FirebaseCRUDService.getAllMyOffers();
                   _offerController.clearAllFields();

@@ -4,6 +4,7 @@ import 'package:aikon/controller/firebase/firebase_crud_service.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/add_offer.dart';
 import 'package:aikon/screens/widgets/alert_dialog.dart';
+import 'package:aikon/utilities/upload_images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -33,9 +34,9 @@ Future<void> showOfferBottomSheet(
           ],
         ),
         onPressed: (context) async {
-          // update offer
-          Get.to(
-              () => AddOffer(isUpdateOffer: true, index: index, offer: offer));
+          // // update offer
+          // Get.to(
+          //     () => AddOffer(isUpdateOffer: true, index: index, offer: offer));
         },
       ),
       BottomSheetAction(
@@ -48,6 +49,7 @@ Future<void> showOfferBottomSheet(
           ],
         ),
         onPressed: (context) async {
+          print("object");
           deleteAlertDialog(
             offerId: offer.id!,
             title: "Are you sure you want to delete this offer?",
@@ -55,6 +57,8 @@ Future<void> showOfferBottomSheet(
             okButton: () async {
               Get.back();
               Get.back();
+
+              await deleteImageFromFirebaseStorage(offer);
               await FirebaseCRUDService.deleteOffer(offer.id!);
               await FirebaseCRUDService.getAllMyOffers();
             },
