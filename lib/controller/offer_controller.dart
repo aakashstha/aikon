@@ -21,7 +21,8 @@ class OfferController extends GetxController {
   List<String> channelList = [];
   var postAnonymously = false.obs;
 
-  List<String> newUpdatedselectedImageUrlList = [];
+  // used in Update
+  List<String> deleteUnSelectedImageUrlList = [];
 
   void clearAllFields() {
     isSell.value = false;
@@ -34,5 +35,6 @@ class OfferController extends GetxController {
     selectedImageUrlList.clear();
     channelList.clear();
     postAnonymously.value = false;
+    deleteUnSelectedImageUrlList.clear();
   }
 }

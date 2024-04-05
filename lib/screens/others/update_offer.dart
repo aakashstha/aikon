@@ -91,15 +91,15 @@ class _UpdateOfferState extends State<UpdateOffer> {
             children: [
               const SizedBox(height: 30),
 
-              InkWell(
-                onTap: () {
-                  print(_offerController.myOffersListings[1].imagesList);
-                },
-                child: const Text(
-                  "Press Me",
-                  style: TextStyle(fontSize: 40),
-                ),
-              ),
+              // InkWell(
+              //   onTap: () {
+              //     print(_offerController.myOffersListings[1].imagesList);
+              //   },
+              //   child: const Text(
+              //     "Press Me",
+              //     style: TextStyle(fontSize: 40),
+              //   ),
+              // ),
 
               Align(
                 alignment: Alignment.topLeft,
@@ -317,7 +317,39 @@ class _UpdateOfferState extends State<UpdateOffer> {
                             right: 0,
                             child: InkWell(
                               onTap: () {
+                                _offerController.deleteUnSelectedImageUrlList
+                                    .add(_offerController
+                                        .selectedImageUrlList[index]);
+
                                 _offerController.selectedImageUrlList
+                                    .removeAt(index);
+                              },
+                              child: const Icon(Icons.close),
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                  ...List.generate(
+                    _offerController.selectedImageList.length,
+                    (index) {
+                      return Stack(
+                        children: [
+                          SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: Image.file(
+                              File(_offerController
+                                  .selectedImageList[index].path),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          Positioned(
+                            right: 0,
+                            child: InkWell(
+                              onTap: () {
+                                _offerController.selectedImageList
                                     .removeAt(index);
                               },
                               child: const Icon(Icons.close),
@@ -329,11 +361,8 @@ class _UpdateOfferState extends State<UpdateOffer> {
                   ),
                   InkWell(
                     onTap: () async {
-                      print(_offerController.myOffersListings[2].imagesList);
-                      print("object");
-                      print(_offerController.selectedImageUrlList);
-                      // await pickSelectedImage();
-                      // print(_offerController.selectedImageList);
+                      await pickSelectedImage();
+                      print(_offerController.selectedImageList);
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -424,14 +453,16 @@ class _UpdateOfferState extends State<UpdateOffer> {
               // Post/Update Button
               TextButton(
                 onPressed: () async {
-                  // Update Offer
                   Get.back();
                   Get.back();
+                  Get.back();
+                  await deleteImageFromFirebaseStorage(
+                      _offerController.deleteUnSelectedImageUrlList);
+
+                  await uploadImagesToFirebaseStorage();
                   await FirebaseCRUDService.updateOffer(widget.offer!.id!);
                   await FirebaseCRUDService.getAllMyOffers();
                   _offerController.clearAllFields();
-
-                  return;
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,

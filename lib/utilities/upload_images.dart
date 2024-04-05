@@ -53,13 +53,13 @@ Future<void> uploadImagesToFirebaseStorage() async {
   }
 }
 
-Future<void> deleteImageFromFirebaseStorage(OfferModel offer) async {
+Future<void> deleteImageFromFirebaseStorage(List<String> imageURLList) async {
   _offerController.loadingMyOffers.value = true;
 
   try {
-    for (var i = 0; i < offer.imagesList.length; i++) {
+    for (var i = 0; i < imageURLList.length; i++) {
       // To get the image name from URL
-      String url = offer.imagesList[i];
+      String url = imageURLList[i];
       Uri uri = Uri.parse(url);
       String imageName = uri.pathSegments.last;
 

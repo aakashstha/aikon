@@ -60,7 +60,7 @@ Future<void> showOfferBottomSheet(
               Get.back();
               Get.back();
 
-              await deleteImageFromFirebaseStorage(offer);
+              await deleteImageFromFirebaseStorage(offer.imagesList);
               await FirebaseCRUDService.deleteOffer(offer.id!);
               await FirebaseCRUDService.getAllMyOffers();
             },

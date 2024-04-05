@@ -104,7 +104,7 @@ class FirebaseCRUDService {
       "description": _offerController.descriptionController.text,
       "countryName": _offerController.countryNameController.text,
       "cityName": _offerController.cityNameController.text,
-      "imagesList": [],
+      "imagesList": _offerController.selectedImageUrlList,
       "channelList": _offerController.channelList,
       "isAnonymous": _offerController.postAnonymously.value,
       "userId": FirebaseAuth.instance.currentUser!.uid,
