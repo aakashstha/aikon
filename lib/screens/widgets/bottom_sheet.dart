@@ -3,6 +3,7 @@ import 'package:aikon/constants/constants.dart';
 import 'package:aikon/controller/firebase/firebase_crud_service.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/add_offer.dart';
+import 'package:aikon/screens/others/update_offer.dart';
 import 'package:aikon/screens/widgets/alert_dialog.dart';
 import 'package:aikon/utilities/upload_images.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +35,10 @@ Future<void> showOfferBottomSheet(
           ],
         ),
         onPressed: (context) async {
-          // // update offer
-          // Get.to(
-          //     () => AddOffer(isUpdateOffer: true, index: index, offer: offer));
+          // update offer
+          Get.to(
+            () => UpdateOffer(index: index, offer: offer),
+          );
         },
       ),
       BottomSheetAction(

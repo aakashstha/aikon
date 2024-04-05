@@ -5,7 +5,7 @@ import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/home/tabbar_navigation.dart';
 import 'package:aikon/screens/others/add_offer.dart';
-import 'package:aikon/screens/others/offer.individual.dart';
+import 'package:aikon/screens/others/offer_individual.dart';
 import 'package:aikon/screens/widgets/bottom_sheet.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/cupertino.dart';
@@ -65,13 +65,11 @@ class _OfferMyListingState extends State<OfferMyListing> {
 
                     // InkWell(
                     //   onTap: () async {
-                    //     await FirebaseCRUDService.getAllOffers();
-                    //     print(_offerController.myOffersListings.length);
-                    //     print(_offerController.otherOffersListings.length);
+                    //     print(_offerController.myOffersListings[0].imagesList);
                     //   },
                     //   child: const Text("Press Me"),
                     // ),
-                    // const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // Offers List
                     ...List.generate(

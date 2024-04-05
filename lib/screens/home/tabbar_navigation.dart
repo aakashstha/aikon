@@ -58,9 +58,7 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
             IconButton(
               onPressed: () {
                 print("Add Offer");
-                Get.to(() => AddOffer(
-                      isUpdateOffer: false,
-                    ));
+                Get.to(() => AddOffer());
               },
               icon: Icon(Icons.add, color: AppColors.white),
             ),

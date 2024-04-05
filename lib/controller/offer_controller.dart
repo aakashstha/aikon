@@ -17,9 +17,11 @@ class OfferController extends GetxController {
   TextEditingController countryNameController = TextEditingController();
   TextEditingController cityNameController = TextEditingController();
   var selectedImageList = <XFile>[].obs;
-  var selectedImageUrlList = <String>[];
-  var channelList = [];
+  var selectedImageUrlList = <String>[].obs;
+  List<String> channelList = [];
   var postAnonymously = false.obs;
+
+  List<String> newUpdatedselectedImageUrlList = [];
 
   void clearAllFields() {
     isSell.value = false;

@@ -3,41 +3,82 @@ import 'dart:io';
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/firebase/firebase_crud_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
+import 'package:aikon/controller/tabbar_controller.dart';
+import 'package:aikon/model/offer_model.dart';
+import 'package:aikon/screens/widgets/dropdown_channel.dart';
 import 'package:aikon/screens/widgets/text_field.dart';
 import 'package:aikon/utilities/upload_images.dart';
+import 'package:country_flags/country_flags.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // Add and Update Offer
-class AddOffer extends StatefulWidget {
-  AddOffer({super.key});
+class UpdateOffer extends StatefulWidget {
+  int? index;
+  OfferModel? offer;
+  UpdateOffer({super.key, this.index, this.offer});
 
   @override
-  State<AddOffer> createState() => _AddOfferState();
+  State<UpdateOffer> createState() => _UpdateOfferState();
 }
 
-class _AddOfferState extends State<AddOffer> {
+class _UpdateOfferState extends State<UpdateOffer> {
   final OfferController _offerController = Get.put(OfferController());
+
   bool toggleState = false;
 
   @override
+  void initState() {
+    // For the Update Offer
+    int index = widget.index!;
+
+    _offerController.isSell.value =
+        _offerController.myOffersListings[index].isSell;
+    _offerController.titleController.text =
+        _offerController.myOffersListings[index].title;
+    _offerController.subTitleController.text =
+        _offerController.myOffersListings[index].subtitle;
+    _offerController.descriptionController.text =
+        _offerController.myOffersListings[index].description;
+    _offerController.countryNameController.text =
+        _offerController.myOffersListings[index].countryName;
+    _offerController.cityNameController.text =
+        _offerController.myOffersListings[index].cityName;
+    _offerController.selectedImageUrlList
+        .addAll(_offerController.myOffersListings[index].imagesList);
+    _offerController.channelList
+        .addAll(_offerController.myOffersListings[index].channelList);
+
+    _offerController.postAnonymously.value =
+        _offerController.myOffersListings[index].isAnonymous;
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print(_offerController.selectedImageUrlList);
+    print(widget.index);
+    print(_offerController.myOffersListings[0].imagesList);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.white),
         backgroundColor: AppColors.blueYonder,
-        title: const Text(
-          "Add Offer",
-          style: TextStyle(color: AppColors.white, fontSize: 18),
+        title: Text(
+          "Update Offer",
+          style: const TextStyle(color: AppColors.white, fontSize: 18),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.white),
           onPressed: () {
-            // _offerController.clearAllFields();
+            _offerController.clearAllFields();
             Get.back();
             Get.back();
           },
@@ -50,20 +91,20 @@ class _AddOfferState extends State<AddOffer> {
             children: [
               const SizedBox(height: 30),
 
-              // InkWell(
-              //   onTap: () {
-              //     print(_offerController.myOffersListings[1].imagesList);
-              //   },
-              //   child: const Text(
-              //     "Press Me",
-              //     style: TextStyle(fontSize: 40),
-              //   ),
-              // ),
+              InkWell(
+                onTap: () {
+                  print(_offerController.myOffersListings[1].imagesList);
+                },
+                child: const Text(
+                  "Press Me",
+                  style: TextStyle(fontSize: 40),
+                ),
+              ),
 
               Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Post an offer",
+                  "Update an offer",
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -262,24 +303,21 @@ class _AddOfferState extends State<AddOffer> {
                 runSpacing: 10,
                 children: [
                   ...List.generate(
-                    _offerController.selectedImageList.length,
+                    _offerController.selectedImageUrlList.length,
                     (index) {
                       return Stack(
                         children: [
                           SizedBox(
                             width: 100,
                             height: 100,
-                            child: Image.file(
-                              File(_offerController
-                                  .selectedImageList[index].path),
-                              fit: BoxFit.fill,
-                            ),
+                            child: Image.network(
+                                _offerController.selectedImageUrlList[index]),
                           ),
                           Positioned(
                             right: 0,
                             child: InkWell(
                               onTap: () {
-                                _offerController.selectedImageList
+                                _offerController.selectedImageUrlList
                                     .removeAt(index);
                               },
                               child: const Icon(Icons.close),
@@ -291,8 +329,11 @@ class _AddOfferState extends State<AddOffer> {
                   ),
                   InkWell(
                     onTap: () async {
-                      await pickSelectedImage();
-                      print(_offerController.selectedImageList);
+                      print(_offerController.myOffersListings[2].imagesList);
+                      print("object");
+                      print(_offerController.selectedImageUrlList);
+                      // await pickSelectedImage();
+                      // print(_offerController.selectedImageList);
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -383,12 +424,14 @@ class _AddOfferState extends State<AddOffer> {
               // Post/Update Button
               TextButton(
                 onPressed: () async {
+                  // Update Offer
                   Get.back();
                   Get.back();
-                  await uploadImagesToFirebaseStorage();
-                  await FirebaseCRUDService.createOffer();
+                  await FirebaseCRUDService.updateOffer(widget.offer!.id!);
                   await FirebaseCRUDService.getAllMyOffers();
                   _offerController.clearAllFields();
+
+                  return;
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
@@ -401,18 +444,17 @@ class _AddOfferState extends State<AddOffer> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28),
-                  child:
-                      // Row(
-                      //         mainAxisSize: MainAxisSize.min,
-                      //         children: [
-                      //           const Text("Changing..."),
-                      //           const SizedBox(width: 20),
-                      //           circularIndicator()
-                      //         ],
-                      //       )
-                      const Text("Post Offer"),
-                ),
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    child:
+                        // Row(
+                        //         mainAxisSize: MainAxisSize.min,
+                        //         children: [
+                        //           const Text("Changing..."),
+                        //           const SizedBox(width: 20),
+                        //           circularIndicator()
+                        //         ],
+                        //       )
+                        const Text("Update Offer")),
               ),
               const SizedBox(height: 40),
             ],
