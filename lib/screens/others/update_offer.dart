@@ -51,6 +51,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
         _offerController.myOffersListings[index].countryName;
     _offerController.cityNameController.text =
         _offerController.myOffersListings[index].cityName;
+
     _offerController.selectedImageUrlList
         .addAll(_offerController.myOffersListings[index].imagesList);
     _offerController.channelList
@@ -310,8 +311,8 @@ class _UpdateOfferState extends State<UpdateOffer> {
                           SizedBox(
                             width: 100,
                             height: 100,
-                            child: Image.network(
-                                _offerController.selectedImageUrlList[index]),
+                            child: Image.network(_offerController
+                                .selectedImageUrlList[index]["url"]),
                           ),
                           Positioned(
                             right: 0,
@@ -453,6 +454,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
               // Post/Update Button
               TextButton(
                 onPressed: () async {
+                  print(_offerController.deleteUnSelectedImageUrlList);
                   Get.back();
                   Get.back();
                   Get.back();

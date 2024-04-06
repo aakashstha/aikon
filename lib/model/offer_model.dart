@@ -8,8 +8,8 @@ class OfferModel {
   final String description;
   final String countryName;
   final String cityName;
-  final List<String> imagesList;
-  final List<String> channelList;
+  final List imagesList;
+  final List channelList;
   final bool isAnonymous;
   final String userId;
   final dynamic createdAt;

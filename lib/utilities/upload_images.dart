@@ -13,6 +13,12 @@ Future<void> pickSelectedImage() async {
     final ImagePicker imagePicker = ImagePicker();
     _offerController.selectedImageList.value =
         await imagePicker.pickMultiImage();
+
+    _offerController.selectedImageList1.clear();
+    for (var element in _offerController.selectedImageList) {
+      _offerController.selectedImageList1
+          .add({"file": element, "isPrivate": false});
+    }
   } catch (e) {
     print("Error: $e");
   }
@@ -23,10 +29,11 @@ Future<void> uploadImagesToFirebaseStorage() async {
   String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
   try {
-    if (_offerController.selectedImageList.isNotEmpty) {
-      for (var i = 0; i < _offerController.selectedImageList.length; i++) {
+    if (_offerController.selectedImageList1.isNotEmpty) {
+      for (var i = 0; i < _offerController.selectedImageList1.length; i++) {
+        XFile imgFile = _offerController.selectedImageList1[i]["file"];
         // IMG20240404214427.jpg from this taking only extension
-        String imageName = _offerController.selectedImageList[i].name;
+        String imageName = imgFile.name;
         List<String> parts = imageName.split(".");
         String imageExtension = parts[1];
 
@@ -37,12 +44,14 @@ Future<void> uploadImagesToFirebaseStorage() async {
         Reference imageUploadReference =
             referenceRoot.child("images/$timestamp$i.$imageExtension");
 
-        await imageUploadReference
-            .putFile(File(_offerController.selectedImageList[i].path));
+        await imageUploadReference.putFile(File(imgFile.path));
 
         // Get the download URL of the image
         var url = await imageUploadReference.getDownloadURL();
-        _offerController.selectedImageUrlList.add(url);
+        _offerController.selectedImageUrlList.add({
+          "url": url,
+          "isPrivate": _offerController.selectedImageList1[i]["isPrivate"]
+        });
         print("Image Uploaded and URL got set");
       }
       _offerController.loadingOtherOffers.value = false;
@@ -53,13 +62,13 @@ Future<void> uploadImagesToFirebaseStorage() async {
   }
 }
 
-Future<void> deleteImageFromFirebaseStorage(List<String> imageURLList) async {
+Future<void> deleteImageFromFirebaseStorage(List imageURLList) async {
   _offerController.loadingMyOffers.value = true;
 
   try {
     for (var i = 0; i < imageURLList.length; i++) {
       // To get the image name from URL
-      String url = imageURLList[i];
+      String url = imageURLList[i]["url"];
       Uri uri = Uri.parse(url);
       String imageName = uri.pathSegments.last;
 
@@ -70,6 +79,7 @@ Future<void> deleteImageFromFirebaseStorage(List<String> imageURLList) async {
       Reference imageDeleteReference = referenceRoot.child(imageName);
 
       await imageDeleteReference.delete();
+      print("Image Deleted from Firebase Storage");
     }
     _offerController.loadingMyOffers.value = false;
   } catch (e) {

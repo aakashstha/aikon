@@ -17,12 +17,14 @@ class OfferController extends GetxController {
   TextEditingController countryNameController = TextEditingController();
   TextEditingController cityNameController = TextEditingController();
   var selectedImageList = <XFile>[].obs;
-  var selectedImageUrlList = <String>[].obs;
-  List<String> channelList = [];
+  var selectedImageList1 = <Map<String, dynamic>>[].obs;
+
+  var selectedImageUrlList = [].obs;
+  List<dynamic> channelList = [];
   var postAnonymously = false.obs;
 
   // used in Update
-  List<String> deleteUnSelectedImageUrlList = [];
+  List deleteUnSelectedImageUrlList = [];
 
   void clearAllFields() {
     isSell.value = false;
@@ -33,6 +35,7 @@ class OfferController extends GetxController {
     cityNameController.clear();
     selectedImageList.clear();
     selectedImageUrlList.clear();
+    selectedImageList1.clear();
     channelList.clear();
     postAnonymously.value = false;
     deleteUnSelectedImageUrlList.clear();

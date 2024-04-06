@@ -37,7 +37,7 @@ class _AddOfferState extends State<AddOffer> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.white),
           onPressed: () {
-            // _offerController.clearAllFields();
+            _offerController.clearAllFields();
             Get.back();
             Get.back();
           },
@@ -203,58 +203,13 @@ class _AddOfferState extends State<AddOffer> {
                 ],
               ),
               const SizedBox(height: 15),
-              // Container(
-              //         padding: const EdgeInsets.symmetric(
-              //             horizontal: 34, vertical: 34),
-              //         decoration: BoxDecoration(
-              //           color: AppColors.searchBackground,
-              //           borderRadius: BorderRadius.circular(10),
-              //         ),
-              //         child: Column(
-              //           children: [
-              //             const Icon(Icons.upload),
-              //             Text("Upload"),
-              //           ],
-              //         ),
-              //       ),
-              //       const SizedBox(height: 5),
-              //       Row(
-              //         mainAxisSize: MainAxisSize.min,
-              //         children: [
-              //           Text(
-              //             "Private",
-              //             style: GoogleFonts.poppins(
-              //               fontSize: 11,
-              //               fontWeight: FontWeight.bold,
-              //               color: AppColors.channelSubtitle,
-              //             ),
-              //           ),
-              //           const SizedBox(width: 10),
-              //           FlutterSwitch(
-              //             height: 25.0,
-              //             width: 42.0,
-              //             toggleSize: 10.0,
-              //             inactiveSwitchBorder: Border.all(
-              //               color: AppColors.subtitleGrey,
-              //               width: 4.0,
-              //             ),
-              //             inactiveColor: AppColors.white,
-              //             inactiveToggleColor: AppColors.subtitleGrey,
-              //             activeSwitchBorder: Border.all(
-              //               color: AppColors.blueYonder,
-              //               width: 4.0,
-              //             ),
-              //             activeColor: AppColors.white,
-              //             activeToggleColor: AppColors.blueYonder,
-              //             value: toggleState,
-              //             onToggle: (value) {
-              //               setState(() {
-              //                 toggleState = value;
-              //               });
-              //             },
-              //           ),
-              //         ],
-              //       ),
+              InkWell(
+                onTap: () async {
+                  print(_offerController.selectedImageList);
+                  print(_offerController.selectedImageList1);
+                },
+                child: const Text("Press Me"),
+              ),
 
               // Upload Images from Gallery
               Wrap(
@@ -262,29 +217,75 @@ class _AddOfferState extends State<AddOffer> {
                 runSpacing: 10,
                 children: [
                   ...List.generate(
-                    _offerController.selectedImageList.length,
+                    _offerController.selectedImageList1.length,
                     (index) {
-                      return Stack(
+                      return Column(
                         children: [
-                          SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: Image.file(
-                              File(_offerController
-                                  .selectedImageList[index].path),
-                              fit: BoxFit.fill,
-                            ),
+                          Stack(
+                            children: [
+                              SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: Image.file(
+                                  File(_offerController
+                                      .selectedImageList1[index]["file"].path),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Positioned(
+                                right: 0,
+                                child: InkWell(
+                                  onTap: () {
+                                    _offerController.selectedImageList1
+                                        .removeAt(index);
+                                  },
+                                  child: const Icon(Icons.close),
+                                ),
+                              )
+                            ],
                           ),
-                          Positioned(
-                            right: 0,
-                            child: InkWell(
-                              onTap: () {
-                                _offerController.selectedImageList
-                                    .removeAt(index);
-                              },
-                              child: const Icon(Icons.close),
-                            ),
-                          )
+                          const SizedBox(height: 5),
+
+                          // Private or Public Button
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "Private",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.channelSubtitle,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              FlutterSwitch(
+                                height: 25.0,
+                                width: 42.0,
+                                toggleSize: 10.0,
+                                inactiveSwitchBorder: Border.all(
+                                  color: AppColors.subtitleGrey,
+                                  width: 4.0,
+                                ),
+                                inactiveColor: AppColors.white,
+                                inactiveToggleColor: AppColors.subtitleGrey,
+                                activeSwitchBorder: Border.all(
+                                  color: AppColors.blueYonder,
+                                  width: 4.0,
+                                ),
+                                activeColor: AppColors.white,
+                                activeToggleColor: AppColors.blueYonder,
+                                value: _offerController
+                                    .selectedImageList1[index]["isPrivate"],
+                                onToggle: (value) {
+                                  setState(() {
+                                    _offerController.selectedImageList1[index]
+                                        ["isPrivate"] = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
                         ],
                       );
                     },

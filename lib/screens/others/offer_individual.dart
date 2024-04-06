@@ -114,14 +114,17 @@ class _OfferIndividualState extends State<OfferIndividual> {
               child: Column(
                 children: [
                   customTextField(
+                    isReadOnly: true,
                     hintText: "Title",
                     controller: titleController,
                   ),
                   customTextField(
+                    isReadOnly: true,
                     hintText: "Subtitle",
                     controller: subTitleController,
                   ),
                   customTextField(
+                    isReadOnly: true,
                     hintText: "Description....",
                     controller: descriptionController,
                     maxLine: 5,
@@ -161,6 +164,7 @@ class _OfferIndividualState extends State<OfferIndividual> {
                       borderRadius: BorderRadius.circular(0),
                     ),
                     child: customTextField(
+                      isReadOnly: true,
                       hintText: "City",
                       controller: cityNameController,
                       textFieldTopHeight: 0,
@@ -179,15 +183,54 @@ class _OfferIndividualState extends State<OfferIndividual> {
                 ...List.generate(
                   offer.imagesList.length,
                   (index) {
-                    return Stack(
+                    return Column(
                       children: [
-                        SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: Image.network(
-                            offer.imagesList[index],
-                            fit: BoxFit.fill,
-                          ),
+                        Stack(
+                          children: [
+                            SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: Image.network(
+                                offer.imagesList[index]["url"],
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        // Private or Public Button
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Private",
+                              style: GoogleFonts.poppins(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.channelSubtitle,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            FlutterSwitch(
+                              height: 25.0,
+                              width: 42.0,
+                              toggleSize: 10.0,
+                              inactiveSwitchBorder: Border.all(
+                                color: AppColors.subtitleGrey,
+                                width: 4.0,
+                              ),
+                              inactiveColor: AppColors.white,
+                              inactiveToggleColor: AppColors.subtitleGrey,
+                              activeSwitchBorder: Border.all(
+                                color: AppColors.blueYonder,
+                                width: 4.0,
+                              ),
+                              activeColor: AppColors.white,
+                              activeToggleColor: AppColors.blueYonder,
+                              value: offer.imagesList[index]["isPrivate"],
+                              onToggle: (value) {},
+                            ),
+                          ],
                         ),
                       ],
                     );

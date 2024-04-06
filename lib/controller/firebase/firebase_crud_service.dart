@@ -53,8 +53,7 @@ class FirebaseCRUDService {
       for (var doc in offerSnapshot.docs) {
         Map<String, dynamic> data = doc.data();
         data["id"] = doc.id;
-        data["imagesList"] = List<String>.from(data["imagesList"]);
-        data["channelList"] = List<String>.from(data["channelList"]);
+        // data["imagesList"] = List<String>.from(data["imagesList"]);
 
         if (FirebaseAuth.instance.currentUser!.uid == data["userId"]) {
           _offerController.myOffersListings.add(OfferModel.fromJson(data));
@@ -79,8 +78,6 @@ class FirebaseCRUDService {
       for (var doc in offerSnapshot.docs) {
         Map<String, dynamic> data = doc.data();
         data["id"] = doc.id;
-        data["imagesList"] = List<String>.from(data["imagesList"]);
-        data["channelList"] = List<String>.from(data["channelList"]);
 
         if (FirebaseAuth.instance.currentUser!.uid != data["userId"]) {
           _offerController.otherOffersListings.add(OfferModel.fromJson(data));
