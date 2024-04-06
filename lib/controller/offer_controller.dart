@@ -20,7 +20,7 @@ class OfferController extends GetxController {
   var selectedImageList1 = <Map<String, dynamic>>[].obs;
 
   var selectedImageUrlList = [].obs;
-  List<dynamic> channelList = [];
+  List channelList = [];
   var postAnonymously = false.obs;
 
   // used in Update

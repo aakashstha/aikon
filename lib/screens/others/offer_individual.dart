@@ -238,9 +238,50 @@ class _OfferIndividualState extends State<OfferIndividual> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
 
-            // Select Channel
+            // Selected Channel
+            Text(
+              "Selected Channel",
+              style: GoogleFonts.poppins(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                ...List.generate(
+                  offer.channelList.length,
+                  (index) {
+                    return Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: AppColors.searchBackground,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            offer.channelList[index],
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
             Row(
               children: [
                 Checkbox(

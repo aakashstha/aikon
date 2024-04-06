@@ -23,6 +23,7 @@ class AddOffer extends StatefulWidget {
 class _AddOfferState extends State<AddOffer> {
   final OfferController _offerController = Get.put(OfferController());
   bool toggleState = false;
+  late MultiValueDropDownController _cntMulti;
 
   @override
   Widget build(BuildContext context) {

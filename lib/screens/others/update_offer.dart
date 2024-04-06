@@ -245,60 +245,8 @@ class _UpdateOfferState extends State<UpdateOffer> {
                 ],
               ),
               const SizedBox(height: 15),
-              // Container(
-              //         padding: const EdgeInsets.symmetric(
-              //             horizontal: 34, vertical: 34),
-              //         decoration: BoxDecoration(
-              //           color: AppColors.searchBackground,
-              //           borderRadius: BorderRadius.circular(10),
-              //         ),
-              //         child: Column(
-              //           children: [
-              //             const Icon(Icons.upload),
-              //             Text("Upload"),
-              //           ],
-              //         ),
-              //       ),
-              //       const SizedBox(height: 5),
-              //       Row(
-              //         mainAxisSize: MainAxisSize.min,
-              //         children: [
-              //           Text(
-              //             "Private",
-              //             style: GoogleFonts.poppins(
-              //               fontSize: 11,
-              //               fontWeight: FontWeight.bold,
-              //               color: AppColors.channelSubtitle,
-              //             ),
-              //           ),
-              //           const SizedBox(width: 10),
-              //           FlutterSwitch(
-              //             height: 25.0,
-              //             width: 42.0,
-              //             toggleSize: 10.0,
-              //             inactiveSwitchBorder: Border.all(
-              //               color: AppColors.subtitleGrey,
-              //               width: 4.0,
-              //             ),
-              //             inactiveColor: AppColors.white,
-              //             inactiveToggleColor: AppColors.subtitleGrey,
-              //             activeSwitchBorder: Border.all(
-              //               color: AppColors.blueYonder,
-              //               width: 4.0,
-              //             ),
-              //             activeColor: AppColors.white,
-              //             activeToggleColor: AppColors.blueYonder,
-              //             value: toggleState,
-              //             onToggle: (value) {
-              //               setState(() {
-              //                 toggleState = value;
-              //               });
-              //             },
-              //           ),
-              //         ],
-              //       ),
 
-              // Upload Images from Gallery
+              // Display Firebase Storage Images and Upload Images from Gallery
               Wrap(
                 spacing: 10,
                 runSpacing: 10,
@@ -500,6 +448,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                   submitButtonTextStyle: const TextStyle(
                     color: AppColors.white,
                   ),
+                 
                   dropDownList: const [
                     DropDownValueModel(
                         name: 'Mobile phones', value: "mobile_phones"),
@@ -519,6 +468,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
 
                     print(_offerController.channelList);
                   },
+                
                 ),
               ),
               Row(
@@ -547,17 +497,16 @@ class _UpdateOfferState extends State<UpdateOffer> {
               // Post/Update Button
               TextButton(
                 onPressed: () async {
-                  print(_offerController.deleteUnSelectedImageUrlList);
-                  Get.back();
-                  Get.back();
-                  Get.back();
-                  await deleteImageFromFirebaseStorage(
-                      _offerController.deleteUnSelectedImageUrlList);
+                  print(_offerController.channelList);
+                  // Get.back();
+                  // Get.back();
+                  // await deleteImageFromFirebaseStorage(
+                  //     _offerController.deleteUnSelectedImageUrlList);
 
-                  await uploadImagesToFirebaseStorage();
-                  await FirebaseCRUDService.updateOffer(widget.offer!.id!);
-                  await FirebaseCRUDService.getAllMyOffers();
-                  _offerController.clearAllFields();
+                  // await uploadImagesToFirebaseStorage();
+                  // await FirebaseCRUDService.updateOffer(widget.offer!.id!);
+                  // await FirebaseCRUDService.getAllMyOffers();
+                  // _offerController.clearAllFields();
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
