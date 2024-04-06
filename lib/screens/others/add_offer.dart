@@ -203,13 +203,6 @@ class _AddOfferState extends State<AddOffer> {
                 ],
               ),
               const SizedBox(height: 15),
-              InkWell(
-                onTap: () async {
-                  print(_offerController.selectedImageList);
-                  print(_offerController.selectedImageList1);
-                },
-                child: const Text("Press Me"),
-              ),
 
               // Upload Images from Gallery
               Wrap(
