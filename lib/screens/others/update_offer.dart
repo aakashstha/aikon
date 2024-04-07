@@ -339,7 +339,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                 height: 100,
                                 child: Image.file(
                                   File(_offerController
-                                      .selectedImageList[index].path),
+                                      .selectedImageList[index]["file"].path),
                                   fit: BoxFit.fill,
                                 ),
                               ),
@@ -386,11 +386,11 @@ class _UpdateOfferState extends State<UpdateOffer> {
                                 ),
                                 activeColor: AppColors.white,
                                 activeToggleColor: AppColors.blueYonder,
-                                value: _offerController
-                                    .selectedImageList1[index]["isPrivate"],
+                                value: _offerController.selectedImageList[index]
+                                    ["isPrivate"],
                                 onToggle: (value) {
                                   setState(() {
-                                    _offerController.selectedImageList1[index]
+                                    _offerController.selectedImageList[index]
                                         ["isPrivate"] = value;
                                   });
                                 },
@@ -448,7 +448,7 @@ class _UpdateOfferState extends State<UpdateOffer> {
                   submitButtonTextStyle: const TextStyle(
                     color: AppColors.white,
                   ),
-                 
+
                   dropDownList: const [
                     DropDownValueModel(
                         name: 'Mobile phones', value: "mobile_phones"),
@@ -468,7 +468,6 @@ class _UpdateOfferState extends State<UpdateOffer> {
 
                     print(_offerController.channelList);
                   },
-                
                 ),
               ),
               Row(
@@ -498,15 +497,15 @@ class _UpdateOfferState extends State<UpdateOffer> {
               TextButton(
                 onPressed: () async {
                   print(_offerController.channelList);
-                  // Get.back();
-                  // Get.back();
-                  // await deleteImageFromFirebaseStorage(
-                  //     _offerController.deleteUnSelectedImageUrlList);
+                  Get.back();
+                  Get.back();
+                  await deleteImageFromFirebaseStorage(
+                      _offerController.deleteUnSelectedImageUrlList);
 
-                  // await uploadImagesToFirebaseStorage();
-                  // await FirebaseCRUDService.updateOffer(widget.offer!.id!);
-                  // await FirebaseCRUDService.getAllMyOffers();
-                  // _offerController.clearAllFields();
+                  await uploadImagesToFirebaseStorage();
+                  await FirebaseCRUDService.updateOffer(widget.offer!.id!);
+                  await FirebaseCRUDService.getAllMyOffers();
+                  _offerController.clearAllFields();
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,

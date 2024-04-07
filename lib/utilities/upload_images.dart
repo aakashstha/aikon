@@ -11,12 +11,11 @@ final OfferController _offerController = Get.put(OfferController());
 Future<void> pickSelectedImage() async {
   try {
     final ImagePicker imagePicker = ImagePicker();
-    _offerController.selectedImageList.value =
-        await imagePicker.pickMultiImage();
+    List<XFile> pickedImages = await imagePicker.pickMultiImage();
 
-    _offerController.selectedImageList1.clear();
-    for (var element in _offerController.selectedImageList) {
-      _offerController.selectedImageList1
+    _offerController.selectedImageList.clear();
+    for (var element in pickedImages) {
+      _offerController.selectedImageList
           .add({"file": element, "isPrivate": false});
     }
   } catch (e) {
@@ -29,9 +28,9 @@ Future<void> uploadImagesToFirebaseStorage() async {
   String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
   try {
-    if (_offerController.selectedImageList1.isNotEmpty) {
-      for (var i = 0; i < _offerController.selectedImageList1.length; i++) {
-        XFile imgFile = _offerController.selectedImageList1[i]["file"];
+    if (_offerController.selectedImageList.isNotEmpty) {
+      for (var i = 0; i < _offerController.selectedImageList.length; i++) {
+        XFile imgFile = _offerController.selectedImageList[i]["file"];
         // IMG20240404214427.jpg from this taking only extension
         String imageName = imgFile.name;
         List<String> parts = imageName.split(".");
@@ -50,7 +49,7 @@ Future<void> uploadImagesToFirebaseStorage() async {
         var url = await imageUploadReference.getDownloadURL();
         _offerController.selectedImageUrlList.add({
           "url": url,
-          "isPrivate": _offerController.selectedImageList1[i]["isPrivate"]
+          "isPrivate": _offerController.selectedImageList[i]["isPrivate"]
         });
         print("Image Uploaded and URL got set");
       }

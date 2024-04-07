@@ -211,7 +211,7 @@ class _AddOfferState extends State<AddOffer> {
                 runSpacing: 10,
                 children: [
                   ...List.generate(
-                    _offerController.selectedImageList1.length,
+                    _offerController.selectedImageList.length,
                     (index) {
                       return Column(
                         children: [
@@ -222,7 +222,7 @@ class _AddOfferState extends State<AddOffer> {
                                 height: 100,
                                 child: Image.file(
                                   File(_offerController
-                                      .selectedImageList1[index]["file"].path),
+                                      .selectedImageList[index]["file"].path),
                                   fit: BoxFit.fill,
                                 ),
                               ),
@@ -230,7 +230,7 @@ class _AddOfferState extends State<AddOffer> {
                                 right: 0,
                                 child: InkWell(
                                   onTap: () {
-                                    _offerController.selectedImageList1
+                                    _offerController.selectedImageList
                                         .removeAt(index);
                                   },
                                   child: const Icon(Icons.close),
@@ -269,11 +269,11 @@ class _AddOfferState extends State<AddOffer> {
                                 ),
                                 activeColor: AppColors.white,
                                 activeToggleColor: AppColors.blueYonder,
-                                value: _offerController
-                                    .selectedImageList1[index]["isPrivate"],
+                                value: _offerController.selectedImageList[index]
+                                    ["isPrivate"],
                                 onToggle: (value) {
                                   setState(() {
-                                    _offerController.selectedImageList1[index]
+                                    _offerController.selectedImageList[index]
                                         ["isPrivate"] = value;
                                   });
                                 },
@@ -378,7 +378,6 @@ class _AddOfferState extends State<AddOffer> {
               // Post/Update Button
               TextButton(
                 onPressed: () async {
-                  Get.back();
                   Get.back();
                   await uploadImagesToFirebaseStorage();
                   await FirebaseCRUDService.createOffer();

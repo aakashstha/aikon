@@ -1,7 +1,6 @@
 import 'package:aikon/model/offer_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 class OfferController extends GetxController {
   var loadingMyOffers = false.obs;
@@ -16,8 +15,7 @@ class OfferController extends GetxController {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController countryNameController = TextEditingController();
   TextEditingController cityNameController = TextEditingController();
-  var selectedImageList = <XFile>[].obs;
-  var selectedImageList1 = <Map<String, dynamic>>[].obs;
+  var selectedImageList = <Map<String, dynamic>>[].obs;
 
   var selectedImageUrlList = [].obs;
   List channelList = [];
@@ -35,7 +33,7 @@ class OfferController extends GetxController {
     cityNameController.clear();
     selectedImageList.clear();
     selectedImageUrlList.clear();
-    selectedImageList1.clear();
+    selectedImageList.clear();
     channelList.clear();
     postAnonymously.value = false;
     deleteUnSelectedImageUrlList.clear();
