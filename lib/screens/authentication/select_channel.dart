@@ -1,4 +1,6 @@
 import 'package:aikon/constants/colors.dart';
+import 'package:aikon/controller/auth_controller.dart';
+import 'package:aikon/controller/firebase/firebase_auth_service.dart';
 import 'package:aikon/screens/home/tabbar_navigation.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,20 +18,21 @@ class SelectChannel extends StatefulWidget {
 }
 
 class _SelectChannelState extends State<SelectChannel> {
-  bool toggleState = false;
+  final AuthController _authController = Get.put(AuthController());
+  bool showErrorText = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 120),
             Text(
               "You must subscribe to some channel to get started.",
-              style: GoogleFonts.poppins(
-                  // fontSize: 16,
-                  ),
+              style: GoogleFonts.poppins(),
             ),
             const SizedBox(height: 20),
             Align(
@@ -44,8 +47,26 @@ class _SelectChannelState extends State<SelectChannel> {
               ),
             ),
             const SizedBox(height: 10),
-            addChannel(),
-            Spacer(),
+            addChannel("Mobile phones", "mostly new, oem, carrier unlocked",
+                "mobile_phones"),
+            const SizedBox(height: 10),
+            addChannel("Computer Electronics",
+                "mostly new, oem, carrier unlocked", "computer_electronics"),
+            const SizedBox(height: 10),
+            addChannel("Laptop", "mostly new, oem, carrier unlocked", "laptop"),
+            const SizedBox(height: 10),
+            addChannel("Accessories", "mostly new, oem, carrier unlocked",
+                "accessories"),
+            const SizedBox(height: 10),
+            showErrorText
+                ? const Text(
+                    "You must select atleast one channel",
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  )
+                : const SizedBox(),
+            const Spacer(),
 
             // Done Button
             Padding(
@@ -56,7 +77,16 @@ class _SelectChannelState extends State<SelectChannel> {
                   shape: const BeveledRectangleBorder(),
                 ),
                 onPressed: () async {
-                  Get.to(() =>TabBarNavigation());
+                  if (_authController.channel.isEmpty) {
+                    setState(() {
+                      showErrorText = true;
+                    });
+                    return;
+                  }
+                  print(_authController.channel);
+                  await FirebaseAuthService.updateUser("subscribed_channel");
+
+                  Get.offAll(() => TabBarNavigation());
                 },
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 15),
@@ -84,66 +114,72 @@ class _SelectChannelState extends State<SelectChannel> {
       ),
     );
   }
-}
 
-Widget addChannel() {
-  bool toggleState = false;
-  return StatefulBuilder(
-    builder: (BuildContext ctx, StateSetter setState) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: FlutterSwitch(
-              height: 30.0,
-              width: 60.0,
-              inactiveSwitchBorder: Border.all(
-                color: AppColors.subtitleGrey,
-                width: 4.0,
+  Widget addChannel(String channel, String subtitle, String postChannel) {
+    bool toggleState = false;
+    return StatefulBuilder(
+      builder: (BuildContext ctx, StateSetter setState) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: FlutterSwitch(
+                height: 30.0,
+                width: 60.0,
+                inactiveSwitchBorder: Border.all(
+                  color: AppColors.subtitleGrey,
+                  width: 4.0,
+                ),
+                inactiveColor: AppColors.white,
+                inactiveToggleColor: AppColors.subtitleGrey,
+                activeSwitchBorder: Border.all(
+                  color: AppColors.blueYonder,
+                  width: 4.0,
+                ),
+                activeColor: AppColors.white,
+                activeToggleColor: AppColors.blueYonder,
+                value: toggleState,
+                onToggle: (value) {
+                  print(value);
+                  setState(() {
+                    toggleState = value;
+                  });
+                  if (value) {
+                    _authController.channel.add(postChannel);
+                  } else {
+                    _authController.channel.remove(postChannel);
+                  }
+                },
               ),
-              inactiveColor: AppColors.white,
-              inactiveToggleColor: AppColors.subtitleGrey,
-              activeSwitchBorder: Border.all(
-                color: AppColors.blueYonder,
-                width: 4.0,
-              ),
-              activeColor: AppColors.white,
-              activeToggleColor: AppColors.blueYonder,
-              value: toggleState,
-              onToggle: (value) {
-                setState(() {
-                  toggleState = value;
-                });
-              },
             ),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "mobile phones / tablets",
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black,
-                  height: 1.2,
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  channel,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.black,
+                    height: 1.2,
+                  ),
                 ),
-              ),
-              Text(
-                "mostly new, oem, carrier unlocked",
-                style: GoogleFonts.poppins(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.channelSubtitle,
-                  height: 1,
+                Text(
+                  subtitle,
+                  style: GoogleFonts.poppins(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.channelSubtitle,
+                    height: 1,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      );
-    },
-  );
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

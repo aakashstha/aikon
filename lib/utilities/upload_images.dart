@@ -8,6 +8,11 @@ import 'package:image_picker/image_picker.dart';
 
 final OfferController _offerController = Get.put(OfferController());
 
+//  Step 1. Pick/Capture an image ✅
+//  Step 2. Upload the image to Firebase storage ✅
+//  Step 3. Get the URL of the uploaded image
+//  Step 4. Store the image URL inside the corresponding document of the database.
+//  Step 5. Display the image on the list view.
 Future<void> pickSelectedImage() async {
   try {
     final ImagePicker imagePicker = ImagePicker();

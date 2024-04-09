@@ -1,6 +1,6 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/firebase/firebase_auth_service.dart';
-import 'package:aikon/controller/firebase/firebase_crud_service.dart';
+import 'package:aikon/controller/firebase/firebase_offer_service.dart';
 import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/screens/authentication/otp.dart';
 import 'package:aikon/screens/authentication/user_info.dart';
@@ -18,7 +18,7 @@ class Login extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Form(
-          key: _formKey, 
+          key: _formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
@@ -69,10 +69,15 @@ class Login extends StatelessWidget {
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () async {
+                      Get.to(() => OTPScreen());
                       if (_formKey.currentState!.validate()) {
-                        await FirebaseAuthService.sendOTP(
-                            phoneNumber: _authController.phoneNumber);
-                        Get.to(() => OTPScreen());
+                        try {
+                          await FirebaseAuthService.sendOTP(
+                              phoneNumber: _authController.phoneNumber);
+                          Get.to(() => OTPScreen());
+                        } catch (e) {
+                          print(e);
+                        }
                       }
                     },
                     style: TextButton.styleFrom(

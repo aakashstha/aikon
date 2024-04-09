@@ -1,8 +1,9 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/firebase/firebase_auth_service.dart';
-import 'package:aikon/controller/firebase/firebase_crud_service.dart';
+import 'package:aikon/controller/firebase/firebase_offer_service.dart';
 import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/screens/authentication/user_info.dart';
+import 'package:aikon/utilities/snackbar.dart';
 import 'package:aikon/utilities/storage_getx.dart';
 import 'package:aikon/utilities/validator.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +33,8 @@ class OTPScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 20),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                    "Enter the 6-digit code we sent by SMS to +9779824968839"),
+                Text(
+                    "Enter the 6-digit code we sent by SMS to ${_authController.phoneNumber}"),
                 const SizedBox(height: 10),
                 Pinput(
                   length: 6,
@@ -43,7 +44,7 @@ class OTPScreen extends StatelessWidget {
                     } else if (val.length < 6) {
                       return "otp";
                     }
-                    return "";
+                    return null;
                   },
                   defaultPinTheme: PinTheme(
                     width: 56,
@@ -57,21 +58,48 @@ class OTPScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  onCompleted: (value) {
-                    _authController.smsCode = value;
-                    print(value);
+                  onChanged: (val) {
+                    _authController.smsCode = val;
+                    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    print(val);
                   },
+                  // onCompleted: (value) {
+                  //   _authController.smsCode = value;
+                  //   print(value);
+                  // },
                 ),
+                // const Text(
+                //   "Please enter the OTP",
+                //   style: TextStyle(
+                //     color: Colors.red,
+                //   ),
+                // ),
                 const Spacer(),
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () async {
-                      // if (_formKey.currentState!.validate()) {
-                      await FirebaseAuthService.verifyOTP(
-                          smsCode: _authController.smsCode);
-                      // Get.to(() => UserInfo());
-                      // }
+                      print(_authController.smsCode);
+                      if (_authController.smsCode.length >= 6) {
+                        var response = await FirebaseAuthService.verifyOTP(
+                            smsCode: _authController.smsCode);
+
+                        if (response == true) {
+                          await FirebaseAuthService.createUser();
+                          Get.to(() => UserInfo());
+                        } else if (response.code ==
+                            "invalid-verification-code") {
+                          showSnackBar(
+                              "The OTP entered is incorrect. Please enter correct OTP or try to resend the OTP");
+                        } else if (response.code == "session-expired") {
+                          showSnackBar(
+                              "The OTP code has been expired. Please try to resend the OTP.");
+                        } else {
+                          showSnackBar(
+                              "Something went wrong please try again later");
+                        }
+                      }
+                      // print(a);
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,

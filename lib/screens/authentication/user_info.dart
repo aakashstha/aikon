@@ -1,10 +1,14 @@
 import 'dart:developer';
 
 import 'package:aikon/constants/colors.dart';
+import 'package:aikon/controller/auth_controller.dart';
+import 'package:aikon/controller/firebase/firebase_auth_service.dart';
 import 'package:aikon/screens/authentication/select_channel.dart';
 import 'package:aikon/screens/home/tabbar_navigation.dart';
 import 'package:aikon/screens/widgets/text_field.dart';
+import 'package:aikon/utilities/storage_getx.dart';
 import 'package:aikon/utilities/validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -19,14 +23,7 @@ class UserInfo extends StatefulWidget {
 
 class _UserInfoState extends State<UserInfo> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController contactNumberController = TextEditingController();
-  TextEditingController abnController = TextEditingController();
-  TextEditingController businessNameController = TextEditingController();
+  final AuthController _authController = Get.put(AuthController());
 
   String password = "";
   String businessName = "";
@@ -39,8 +36,7 @@ class _UserInfoState extends State<UserInfo> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
               children: [
                 //  User Info
                 const Padding(
@@ -53,13 +49,38 @@ class _UserInfoState extends State<UserInfo> {
                     ),
                   ),
                 ),
+                TextButton(
+                  onPressed: () async {
+                    // var a1 = await StorageGetX.readFirebaseToken();
+                    // print(a1);
+                    // // new token every time
+                    // final user = FirebaseAuth.instance.currentUser;
+                    // var a = await user!.getIdToken();
+                    // print(a);
+                    // print("object");
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: AppColors.blueYonder,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 28),
+                    child: Text("get token"),
+                  ),
+                ),
                 customTextField(
                   hintText: "Full Name",
                   textCapitalization: TextCapitalization.words,
-                  controller: firstNameController,
+                  controller: _authController.fullNameController,
                   prefixWidth: 5,
                   validate: (val) {
-                    return Validator.validateEmpty(val!, "First Name");
+                    return Validator.validateEmpty(val!, "Full Name");
                   },
                 ),
 
@@ -67,10 +88,10 @@ class _UserInfoState extends State<UserInfo> {
                   padding: const EdgeInsets.only(top: 15, bottom: 40),
                   child: customTextField(
                     hintText: "Username",
-                    controller: emailController,
+                    controller: _authController.userNameController,
                     prefixWidth: 5,
                     validate: (val) {
-                      return Validator.validateEmail(val!, "Email");
+                      return Validator.validateEmpty(val!, "Username");
                     },
                   ),
                 ),
@@ -88,7 +109,7 @@ class _UserInfoState extends State<UserInfo> {
                     style: TextStyle(),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(height: 80),
 
                 // Next Button
                 Padding(
@@ -99,7 +120,10 @@ class _UserInfoState extends State<UserInfo> {
                       shape: const BeveledRectangleBorder(),
                     ),
                     onPressed: () async {
-                      Get.to(() =>SelectChannel());
+                      if (_formKey.currentState!.validate()) {
+                        await FirebaseAuthService.updateUser("user_info");
+                        Get.to(() => SelectChannel());
+                      }
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15),

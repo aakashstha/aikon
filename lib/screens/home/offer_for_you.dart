@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:aikon/constants/colors.dart';
-import 'package:aikon/controller/firebase/firebase_crud_service.dart';
+import 'package:aikon/controller/firebase/firebase_offer_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
@@ -60,45 +60,17 @@ class _OfferForYouState extends State<OfferForYou> {
                         children: [
                           // Testing Purposes buttons
 
-                          //  Step 1. Pick/Capture an image ✅
-                          //  Step 2. Upload the image to Firebase storage ✅
-                          //  Step 3. Get the URL of the uploaded image
-                          //  Step 4. Store the image URL inside the corresponding document of the database.
-                          //  Step 5. Display the image on the list view.
                           TextButton(
                             onPressed: () async {
-                              // Create a reference to the file to delete
-                              // deleteImageFromFirebaseStorage();
-                              print(_offerController
-                                  .otherOffersListings[0].imagesList);
-                            },
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: AppColors.blueYonder,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0),
-                              ),
-                              textStyle: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 28),
-                              child: Text("Upload Image"),
-                            ),
-                          ),
-
-                          TextButton(
-                            onPressed: () async {
-                              // var a1 = await StorageGetX.readFirebaseToken();
-                              // print(a1);
-                              // // new token every time
-                              // final user = FirebaseAuth.instance.currentUser;
-                              // var a = await user!.getIdToken();
-                              // var b = user.refreshToken;
-                              // print(a);
-                              // print(b);
-                              // print("object");
+                              var a1 = await StorageGetX.readFirebaseToken();
+                              print(a1);
+                              // new token every time
+                              final user = FirebaseAuth.instance.currentUser;
+                              var a = await user!.getIdToken();
+                              var b = user.refreshToken;
+                              print(a);
+                              print(b);
+                              print("object");
                             },
                             style: TextButton.styleFrom(
                               foregroundColor: Colors.white,

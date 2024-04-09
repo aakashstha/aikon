@@ -31,8 +31,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blueYonder),
         useMaterial3: true,
       ),
-      home: TabBarNavigation(),
+      // home: TabBarNavigation(),
       // home: Login(),
+      home: UserInfo(),
       // getPages: appRoutes(),
     );
   }

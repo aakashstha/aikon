@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class OfferModel {
   String? id;
   final bool isSell;
