@@ -2,6 +2,7 @@ import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/firebase/firebase_auth_service.dart';
 import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/screens/authentication/otp.dart';
+import 'package:aikon/screens/widgets/circular_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -69,8 +70,10 @@ class Login extends StatelessWidget {
                     child: TextButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
+                          _authController.loading.value = true;
                           await FirebaseAuthService.sendOTP(
                               phoneNumber: _authController.phoneNumber);
+                          _authController.loading.value = false;
 
                           Get.to(() => OTPScreen());
                         }
@@ -86,14 +89,15 @@ class Login extends StatelessWidget {
                         ),
                       ),
                       child: _authController.loading.value
-                          ? const Center(
-                              child: SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(),
+                          ? circularButtonIndicator()
+                          : const Text(
+                              "Next",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
                               ),
-                            )
-                          : const Text("Next"),
+                            ),
                     ),
                   ),
                 ),

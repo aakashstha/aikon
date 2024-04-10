@@ -13,8 +13,10 @@ Widget customTextField({
   double prefixWidth = 0,
   final void Function()? onTap,
   bool isReadOnly = false,
+  int? maxLength,
 }) {
   return TextFormField(
+    maxLength: maxLength,
     readOnly: isReadOnly,
     autovalidateMode: AutovalidateMode.onUserInteraction,
     controller: controller,

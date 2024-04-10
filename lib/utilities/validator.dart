@@ -3,10 +3,11 @@ class Validator {
     return value.isEmpty ? "$title is required" : null;
   }
 
-  static String? validateEmail(String value, String title) {
-    if (value.isEmpty) return "$title is required";
-    if (!RegExp(r"^[\w%\+\-]+(\.[\w%\+\-]+)*@[\w%\+\-]+(\.[\w%\+\-]+)+$")
-        .hasMatch(value)) return "Enter a valid email address";
+  static String? validateUsername(String value) {
+    if (value.isEmpty) return "Username is required";
+    if (!RegExp(r"^[a-zA-Z]+(\.[a-zA-Z]+)?$").hasMatch(value)) {
+      return "Username should only be characters and dot(.)";
+    }
     return null;
   }
 }

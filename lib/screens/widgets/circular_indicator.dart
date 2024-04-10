@@ -11,3 +11,14 @@ Widget circularButtonIndicator() {
     ),
   );
 }
+
+Widget circularCenterScreenIndicator() {
+  return const SizedBox(
+    height: 50,
+    width: 50,
+    child: CircularProgressIndicator(
+      strokeWidth: 3,
+      color: AppColors.blueYonder,
+    ),
+  );
+}

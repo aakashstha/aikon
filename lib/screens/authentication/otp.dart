@@ -3,6 +3,7 @@ import 'package:aikon/controller/firebase/firebase_auth_service.dart';
 import 'package:aikon/controller/firebase/firebase_offer_service.dart';
 import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/screens/authentication/user_info.dart';
+import 'package:aikon/screens/widgets/circular_indicator.dart';
 import 'package:aikon/utilities/snackbar.dart';
 import 'package:aikon/utilities/storage_getx.dart';
 import 'package:aikon/utilities/validator.dart';
@@ -81,11 +82,13 @@ class OTPScreen extends StatelessWidget {
                     child: TextButton(
                       onPressed: () async {
                         if (_authController.smsCode.length >= 6) {
+                          _authController.loading.value = true;
                           var response = await FirebaseAuthService.verifyOTP(
                               smsCode: _authController.smsCode);
 
                           if (response == true) {
                             await FirebaseAuthService.createUser();
+                            await FirebaseAuthService.generateUsername();
                             Get.to(() => UserInfo());
                           } else if (response.code ==
                               "invalid-verification-code") {
@@ -98,6 +101,7 @@ class OTPScreen extends StatelessWidget {
                             showSnackBar(
                                 "Something went wrong please try again later");
                           }
+                          _authController.loading.value = false;
                         }
                       },
                       style: TextButton.styleFrom(
@@ -111,14 +115,15 @@ class OTPScreen extends StatelessWidget {
                         ),
                       ),
                       child: _authController.loading.value
-                          ? const Center(
-                              child: SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(),
+                          ? circularButtonIndicator()
+                          : const Text(
+                              "Next",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
                               ),
-                            )
-                          : const Text("Next"),
+                            ),
                     ),
                   ),
                 ),

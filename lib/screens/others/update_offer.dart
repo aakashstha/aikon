@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/firebase/firebase_offer_service.dart';
+import 'package:aikon/controller/firebase/firebase_upload_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/widgets/dropdown_channel.dart';
 import 'package:aikon/screens/widgets/text_field.dart';
-import 'package:aikon/utilities/upload_images.dart';
+import 'package:aikon/utilities/pick_images.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -499,10 +500,10 @@ class _UpdateOfferState extends State<UpdateOffer> {
                   print(_offerController.channelList);
                   Get.back();
                   Get.back();
-                  await deleteImageFromFirebaseStorage(
+                  await FirebaseUploadService.deleteImageFromFirebaseStorage(
                       _offerController.deleteUnSelectedImageUrlList);
 
-                  await uploadImagesToFirebaseStorage();
+                  await FirebaseUploadService.uploadImagesToFirebaseStorage();
                   await FirebaseCRUDService.updateOffer(widget.offer!.id!);
                   await FirebaseCRUDService.getAllMyOffers();
                   _offerController.clearAllFields();

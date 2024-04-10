@@ -10,7 +10,7 @@ import 'package:aikon/screens/home/tabbar_navigation.dart';
 import 'package:aikon/screens/widgets/circular_indicator.dart';
 import 'package:aikon/screens/widgets/text_field.dart';
 import 'package:aikon/utilities/storage_getx.dart';
-import 'package:aikon/utilities/upload_images.dart';
+import 'package:aikon/utilities/pick_images.dart';
 import 'package:aikon/utilities/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -67,20 +67,25 @@ class _UserInfoState extends State<UserInfo> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.only(top: 15, bottom: 40),
+                  padding: const EdgeInsets.only(top: 15, bottom: 10),
                   child: customTextField(
+                    maxLength: 15,
                     hintText: "Username",
                     controller: _authController.userNameController,
                     prefixWidth: 5,
                     validate: (val) {
-                      return Validator.validateEmpty(val!, "Username");
+                      return Validator.validateUsername(val!);
                     },
                   ),
                 ),
+                const Text(
+                  "*We have generated a unique username for you. You can customize it.",
+                ),
+                const SizedBox(height: 30),
                 Obx(
                   () => InkWell(
                     onTap: () async {
-                      await pickProfilePic();
+                      await pickProfileImage();
                     },
                     child: _authController.profilePic.value.path.isEmpty
                         ? const Center(

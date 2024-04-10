@@ -90,7 +90,6 @@ class _SelectChannelState extends State<SelectChannel> {
                     _authController.loading.value = true;
 
                     await FirebaseAuthService.updateUser("subscribed_channel");
-                    await FirebaseAuthService.getUserInfo();
                     _authController.loading.value = false;
 
                     Get.offAll(() => TabBarNavigation());

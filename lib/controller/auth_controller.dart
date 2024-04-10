@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 
 class AuthController extends GetxController {
   var loading = false.obs;
+  var loadingTabBarNavigation = false.obs;
+
   var loadingUserInfo = false.obs;
 
   String phoneNumber = '';

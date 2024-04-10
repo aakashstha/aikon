@@ -1,11 +1,12 @@
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:aikon/constants/constants.dart';
 import 'package:aikon/controller/firebase/firebase_offer_service.dart';
+import 'package:aikon/controller/firebase/firebase_upload_service.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/add_offer.dart';
 import 'package:aikon/screens/others/update_offer.dart';
 import 'package:aikon/screens/widgets/alert_dialog.dart';
-import 'package:aikon/utilities/upload_images.dart';
+import 'package:aikon/utilities/pick_images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -60,7 +61,8 @@ Future<void> showOfferBottomSheet(
               Get.back();
               Get.back();
 
-              await deleteImageFromFirebaseStorage(offer.imagesList);
+              await FirebaseUploadService.deleteImageFromFirebaseStorage(
+                  offer.imagesList);
               await FirebaseCRUDService.deleteOffer(offer.id!);
               await FirebaseCRUDService.getAllMyOffers();
             },

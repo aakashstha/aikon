@@ -8,7 +8,7 @@ import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/add_offer.dart';
 import 'package:aikon/utilities/storage_getx.dart';
-import 'package:aikon/utilities/upload_images.dart';
+import 'package:aikon/utilities/pick_images.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
