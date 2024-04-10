@@ -1,12 +1,10 @@
-import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/model/user_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AuthController extends GetxController {
+  // used in all authentication buttons
   var loading = false.obs;
   var loadingTabBarNavigation = false.obs;
 
@@ -22,5 +20,6 @@ class AuthController extends GetxController {
   String urlProfilePic = "";
   var channel = [].obs;
 
+  // for storing user info from server
   var user = UserModel().obs;
 }

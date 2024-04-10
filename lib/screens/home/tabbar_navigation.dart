@@ -56,8 +56,16 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
                   title: Row(
                     children: [
                       CircleAvatar(
-                        backgroundColor: AppColors.subtitleGrey,
                         radius: 20,
+                        backgroundColor: Colors.transparent,
+                        child: ClipOval(
+                          child: Image.network(
+                            _authController.user.value.profilePic!,
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 100,
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 10),
                       Column(
