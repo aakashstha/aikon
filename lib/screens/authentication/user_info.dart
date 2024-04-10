@@ -1,18 +1,24 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/controller/firebase/firebase_auth_service.dart';
+import 'package:aikon/controller/firebase/firebase_upload_service.dart';
 import 'package:aikon/screens/authentication/select_channel.dart';
 import 'package:aikon/screens/home/tabbar_navigation.dart';
+import 'package:aikon/screens/widgets/circular_indicator.dart';
 import 'package:aikon/screens/widgets/text_field.dart';
 import 'package:aikon/utilities/storage_getx.dart';
+import 'package:aikon/utilities/upload_images.dart';
 import 'package:aikon/utilities/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 class UserInfo extends StatefulWidget {
   const UserInfo({super.key});
@@ -49,31 +55,7 @@ class _UserInfoState extends State<UserInfo> {
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () async {
-                    // var a1 = await StorageGetX.readFirebaseToken();
-                    // print(a1);
-                    // // new token every time
-                    // final user = FirebaseAuth.instance.currentUser;
-                    // var a = await user!.getIdToken();
-                    // print(a);
-                    // print("object");
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: AppColors.blueYonder,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                    textStyle: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 28),
-                    child: Text("get token"),
-                  ),
-                ),
+
                 customTextField(
                   hintText: "Full Name",
                   textCapitalization: TextCapitalization.words,
@@ -95,43 +77,67 @@ class _UserInfoState extends State<UserInfo> {
                     },
                   ),
                 ),
-                const Center(
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.subtitleGrey,
-                    radius: 50,
-                    child: Icon(Icons.upload),
+                Obx(
+                  () => InkWell(
+                    onTap: () async {
+                      await pickProfilePic();
+                    },
+                    child: _authController.profilePic.value.path.isEmpty
+                        ? const Center(
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: AppColors.subtitleGrey,
+                              child: Icon(Icons.upload),
+                            ),
+                          )
+                        : CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Colors.transparent,
+                            child: ClipOval(
+                              child: Image.file(
+                                File(_authController.profilePic.value.path),
+                                fit: BoxFit.cover,
+                                width: 100,
+                                height: 100,
+                              ),
+                            ),
+                          ),
                   ),
                 ),
-                const SizedBox(height: 10),
+
+                const SizedBox(height: 15),
                 const Center(
                   child: Text(
                     "Upload your profile image here",
                     style: TextStyle(),
                   ),
                 ),
+
                 const SizedBox(height: 80),
 
                 // Next Button
-                Padding(
-                  padding: const EdgeInsets.only(top: 15, bottom: 40),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.blueYonder,
-                      shape: const BeveledRectangleBorder(),
-                    ),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        await FirebaseAuthService.updateUser("user_info");
-                        Get.to(() => SelectChannel());
-                      }
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Center(
-                            child: const Text(
+                Obx(
+                  () => Padding(
+                    padding: const EdgeInsets.only(top: 15, bottom: 40),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.blueYonder,
+                        shape: const BeveledRectangleBorder(),
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          _authController.loading.value = true;
+
+                          await FirebaseUploadService.uploadProfileImage();
+                          await FirebaseAuthService.updateUser("user_info");
+
+                          _authController.loading.value = false;
+                          Get.to(() => SelectChannel());
+                        }
+                      },
+                      child: _authController.loading.value
+                          ? circularButtonIndicator()
+                          : const Text(
                               "Next",
                               style: TextStyle(
                                 color: Colors.white,
@@ -139,9 +145,6 @@ class _UserInfoState extends State<UserInfo> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 ),

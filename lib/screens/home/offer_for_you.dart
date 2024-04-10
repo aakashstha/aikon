@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:aikon/constants/colors.dart';
+import 'package:aikon/controller/firebase/firebase_auth_service.dart';
 import 'package:aikon/controller/firebase/firebase_offer_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
@@ -62,15 +63,17 @@ class _OfferForYouState extends State<OfferForYou> {
 
                           TextButton(
                             onPressed: () async {
-                              var a1 = await StorageGetX.readFirebaseToken();
-                              print(a1);
-                              // new token every time
-                              final user = FirebaseAuth.instance.currentUser;
-                              var a = await user!.getIdToken();
-                              var b = user.refreshToken;
-                              print(a);
-                              print(b);
-                              print("object");
+                              await FirebaseAuthService.getUserInfo();
+
+                              // var a1 = await StorageGetX.readFirebaseToken();
+                              // print(a1);
+                              // // new token every time
+                              // final user = FirebaseAuth.instance.currentUser;
+                              // var a = await user!.getIdToken();
+                              // var b = user.refreshToken;
+                              // print(a);
+                              // print(b);
+                              // print("object");
                             },
                             style: TextButton.styleFrom(
                               foregroundColor: Colors.white,

@@ -75,45 +75,50 @@ class OTPScreen extends StatelessWidget {
                 //   ),
                 // ),
                 const Spacer(),
-                SizedBox(
-                  width: double.infinity,
-                  child: TextButton(
-                    onPressed: () async {
-                      print(_authController.smsCode);
-                      if (_authController.smsCode.length >= 6) {
-                        var response = await FirebaseAuthService.verifyOTP(
-                            smsCode: _authController.smsCode);
+                Obx(
+                  () => SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () async {
+                        if (_authController.smsCode.length >= 6) {
+                          var response = await FirebaseAuthService.verifyOTP(
+                              smsCode: _authController.smsCode);
 
-                        if (response == true) {
-                          await FirebaseAuthService.createUser();
-                          Get.to(() => UserInfo());
-                        } else if (response.code ==
-                            "invalid-verification-code") {
-                          showSnackBar(
-                              "The OTP entered is incorrect. Please enter correct OTP or try to resend the OTP");
-                        } else if (response.code == "session-expired") {
-                          showSnackBar(
-                              "The OTP code has been expired. Please try to resend the OTP.");
-                        } else {
-                          showSnackBar(
-                              "Something went wrong please try again later");
+                          if (response == true) {
+                            await FirebaseAuthService.createUser();
+                            Get.to(() => UserInfo());
+                          } else if (response.code ==
+                              "invalid-verification-code") {
+                            showSnackBar(
+                                "The OTP entered is incorrect. Please enter correct OTP or try to resend the OTP");
+                          } else if (response.code == "session-expired") {
+                            showSnackBar(
+                                "The OTP code has been expired. Please try to resend the OTP.");
+                          } else {
+                            showSnackBar(
+                                "Something went wrong please try again later");
+                          }
                         }
-                      }
-                      // print(a);
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: AppColors.blueYonder,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0),
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: AppColors.blueYonder,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        textStyle: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 28),
-                      child: Text("Next"),
+                      child: _authController.loading.value
+                          ? const Center(
+                              child: SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(),
+                              ),
+                            )
+                          : const Text("Next"),
                     ),
                   ),
                 ),

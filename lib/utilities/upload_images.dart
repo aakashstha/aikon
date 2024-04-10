@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 final OfferController _offerController = Get.put(OfferController());
+final AuthController _authController = Get.put(AuthController());
 
 //  Step 1. Pick/Capture an image ✅
 //  Step 2. Upload the image to Firebase storage ✅
@@ -88,6 +90,18 @@ Future<void> deleteImageFromFirebaseStorage(List imageURLList) async {
     _offerController.loadingMyOffers.value = false;
   } catch (e) {
     _offerController.loadingMyOffers.value = false;
+    print("Error: $e");
+  }
+}
+
+Future<void> pickProfilePic() async {
+  try {
+    final ImagePicker imagePicker = ImagePicker();
+    XFile? pickedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+
+    _authController.profilePic.value = pickedImage!;
+  } catch (e) {
     print("Error: $e");
   }
 }

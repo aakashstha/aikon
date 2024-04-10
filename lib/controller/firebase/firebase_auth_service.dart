@@ -1,4 +1,5 @@
 import 'package:aikon/controller/auth_controller.dart';
+import 'package:aikon/utilities/snackbar.dart';
 import 'package:aikon/utilities/storage_getx.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,31 +13,35 @@ final AuthController _authController = Get.find<AuthController>();
 class FirebaseAuthService {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
-  static String verifyId = '';
-  int resendToken = 0;
   static String userCollection = "users";
+  // used while sending OTP and it's verification
+  static String verificationIdHolder = '';
+  static int resendTokenHolder = 0;
 
   static Future<void> sendOTP({required String phoneNumber}) async {
+    _authController.loading.value = true;
     try {
       await _firebaseAuth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         timeout: const Duration(seconds: 120),
-        // forceResendingToken: controller.resendToken,
-        verificationCompleted:
-            (PhoneAuthCredential phoneAuthCredential) async {},
+        verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
         verificationFailed: (FirebaseAuthException e) {
           if (e.code == 'invalid-phone-number') {
-            print('The provided phone number is not valid.');
+            _authController.loading.value = false;
+            showSnackBar(
+                "The provided phone number is not valid. Please input a valid phone number and try again.");
+            return;
           }
+          _authController.loading.value = false;
+          showSnackBar("Something went wrong please try again later");
         },
         codeSent: (String verificationId, int? resendToken) async {
-          verifyId = verificationId;
-          resendToken = resendToken!;
+          verificationIdHolder = verificationId;
+          resendTokenHolder = resendToken!;
 
-          print("#########################################################");
           print(verificationId);
-          print(resendToken);
+          print(resendTokenHolder);
+          _authController.loading.value = false;
         },
         codeAutoRetrievalTimeout: (String verificationId) {},
       );
@@ -46,38 +51,28 @@ class FirebaseAuthService {
   }
 
   static Future verifyOTP({required String smsCode}) async {
+    _authController.loading.value = true;
     try {
-      PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
-          verificationId: verifyId, smsCode: smsCode);
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationIdHolder, smsCode: smsCode);
 
-      var response =
-          await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+      var response = await _firebaseAuth.signInWithCredential(credential);
       var firebaseToken = await response.user!.getIdToken();
+      _authController.loading.value = false;
+
       String token = firebaseToken!;
       StorageGetX.writeFirebaseToken(token);
 
-      print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-      print(verifyId);
-      print(response.user!.refreshToken);
-      print(response);
       return true;
     } catch (e) {
+      _authController.loading.value = false;
       if (e is FirebaseAuthException) {
         return e;
       }
+
       print("Error: $e");
+      return false;
     }
-  }
-
-  // logout the user
-  static Future<void> logOut() async {
-    await _firebaseAuth.signOut();
-  }
-
-  // check whetehr the user is logged in or not
-  bool isLoggedIn() {
-    return _firebaseAuth.currentUser != null;
   }
 
   // Add User
@@ -111,14 +106,13 @@ class FirebaseAuthService {
 
   // Update User
   static Future<void> updateUser(String verified) async {
-    _authController.loadingUserInfo.value = true;
     late Map<String, dynamic> userData;
-    if (verified == "usre_info") {
+    if (verified == "user_info") {
       userData = {
         "verified": "subscribed_channel",
         "fullName": _authController.fullNameController.text,
         "username": _authController.userNameController.text,
-        "profilePic": "",
+        "profilePic": _authController.urlProfilePic,
       };
     } else if (verified == "subscribed_channel") {
       userData = {
@@ -133,11 +127,34 @@ class FirebaseAuthService {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update(userData);
 
-      _authController.loadingUserInfo.value = false;
       print("User Updated");
     } catch (e) {
-      _authController.loadingUserInfo.value = false;
       print("Failed to Update User:  $e");
+    }
+  }
+
+  static Future<void> getUserInfo() async {
+    _authController.user.value.userId = FirebaseAuth.instance.currentUser!.uid;
+    _authController.user.value.phoneNumber =
+        FirebaseAuth.instance.currentUser!.phoneNumber;
+
+    try {
+      await FirebaseFirestore.instance
+          .collection(userCollection)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get()
+          .then((value) {
+        _authController.user.value.fullName = value['fullName'];
+        _authController.user.value.username = value['username'];
+        _authController.user.value.profilePic = value['profilePic'];
+        _authController.user.value.verified = value['verified'];
+        _authController.user.value.subscribedChannels =
+            value['subscribedChannels'];
+      });
+
+      print("Getting User Info Done");
+    } catch (e) {
+      print("Failed to get User:  $e");
     }
   }
 }

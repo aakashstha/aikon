@@ -2,12 +2,14 @@ import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/controller/firebase/firebase_auth_service.dart';
 import 'package:aikon/screens/home/tabbar_navigation.dart';
+import 'package:aikon/screens/widgets/circular_indicator.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SelectChannel extends StatefulWidget {
@@ -69,42 +71,40 @@ class _SelectChannelState extends State<SelectChannel> {
             const Spacer(),
 
             // Done Button
-            Padding(
-              padding: const EdgeInsets.only(top: 15, bottom: 40),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.blueYonder,
-                  shape: const BeveledRectangleBorder(),
-                ),
-                onPressed: () async {
-                  if (_authController.channel.isEmpty) {
-                    setState(() {
-                      showErrorText = true;
-                    });
-                    return;
-                  }
-                  print(_authController.channel);
-                  await FirebaseAuthService.updateUser("subscribed_channel");
+            Obx(
+              () => SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.blueYonder,
+                    shape: const BeveledRectangleBorder(),
+                  ),
+                  onPressed: () async {
+                    print(_authController.channel);
+                    if (_authController.channel.isEmpty) {
+                      setState(() {
+                        showErrorText = true;
+                      });
+                      return;
+                    }
+                    _authController.loading.value = true;
 
-                  Get.offAll(() => TabBarNavigation());
-                },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Center(
-                        child: Text(
-                          "Done",
+                    await FirebaseAuthService.updateUser("subscribed_channel");
+                    await FirebaseAuthService.getUserInfo();
+                    _authController.loading.value = false;
+
+                    Get.offAll(() => TabBarNavigation());
+                  },
+                  child: _authController.loading.value
+                      ? circularButtonIndicator()
+                      : const Text(
+                          "Next",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),

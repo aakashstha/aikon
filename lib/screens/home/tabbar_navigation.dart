@@ -1,4 +1,5 @@
 import 'package:aikon/constants/colors.dart';
+import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/screens/home/channel.dart';
 import 'package:aikon/screens/home/offer_for_you.dart';
@@ -21,6 +22,8 @@ class TabBarNavigation extends StatefulWidget {
 enum Options { search, upload, copy, exit }
 
 class _TabBarNavigationState extends State<TabBarNavigation> {
+  final AuthController _authController = Get.put(AuthController());
+
   var _popupMenuItemIndex = 0;
   Color _changeColorAccordingToMenuItem = Colors.red;
 
@@ -42,13 +45,15 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "John Doe",
-                    style: TextStyle(fontSize: 20, color: AppColors.white),
+                  Text(
+                    _authController.user.value.fullName!,
+                    style:
+                        const TextStyle(fontSize: 20, color: AppColors.white),
                   ),
-                  const Text(
-                    "+65 9875 6345",
-                    style: TextStyle(fontSize: 11, color: AppColors.white),
+                  Text(
+                    _authController.user.value.phoneNumber!,
+                    style:
+                        const TextStyle(fontSize: 11, color: AppColors.white),
                   ),
                 ],
               ),

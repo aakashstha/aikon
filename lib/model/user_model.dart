@@ -1,12 +1,12 @@
 class UserModel {
-  final String? userId;
-  final String? phoneNumber;
-  final String? verified;
-  final String? fullName;
-  final String? username;
-  final String? profilePic;
-  final List? subscribedChannels;
-  final dynamic createdAt;
+  String? userId;
+  String? phoneNumber;
+  String? verified;
+  String? fullName;
+  String? username;
+  String? profilePic;
+  List? subscribedChannels;
+  dynamic createdAt;
 
   UserModel({
     this.userId,
