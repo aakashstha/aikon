@@ -61,35 +61,35 @@ class _OfferForYouState extends State<OfferForYou> {
                         children: [
                           // Testing Purposes buttons
 
-                          TextButton(
-                            onPressed: () async {
-                              await FirebaseAuthService.getUserInfo();
+                          // TextButton(
+                          //   onPressed: () async {
+                          //     await FirebaseAuthService.getUserInfo();
 
-                              // var a1 = await StorageGetX.readFirebaseToken();
-                              // print(a1);
-                              // // new token every time
-                              // final user = FirebaseAuth.instance.currentUser;
-                              // var a = await user!.getIdToken();
-                              // var b = user.refreshToken;
-                              // print(a);
-                              // print(b);
-                              // print("object");
-                            },
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: AppColors.blueYonder,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0),
-                              ),
-                              textStyle: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 28),
-                              child: Text("get token"),
-                            ),
-                          ),
+                          //     // var a1 = await StorageGetX.readFirebaseToken();
+                          //     // print(a1);
+                          //     // // new token every time
+                          //     // final user = FirebaseAuth.instance.currentUser;
+                          //     // var a = await user!.getIdToken();
+                          //     // var b = user.refreshToken;
+                          //     // print(a);
+                          //     // print(b);
+                          //     // print("object");
+                          //   },
+                          //   style: TextButton.styleFrom(
+                          //     foregroundColor: Colors.white,
+                          //     backgroundColor: AppColors.blueYonder,
+                          //     shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(0),
+                          //     ),
+                          //     textStyle: const TextStyle(
+                          //       fontWeight: FontWeight.w700,
+                          //     ),
+                          //   ),
+                          //   child: const Padding(
+                          //     padding: EdgeInsets.symmetric(horizontal: 28),
+                          //     child: Text("get token"),
+                          //   ),
+                          // ),
 
                           TextFormField(
                             decoration: InputDecoration(

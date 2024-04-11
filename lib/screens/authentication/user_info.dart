@@ -135,6 +135,7 @@ class _UserInfoState extends State<UserInfo> {
 
                           await FirebaseUploadService.uploadProfileImage();
                           await FirebaseAuthService.updateUser("user_info");
+                          await FirebaseAuthService.getAllChannels();
 
                           _authController.loading.value = false;
                           Get.to(() => SelectChannel());

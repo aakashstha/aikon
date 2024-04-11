@@ -49,17 +49,15 @@ class _SelectChannelState extends State<SelectChannel> {
               ),
             ),
             const SizedBox(height: 10),
-            addChannel("Mobile phones", "mostly new, oem, carrier unlocked",
-                "mobile_phones"),
-            const SizedBox(height: 10),
-            addChannel("Computer Electronics",
-                "mostly new, oem, carrier unlocked", "computer_electronics"),
-            const SizedBox(height: 10),
-            addChannel("Laptop", "mostly new, oem, carrier unlocked", "laptop"),
-            const SizedBox(height: 10),
-            addChannel("Accessories", "mostly new, oem, carrier unlocked",
-                "accessories"),
-            const SizedBox(height: 10),
+
+            ...List.generate(_authController.channelList.length, (index) {
+              var channel = _authController.channelList[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: addChannel(channel.id, channel.title, channel.subtitle),
+              );
+            }),
+
             showErrorText
                 ? const Text(
                     "You must select atleast one channel",
@@ -80,8 +78,9 @@ class _SelectChannelState extends State<SelectChannel> {
                     shape: const BeveledRectangleBorder(),
                   ),
                   onPressed: () async {
-                    print(_authController.channel);
-                    if (_authController.channel.isEmpty) {
+                    // print(_authController.channelList);
+                    print(_authController.channelId);
+                    if (_authController.channelId.isEmpty) {
                       setState(() {
                         showErrorText = true;
                       });
@@ -93,6 +92,8 @@ class _SelectChannelState extends State<SelectChannel> {
                     _authController.loading.value = false;
 
                     Get.offAll(() => TabBarNavigation());
+                    _authController.channelList.clear();
+                    _authController.channelId.clear();
                   },
                   child: _authController.loading.value
                       ? circularButtonIndicator()
@@ -114,7 +115,7 @@ class _SelectChannelState extends State<SelectChannel> {
     );
   }
 
-  Widget addChannel(String channel, String subtitle, String postChannel) {
+  Widget addChannel(int id, String title, String subtitle) {
     bool toggleState = false;
     return StatefulBuilder(
       builder: (BuildContext ctx, StateSetter setState) {
@@ -145,9 +146,9 @@ class _SelectChannelState extends State<SelectChannel> {
                     toggleState = value;
                   });
                   if (value) {
-                    _authController.channel.add(postChannel);
+                    _authController.channelId.add(id);
                   } else {
-                    _authController.channel.remove(postChannel);
+                    _authController.channelId.remove(id);
                   }
                 },
               ),
@@ -157,7 +158,7 @@ class _SelectChannelState extends State<SelectChannel> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  channel,
+                  title,
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,

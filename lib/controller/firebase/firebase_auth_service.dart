@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:aikon/controller/auth_controller.dart';
+import 'package:aikon/controller/channel_controller.dart';
+import 'package:aikon/model/channel_model.dart';
 import 'package:aikon/utilities/snackbar.dart';
 import 'package:aikon/utilities/storage_getx.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,11 +13,13 @@ import 'package:get/get.dart';
 // OTP = 123456
 
 final AuthController _authController = Get.find<AuthController>();
+final ChannelController _channelController = Get.find<ChannelController>();
 
 class FirebaseAuthService {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static String userCollection = "users";
+  static String channelCollection = "channels";
   // used while sending OTP and it's verification
   static String verificationIdHolder = '';
   static int resendTokenHolder = 0;
@@ -112,7 +116,7 @@ class FirebaseAuthService {
     } else if (verified == "subscribed_channel") {
       userData = {
         "verified": "completed",
-        "subscribedChannels": _authController.channel,
+        "subscribedChannels": _authController.channelId,
       };
     }
 
@@ -180,6 +184,61 @@ class FirebaseAuthService {
       print("Getting User Info Done");
     } catch (e) {
       print("Failed to get User:  $e");
+    }
+  }
+
+  static Future<void> getAllChannels() async {
+    _authController.channelList.clear();
+
+    try {
+      var channelSnapshot = await db.collection(channelCollection).get();
+
+      for (var doc in channelSnapshot.docs) {
+        Map<String, dynamic> data = doc.data();
+        data["id"] = int.parse(doc.id);
+
+        _authController.channelList.add(ChannelModel.fromJson(data));
+      }
+
+      print("Getting All Channel List Done");
+    } catch (e) {
+      print("Failed to get all Channel List:  $e");
+    }
+  }
+
+  static Future<void> getUserSubscribedChannels() async {
+    _authController.channelId.clear();
+
+    try {
+      var userSnapshot = await db
+          .collection(userCollection)
+          .doc(_authController.user.value.userId)
+          .get();
+
+      _authController.channelId =
+          List<int>.from(userSnapshot["subscribedChannels"]);
+
+      print("Getting All Channel List Done");
+    } catch (e) {
+      print("Failed to get all Channel List:  $e");
+    }
+  }
+
+  // Update Subscribed Channels
+  static Future<void> updateSubscribedChannels() async {
+    Map<String, dynamic> userData = {
+      "subscribedChannels": _authController.channelId,
+    };
+
+    try {
+      await db
+          .collection(userCollection)
+          .doc(_authController.user.value.userId)
+          .update(userData);
+
+      print("User Subscribed Channels Updated");
+    } catch (e) {
+      print("Failed to Update User Subscribed Channels:  $e");
     }
   }
 }
