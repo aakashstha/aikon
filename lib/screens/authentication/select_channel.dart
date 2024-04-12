@@ -1,6 +1,6 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/auth_controller.dart';
-import 'package:aikon/firebase/firebase_auth_service.dart';
+import 'package:aikon/firebase/auth_service.dart';
 import 'package:aikon/screens/home/tabbar_navigation.dart';
 import 'package:aikon/screens/widgets/circular_indicator.dart';
 import 'package:country_flags/country_flags.dart';

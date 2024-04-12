@@ -1,7 +1,7 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/auth_controller.dart';
-import 'package:aikon/firebase/firebase_auth_service.dart';
-import 'package:aikon/firebase/firebase_offer_service.dart';
+import 'package:aikon/firebase/auth_service.dart';
+import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
@@ -167,9 +167,9 @@ class _OfferForYouState extends State<OfferForYou> {
                                   activeToggleColor: AppColors.wantToSell,
                                   value: toggleState,
                                   onToggle: (value) {
-                                    // setState(() {
-                                    //   toggleState = value;
-                                    // });
+                                    setState(() {
+                                      toggleState = value;
+                                    });
                                   },
                                 ),
                               ),

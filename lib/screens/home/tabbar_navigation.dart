@@ -1,6 +1,6 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/auth_controller.dart';
-import 'package:aikon/firebase/firebase_auth_service.dart';
+import 'package:aikon/firebase/auth_service.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/screens/home/channel.dart';
 import 'package:aikon/screens/home/offer_for_you.dart';

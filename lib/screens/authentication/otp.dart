@@ -1,6 +1,6 @@
 import 'package:aikon/constants/colors.dart';
-import 'package:aikon/firebase/firebase_auth_service.dart';
-import 'package:aikon/firebase/firebase_offer_service.dart';
+import 'package:aikon/firebase/auth_service.dart';
+import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/screens/authentication/user_info.dart';
 import 'package:aikon/screens/widgets/circular_indicator.dart';
