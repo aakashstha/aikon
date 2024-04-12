@@ -1,32 +1,30 @@
 import 'package:aikon/constants/colors.dart';
+import 'package:aikon/controller/auth_controller.dart';
+import 'package:aikon/firebase/firebase_auth_service.dart';
 import 'package:aikon/firebase/firebase_offer_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
-import 'package:aikon/screens/home/tabbar_navigation.dart';
-import 'package:aikon/screens/others/add_offer.dart';
 import 'package:aikon/screens/others/offer_individual.dart';
 import 'package:aikon/screens/widgets/bottom_sheet.dart';
+import 'package:aikon/screens/widgets/circular_indicator.dart';
 import 'package:country_flags/country_flags.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class OfferMyListing extends StatefulWidget {
-  const OfferMyListing({super.key});
+class FavouriteListing extends StatefulWidget {
+  const FavouriteListing({super.key});
 
   @override
-  State<OfferMyListing> createState() => _OfferMyListingState();
+  State<FavouriteListing> createState() => _FavouriteListingState();
 }
 
-class _OfferMyListingState extends State<OfferMyListing> {
+class _FavouriteListingState extends State<FavouriteListing> {
   final TabBarController _tabBarController = Get.put(TabBarController());
   // while not using permanent = true then the controller get deleted
-  final OfferController _offerController =
-      Get.put(OfferController(), permanent: true);
+  final OfferController _offerController = Get.put(OfferController());
+  final AuthController _authController = Get.put(AuthController());
 
   @override
   void initState() {
@@ -35,7 +33,13 @@ class _OfferMyListingState extends State<OfferMyListing> {
   }
 
   void initialize() async {
-    await FirebaseCRUDService.getAllMyOffers();
+    _offerController.loadingFavouriteOffers.value = true;
+    await FirebaseAuthService.getUserFavouriteAndArchiveIds();
+    await FirebaseCRUDService.getAllFavouriteOffers();
+    _offerController.loadingFavouriteOffers.value = false;
+
+    print(_authController.favouriteIdList);
+    print(_authController.archiveIdList);
   }
 
   @override
@@ -44,7 +48,7 @@ class _OfferMyListingState extends State<OfferMyListing> {
       appBar: AppBar(
         backgroundColor: AppColors.blueYonder,
         title: const Text(
-          "My Listings",
+          "My Favourite",
           style: TextStyle(color: AppColors.white, fontSize: 18),
         ),
         leading: IconButton(
@@ -55,17 +59,18 @@ class _OfferMyListingState extends State<OfferMyListing> {
         ),
       ),
       body: Obx(
-        () => _offerController.loadingMyOffers.value
-            ? const Center(child: CircularProgressIndicator())
+        () => _offerController.loadingFavouriteOffers.value
+            ? circularCenterScreenIndicator()
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: ListView(
                   children: [
-                    const SizedBox(height: 20),
-
                     // InkWell(
                     //   onTap: () async {
-                    //     print(_offerController.myOffersListings[0].imagesList);
+                    //     print(_authController.favouriteIdList);
+                    //     print(_authController.archiveIdList);
+
+                    //     print(_offerController.favouriteOfferList);
                     //   },
                     //   child: const Text("Press Me"),
                     // ),
@@ -73,10 +78,10 @@ class _OfferMyListingState extends State<OfferMyListing> {
 
                     // Offers List
                     ...List.generate(
-                      _offerController.myOffersListings.length,
+                      _offerController.favouriteOfferList.length,
                       (index) {
                         OfferModel offer =
-                            _offerController.myOffersListings[index];
+                            _offerController.favouriteOfferList[index];
 
                         return addOffers(offer, index);
                         // return Text("hey");
@@ -202,15 +207,15 @@ Widget addOffers(OfferModel offer, int index) {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      showOfferBottomSheet(index: index, offer: offer);
-                    },
-                    child: const Icon(
-                      Icons.more_horiz,
-                      color: AppColors.blueYonder,
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     showOfferBottomSheet(index: index, offer: offer);
+                  //   },
+                  //   child: const Icon(
+                  //     Icons.more_horiz,
+                  //     color: AppColors.blueYonder,
+                  //   ),
+                  // ),
                   const Spacer(),
                   Text(
                     "9:44 PM",

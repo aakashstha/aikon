@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class OfferController extends GetxController {
   var loadingMyOffers = false.obs;
   var loadingOtherOffers = false.obs;
+  var loadingFavouriteOffers = false.obs;
 
   List<OfferModel> myOffersListings = [];
   List<OfferModel> otherOffersListings = [];
@@ -23,6 +24,10 @@ class OfferController extends GetxController {
 
   // used in Update
   List deleteUnSelectedImageUrlList = [];
+
+  // favourite and archive
+  var favouriteOfferList = [].obs;
+  var archiveOfferList = [].obs;
 
   void clearAllFields() {
     isSell.value = false;

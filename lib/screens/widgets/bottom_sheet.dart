@@ -1,7 +1,7 @@
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:aikon/constants/constants.dart';
-import 'package:aikon/controller/firebase/firebase_offer_service.dart';
-import 'package:aikon/controller/firebase/firebase_upload_service.dart';
+import 'package:aikon/firebase/firebase_offer_service.dart';
+import 'package:aikon/firebase/firebase_upload_service.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/add_offer.dart';
 import 'package:aikon/screens/others/update_offer.dart';

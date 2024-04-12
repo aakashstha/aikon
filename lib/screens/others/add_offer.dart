@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:aikon/constants/colors.dart';
-import 'package:aikon/controller/firebase/firebase_offer_service.dart';
-import 'package:aikon/controller/firebase/firebase_upload_service.dart';
+import 'package:aikon/firebase/firebase_offer_service.dart';
+import 'package:aikon/firebase/firebase_upload_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/screens/widgets/text_field.dart';
 import 'package:aikon/utilities/pick_images.dart';

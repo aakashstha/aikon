@@ -86,6 +86,8 @@ class FirebaseAuthService {
       "username": "",
       "profilePic": "",
       "subscribedChannels": [],
+      "favourite": [],
+      "archive": [],
       "createdAt": FirebaseAuth.instance.currentUser!.metadata.creationTime,
     };
 
@@ -239,6 +241,53 @@ class FirebaseAuthService {
       print("User Subscribed Channels Updated");
     } catch (e) {
       print("Failed to Update User Subscribed Channels:  $e");
+    }
+  }
+
+  static Future<void> getUserFavouriteAndArchiveIds() async {
+    _authController.favouriteIdList.clear();
+    _authController.archiveIdList.clear();
+
+    try {
+      var userSnapshot = await db
+          .collection(userCollection)
+          .doc(_authController.user.value.userId)
+          .get();
+
+      _authController.favouriteIdList =
+          List<String>.from(userSnapshot["favourite"]);
+      _authController.archiveIdList =
+          List<String>.from(userSnapshot["archive"]);
+
+      print("Getting All Favourite/Archive Lists Done");
+    } catch (e) {
+      print("Failed to get all Favourite/Archive Lists List:  $e");
+    }
+  }
+
+  // Update Favourite and Archive
+  static Future<void> updateFavouriteAndArchive(
+      {required bool isFavourite}) async {
+    late Map<String, dynamic> userData;
+    if (isFavourite) {
+      userData = {
+        "favourite": _authController.favouriteIdList,
+      };
+    } else {
+      userData = {
+        "archive": _authController.archiveIdList,
+      };
+    }
+
+    try {
+      await db
+          .collection(userCollection)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update(userData);
+
+      print("User Favourite/Archive Lists Updated");
+    } catch (e) {
+      print("Failed to Update User Favourite/Archive:  $e");
     }
   }
 }

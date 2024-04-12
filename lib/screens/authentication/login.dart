@@ -1,5 +1,5 @@
 import 'package:aikon/constants/colors.dart';
-import 'package:aikon/controller/firebase/firebase_auth_service.dart';
+import 'package:aikon/firebase/firebase_auth_service.dart';
 import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/screens/authentication/otp.dart';
 import 'package:aikon/screens/widgets/circular_indicator.dart';

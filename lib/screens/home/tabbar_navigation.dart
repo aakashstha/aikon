@@ -1,6 +1,6 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/auth_controller.dart';
-import 'package:aikon/controller/firebase/firebase_auth_service.dart';
+import 'package:aikon/firebase/firebase_auth_service.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/screens/home/channel.dart';
 import 'package:aikon/screens/home/offer_for_you.dart';
@@ -55,18 +55,29 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
                   backgroundColor: AppColors.blueYonder,
                   title: Row(
                     children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.transparent,
-                        child: ClipOval(
-                          child: Image.network(
-                            _authController.user.value.profilePic!,
-                            fit: BoxFit.cover,
-                            width: 100,
-                            height: 100,
-                          ),
-                        ),
-                      ),
+                      _authController.user.value.profilePic!.isEmpty
+                          ? const CircleAvatar(
+                              radius: 20,
+                              backgroundColor: AppColors.subtitleGrey,
+                              child: ClipOval(
+                                child: SizedBox(
+                                  width: 100,
+                                  height: 100,
+                                ),
+                              ),
+                            )
+                          : CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.transparent,
+                              child: ClipOval(
+                                child: Image.network(
+                                  _authController.user.value.profilePic!,
+                                  fit: BoxFit.cover,
+                                  width: 100,
+                                  height: 100,
+                                ),
+                              ),
+                            ),
                       const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

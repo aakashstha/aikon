@@ -25,4 +25,8 @@ class AuthController extends GetxController {
 
   // for storing user info from server
   var user = UserModel().obs;
+
+  // favourite and archive
+  List<String> favouriteIdList = [];
+  List<String> archiveIdList = [];
 }

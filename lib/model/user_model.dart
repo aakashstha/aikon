@@ -7,6 +7,8 @@ class UserModel {
   String? profilePic;
   List? subscribedChannels;
   dynamic createdAt;
+  List? favourite;
+  List? archive;
 
   UserModel({
     this.userId,
@@ -17,6 +19,8 @@ class UserModel {
     this.profilePic,
     this.subscribedChannels,
     this.createdAt,
+    this.favourite,
+    this.archive,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +32,8 @@ class UserModel {
       username: json["username"],
       profilePic: json["profilePic"],
       subscribedChannels: json["subscribedChannels"],
+      favourite: json["favourite"],
+      archive: json["archive"],
       createdAt: json["createdAt"],
     );
   }
@@ -42,6 +48,8 @@ class UserModel {
     data["username"] = username;
     data["profilePic"] = profilePic;
     data["subscribedChannels"] = subscribedChannels;
+    data["favourite"] = favourite;
+    data["archive"] = archive;
     data["createdAt"] = createdAt;
     return data;
   }

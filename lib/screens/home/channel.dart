@@ -1,12 +1,8 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/auth_controller.dart';
-import 'package:aikon/controller/channel_controller.dart';
-import 'package:aikon/controller/firebase/firebase_auth_service.dart';
+import 'package:aikon/firebase/firebase_auth_service.dart';
 import 'package:aikon/screens/widgets/circular_indicator.dart';
-import 'package:country_flags/country_flags.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,7 +25,7 @@ class _ChannelState extends State<Channel> {
 
   void initialize() async {
     _authController.loadingChannel.value = true;
-    await FirebaseAuthService.getAllChannels();
+    await FirebaseAuthService.getAllChannels(); 
     await FirebaseAuthService.getUserSubscribedChannels();
     _authController.loadingChannel.value = false;
   }
@@ -59,18 +55,20 @@ class _ChannelState extends State<Channel> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        ...List.generate(_authController.channelList.length,
-                            (index) {
-                          var channel = _authController.channelList[index];
-                          bool toggleState =
-                              _authController.channelId.contains(channel.id);
+                        ...List.generate(
+                          _authController.channelList.length,
+                          (index) {
+                            var channel = _authController.channelList[index];
+                            bool toggleState =
+                                _authController.channelId.contains(channel.id);
 
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: addChannel(channel.id, channel.title,
-                                channel.subtitle, toggleState),
-                          );
-                        }),
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: addChannel(channel.id, channel.title,
+                                  channel.subtitle, toggleState),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ],
