@@ -35,7 +35,7 @@ class _FavouriteListingState extends State<FavouriteListing> {
   void initialize() async {
     _offerController.loadingFavouriteOffers.value = true;
     await FirebaseAuthService.getUserFavouriteAndArchiveIds();
-    await FirebaseCRUDService.getAllFavouriteOffers();
+    await FirebaseOfferService.getAllFavouriteOffers();
     _offerController.loadingFavouriteOffers.value = false;
 
     print(_authController.favouriteIdList);
@@ -190,7 +190,7 @@ Widget addOffers(OfferModel offer, int index) {
                     Row(
                       children: [
                         Text(
-                          "${offer.countryName} > ${offer.cityName} > David Campbell",
+                          "${offer.country} > ${offer.city} > David Campbell",
                           style: GoogleFonts.poppins(
                             fontSize: 10,
                             fontWeight: FontWeight.w400,

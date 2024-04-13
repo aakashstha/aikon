@@ -8,10 +8,8 @@ import 'package:get/get.dart';
 final _offerController = Get.find<OfferController>();
 final _authController = Get.find<AuthController>();
 
-class FirebaseCRUDService {
+class FirebaseOfferService {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
-  var locationDetailsLenght = 0.obs;
-
   static String offerCollection = "offers";
 
   // Add Offer
@@ -25,10 +23,10 @@ class FirebaseCRUDService {
       "title": _offerController.titleController.text,
       "subtitle": _offerController.subTitleController.text,
       "description": _offerController.descriptionController.text,
-      "countryName": _offerController.countryNameController.text,
-      "cityName": _offerController.cityNameController.text,
-      "imagesList": _offerController.selectedImageUrlList,
-      "channelList": _offerController.channelList,
+      "country": _offerController.countryController.text,
+      "city": _offerController.cityController.text,
+      "images": _offerController.selectedImageUrlList,
+      "channels": _offerController.channelList,
       "isAnonymous": _offerController.postAnonymously.value,
       "userId": FirebaseAuth.instance.currentUser!.uid,
       "createdAt": DateTime.now(),
@@ -77,7 +75,8 @@ class FirebaseCRUDService {
     _offerController.otherOffersListings.clear();
 
     try {
-      var offerSnapshot = await db.collection(offerCollection).get();
+      var offerSnapshot = await db.collection(offerCollection).where("isSell",
+          whereIn: [_offerController.toggleStateIsSell.value]).get();
 
       for (var doc in offerSnapshot.docs) {
         Map<String, dynamic> data = doc.data();
@@ -102,10 +101,10 @@ class FirebaseCRUDService {
       "title": _offerController.titleController.text,
       "subtitle": _offerController.subTitleController.text,
       "description": _offerController.descriptionController.text,
-      "countryName": _offerController.countryNameController.text,
-      "cityName": _offerController.cityNameController.text,
-      "imagesList": _offerController.selectedImageUrlList,
-      "channelList": _offerController.channelList,
+      "country": _offerController.countryController.text,
+      "city": _offerController.cityController.text,
+      "images": _offerController.selectedImageUrlList,
+      "channels": _offerController.channelList,
       "isAnonymous": _offerController.postAnonymously.value,
       "userId": FirebaseAuth.instance.currentUser!.uid,
       "createdAt": DateTime.now(),

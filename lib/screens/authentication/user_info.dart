@@ -58,7 +58,7 @@ class _UserInfoState extends State<UserInfo> {
 
                 customTextField(
                   hintText: "Full Name",
-                  textCapitalization: TextCapitalization.words,
+                  textCapitalization: TextCapitalization.characters,
                   controller: _authController.fullNameController,
                   prefixWidth: 5,
                   validate: (val) {

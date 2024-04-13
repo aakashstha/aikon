@@ -80,14 +80,14 @@ class FirebaseAuthService {
 
     var userData = {
       "userId": FirebaseAuth.instance.currentUser!.uid,
-      "phoneNumber": FirebaseAuth.instance.currentUser!.phoneNumber,
+      "phoneNum": FirebaseAuth.instance.currentUser!.phoneNumber,
       "verified": "user_info",
       "fullName": "",
       "username": "",
       "profilePic": "",
-      "subscribedChannels": [],
-      "favourite": [],
-      "archive": [],
+      "subChannels": [],
+      "favourites": [],
+      "archives": [],
       "createdAt": FirebaseAuth.instance.currentUser!.metadata.creationTime,
     };
 
@@ -118,7 +118,7 @@ class FirebaseAuthService {
     } else if (verified == "subscribed_channel") {
       userData = {
         "verified": "completed",
-        "subscribedChannels": _authController.channelId,
+        "subChannels": _authController.channelsId,
       };
     }
 
@@ -175,12 +175,12 @@ class FirebaseAuthService {
           .get();
 
       _authController.user.value.userId = userSnapshot["userId"];
-      _authController.user.value.phoneNumber = userSnapshot["phoneNumber"];
+      _authController.user.value.phoneNum = userSnapshot["phoneNum"];
       _authController.user.value.verified = userSnapshot['verified'];
       _authController.user.value.fullName = userSnapshot['fullName'];
       _authController.user.value.username = userSnapshot['username'];
       _authController.user.value.profilePic = userSnapshot['profilePic'];
-      _authController.user.value.subscribedChannels =
+      _authController.user.value.subChannels =
           userSnapshot['subscribedChannels'];
 
       print("Getting User Info Done");
@@ -208,8 +208,8 @@ class FirebaseAuthService {
     }
   }
 
-  static Future<void> getUserSubscribedChannels() async {
-    _authController.channelId.clear();
+  static Future<void> getUserSubscribedChannelsId() async {
+    _authController.channelsId.clear();
 
     try {
       var userSnapshot = await db
@@ -217,8 +217,7 @@ class FirebaseAuthService {
           .doc(_authController.user.value.userId)
           .get();
 
-      _authController.channelId =
-          List<int>.from(userSnapshot["subscribedChannels"]);
+      _authController.channelsId = List<int>.from(userSnapshot["subChannels"]);
 
       print("Getting All Channel List Done");
     } catch (e) {
@@ -229,7 +228,7 @@ class FirebaseAuthService {
   // Update Subscribed Channels
   static Future<void> updateSubscribedChannels() async {
     Map<String, dynamic> userData = {
-      "subscribedChannels": _authController.channelId,
+      "subChannels": _authController.channelsId,
     };
 
     try {
@@ -255,9 +254,9 @@ class FirebaseAuthService {
           .get();
 
       _authController.favouriteIdList =
-          List<String>.from(userSnapshot["favourite"]);
+          List<String>.from(userSnapshot["favourites"]);
       _authController.archiveIdList =
-          List<String>.from(userSnapshot["archive"]);
+          List<String>.from(userSnapshot["archives"]);
 
       print("Getting All Favourite/Archive Lists Done");
     } catch (e) {
@@ -271,11 +270,11 @@ class FirebaseAuthService {
     late Map<String, dynamic> userData;
     if (isFavourite) {
       userData = {
-        "favourite": _authController.favouriteIdList,
+        "favourites": _authController.favouriteIdList,
       };
     } else {
       userData = {
-        "archive": _authController.archiveIdList,
+        "archives": _authController.archiveIdList,
       };
     }
 

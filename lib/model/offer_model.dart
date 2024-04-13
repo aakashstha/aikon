@@ -1,27 +1,27 @@
 class OfferModel {
-  String? id;
+  final String id;
   final bool isSell;
   final String title;
   final String subtitle;
   final String description;
-  final String countryName;
-  final String cityName;
-  final List imagesList;
-  final List channelList;
+  final String country;
+  final String city;
+  final List images;
+  final List channels;
   final bool isAnonymous;
   final String userId;
   final dynamic createdAt;
 
   OfferModel({
-    this.id,
+    required this.id,
     required this.isSell,
     required this.title,
     required this.subtitle,
     required this.description,
-    required this.countryName,
-    required this.cityName,
-    required this.imagesList,
-    required this.channelList,
+    required this.country,
+    required this.city,
+    required this.images,
+    required this.channels,
     required this.isAnonymous,
     required this.userId,
     required this.createdAt,
@@ -34,10 +34,10 @@ class OfferModel {
       title: json["title"],
       subtitle: json["subtitle"],
       description: json["description"],
-      countryName: json["countryName"],
-      cityName: json["cityName"],
-      imagesList: json["imagesList"],
-      channelList: json["channelList"],
+      country: json["country"],
+      city: json["city"],
+      images: json["images"],
+      channels: json["channels"],
       isAnonymous: json["isAnonymous"],
       userId: json["userId"],
       createdAt: json["createdAt"],
@@ -52,10 +52,10 @@ class OfferModel {
     data["title"] = title;
     data["subtitle"] = subtitle;
     data["description"] = description;
-    data["countryName"] = countryName;
-    data["cityName"] = cityName;
-    data["imagesList"] = imagesList;
-    data["channelList"] = channelList;
+    data["country"] = country;
+    data["city"] = city;
+    data["images"] = images;
+    data["channels"] = channels;
     data["isAnonymous"] = isAnonymous;
     data["userId"] = userId;
     data["createdAt"] = createdAt;

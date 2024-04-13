@@ -35,7 +35,7 @@ class _OfferMyListingState extends State<OfferMyListing> {
   }
 
   void initialize() async {
-    await FirebaseCRUDService.getAllMyOffers();
+    await FirebaseOfferService.getAllMyOffers();
   }
 
   @override
@@ -185,7 +185,7 @@ Widget addOffers(OfferModel offer, int index) {
                     Row(
                       children: [
                         Text(
-                          "${offer.countryName} > ${offer.cityName} > David Campbell",
+                          "${offer.country} > ${offer.city} > David Campbell",
                           style: GoogleFonts.poppins(
                             fontSize: 10,
                             fontWeight: FontWeight.w400,

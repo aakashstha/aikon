@@ -88,7 +88,7 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
                                 fontSize: 20, color: AppColors.white),
                           ),
                           Text(
-                            _authController.user.value.phoneNumber!,
+                            _authController.user.value.phoneNum!,
                             style: const TextStyle(
                                 fontSize: 11, color: AppColors.white),
                           ),

@@ -62,9 +62,9 @@ Future<void> showOfferBottomSheet(
               Get.back();
 
               await FirebaseUploadService.deleteImageFromFirebaseStorage(
-                  offer.imagesList);
-              await FirebaseCRUDService.deleteOffer(offer.id!);
-              await FirebaseCRUDService.getAllMyOffers();
+                  offer.images);
+              await FirebaseOfferService.deleteOffer(offer.id!);
+              await FirebaseOfferService.getAllMyOffers();
             },
             secondButtonTitle: "Cancel",
             secondButton: () {

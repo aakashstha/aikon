@@ -25,8 +25,8 @@ class _ChannelState extends State<Channel> {
 
   void initialize() async {
     _authController.loadingChannel.value = true;
-    await FirebaseAuthService.getAllChannels(); 
-    await FirebaseAuthService.getUserSubscribedChannels();
+    await FirebaseAuthService.getAllChannels();
+    await FirebaseAuthService.getUserSubscribedChannelsId();
     _authController.loadingChannel.value = false;
   }
 
@@ -60,7 +60,7 @@ class _ChannelState extends State<Channel> {
                           (index) {
                             var channel = _authController.channelList[index];
                             bool toggleState =
-                                _authController.channelId.contains(channel.id);
+                                _authController.channelsId.contains(channel.id);
 
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 10),
@@ -109,14 +109,14 @@ class _ChannelState extends State<Channel> {
                     toggleState = value;
                   });
                   if (value) {
-                    _authController.channelId.add(id);
+                    _authController.channelsId.add(id);
                   } else {
-                    _authController.channelId.remove(id);
+                    _authController.channelsId.remove(id);
                   }
                   _authController.loadingChannel.value = true;
                   await FirebaseAuthService.updateSubscribedChannels();
                   _authController.loadingChannel.value = false;
-                  print(_authController.channelId);
+                  print(_authController.channelsId);
                 },
               ),
             ),

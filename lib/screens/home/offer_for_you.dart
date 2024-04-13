@@ -4,6 +4,7 @@ import 'package:aikon/firebase/auth_service.dart';
 import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
+import 'package:aikon/model/channel_model.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/favourite.dart';
 import 'package:country_flags/country_flags.dart';
@@ -23,7 +24,6 @@ class _OfferForYouState extends State<OfferForYou> {
   final TabBarController _tabBarController = Get.put(TabBarController());
   final OfferController _offerController = Get.put(OfferController());
   final AuthController _authController = Get.put(AuthController());
-  bool toggleState = false;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _OfferForYouState extends State<OfferForYou> {
 
   void initialize() async {
     _offerController.loadingOtherOffers.value = true;
-    await FirebaseCRUDService.getAllOtherOffers();
+    await FirebaseOfferService.getAllOtherOffers();
     await FirebaseAuthService.getAllChannels();
     await FirebaseAuthService.getUserInfo();
 
@@ -58,33 +58,33 @@ class _OfferForYouState extends State<OfferForYou> {
                         children: [
                           // Testing Purposes buttons
 
-                          TextButton(
-                            onPressed: () async {
-                              // var a1 = await StorageGetX.readFirebaseToken();
-                              // print(a1);
-                              // // new token every time
-                              // final user = FirebaseAuth.instance.currentUser;
-                              // var a = await user!.getIdToken();
-                              // var b = user.refreshToken;
-                              // print(a);
-                              // print(b);
-                              // print("object");
-                            },
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: AppColors.blueYonder,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0),
-                              ),
-                              textStyle: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 28),
-                              child: Text("get token"),
-                            ),
-                          ),
+                          // TextButton(
+                          //   onPressed: () async {
+                          //     // var a1 = await StorageGetX.readFirebaseToken();
+                          //     // print(a1);
+                          //     // // new token every time
+                          //     // final user = FirebaseAuth.instance.currentUser;
+                          //     // var a = await user!.getIdToken();
+                          //     // var b = user.refreshToken;
+                          //     // print(a);
+                          //     // print(b);
+                          //     // print("object");
+                          //   },
+                          //   style: TextButton.styleFrom(
+                          //     foregroundColor: Colors.white,
+                          //     backgroundColor: AppColors.blueYonder,
+                          //     shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(0),
+                          //     ),
+                          //     textStyle: const TextStyle(
+                          //       fontWeight: FontWeight.w700,
+                          //     ),
+                          //   ),
+                          //   child: const Padding(
+                          //     padding: EdgeInsets.symmetric(horizontal: 28),
+                          //     child: Text("get token"),
+                          //   ),
+                          // ),
 
                           TextFormField(
                             decoration: InputDecoration(
@@ -117,21 +117,24 @@ class _OfferForYouState extends State<OfferForYou> {
                             alignment: Alignment.topLeft,
                             child: Wrap(
                               children: [
-                                ...List.generate(
-                                    _authController.channelList.length,
-                                    (index) {
-                                  bool isChannel = _authController
-                                      .user.value.subscribedChannels!
-                                      .contains(_authController
-                                          .channelList[index].id);
-                                  String title =
-                                      _authController.channelList[index].title;
+                                // ...List.generate(
+                                //     _authController.channelList.length,
+                                //     (index) {
+                                //   ChannelModel channel =
+                                //       _authController.channelList[index];
 
-                                  if (isChannel) {
-                                    return skillSetIndividual(title);
-                                  }
-                                  return const SizedBox();
-                                }),
+                                //   bool isChannel = _authController
+                                //       .user.value.subChannels!
+                                //       .contains(_authController
+                                //           .channelList[index].id);
+                                //   String title = channel.title;
+                                //   int channelId = channel.id;
+
+                                //   if (isChannel) {
+                                //     return selectedChannel(title, channelId);
+                                //   }
+                                //   return const SizedBox();
+                                // }),
                               ],
                             ),
                           ),
@@ -165,11 +168,18 @@ class _OfferForYouState extends State<OfferForYou> {
                                   ),
                                   activeColor: AppColors.white,
                                   activeToggleColor: AppColors.wantToSell,
-                                  value: toggleState,
-                                  onToggle: (value) {
-                                    setState(() {
-                                      toggleState = value;
-                                    });
+                                  value:
+                                      _offerController.toggleStateIsSell.value,
+                                  onToggle: (value) async {
+                                    _offerController.toggleStateIsSell.value =
+                                        value;
+
+                                    _offerController.loadingOtherOffers.value =
+                                        true;
+                                    await FirebaseOfferService
+                                        .getAllOtherOffers();
+                                    _offerController.loadingOtherOffers.value =
+                                        false;
                                   },
                                 ),
                               ),
@@ -224,39 +234,53 @@ class _OfferForYouState extends State<OfferForYou> {
     );
   }
 
-  Widget skillSetIndividual(String title) {
+  Widget selectedChannel(String title, int channelId) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-      child: InkWell(
-        onTap: () {
-          print(title);
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(
-              color: const Color.fromARGB(255, 213, 213, 213),
-              width: 1,
+      child: Obx(() {
+        bool isChannelContains =
+            _offerController.selectedChannelId.contains(channelId);
+
+        return InkWell(
+          onTap: () {
+            if (isChannelContains) {
+              _offerController.selectedChannelId.remove(channelId);
+            } else {
+              _offerController.selectedChannelId.add(channelId);
+            }
+
+            print(channelId);
+            print(title);
+            print(_offerController.selectedChannelId);
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+            decoration: BoxDecoration(
+              color:
+                  isChannelContains ? AppColors.subtitleGrey : AppColors.white,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                color: AppColors.timeGrey,
+                width: 1,
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.black,
+                  ),
+                ),
+                const SizedBox(width: 2),
+              ],
             ),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black,
-                ),
-              ),
-              const SizedBox(width: 2),
-            ],
-          ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -364,7 +388,7 @@ class _OfferForYouState extends State<OfferForYou> {
                       Row(
                         children: [
                           Text(
-                            "${offer.countryName} > ${offer.cityName} > David Campbell",
+                            "${offer.country} > ${offer.city} > David Campbell",
                             style: GoogleFonts.poppins(
                               fontSize: 10,
                               fontWeight: FontWeight.w400,

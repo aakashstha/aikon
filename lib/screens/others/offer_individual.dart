@@ -18,8 +18,8 @@ class _OfferIndividualState extends State<OfferIndividual> {
   TextEditingController titleController = TextEditingController();
   TextEditingController subTitleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController countryNameController = TextEditingController();
-  TextEditingController cityNameController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
   late OfferModel offer;
 
   @override
@@ -29,8 +29,8 @@ class _OfferIndividualState extends State<OfferIndividual> {
     titleController.text = offer.title;
     subTitleController.text = offer.subtitle;
     descriptionController.text = offer.description;
-    countryNameController.text = offer.countryName;
-    cityNameController.text = offer.cityName;
+    countryController.text = offer.country;
+    cityController.text = offer.city;
 
     super.initState();
   }
@@ -149,7 +149,7 @@ class _OfferIndividualState extends State<OfferIndividual> {
                     child: customTextField(
                         hintText: "Country",
                         isReadOnly: true,
-                        controller: countryNameController,
+                        controller: countryController,
                         textFieldTopHeight: 0,
                         onTap: () {}),
                   ),
@@ -166,7 +166,7 @@ class _OfferIndividualState extends State<OfferIndividual> {
                     child: customTextField(
                       isReadOnly: true,
                       hintText: "City",
-                      controller: cityNameController,
+                      controller: cityController,
                       textFieldTopHeight: 0,
                     ),
                   ),
@@ -181,7 +181,7 @@ class _OfferIndividualState extends State<OfferIndividual> {
               runSpacing: 10,
               children: [
                 ...List.generate(
-                  offer.imagesList.length,
+                  offer.images.length,
                   (index) {
                     return Column(
                       children: [
@@ -191,7 +191,7 @@ class _OfferIndividualState extends State<OfferIndividual> {
                               width: 100,
                               height: 100,
                               child: Image.network(
-                                offer.imagesList[index]["url"],
+                                offer.images[index]["url"],
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -227,7 +227,7 @@ class _OfferIndividualState extends State<OfferIndividual> {
                               ),
                               activeColor: AppColors.white,
                               activeToggleColor: AppColors.blueYonder,
-                              value: offer.imagesList[index]["isPrivate"],
+                              value: offer.images[index]["isPrivate"],
                               onToggle: (value) {},
                             ),
                           ],
@@ -255,7 +255,7 @@ class _OfferIndividualState extends State<OfferIndividual> {
               runSpacing: 10,
               children: [
                 ...List.generate(
-                  offer.channelList.length,
+                  offer.channels.length,
                   (index) {
                     return Column(
                       children: [
@@ -267,7 +267,7 @@ class _OfferIndividualState extends State<OfferIndividual> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
-                            offer.channelList[index],
+                            offer.channels[index]["title"],
                             style: GoogleFonts.poppins(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,

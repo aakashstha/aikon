@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:aikon/constants/colors.dart';
+import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/firebase/upload_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
@@ -25,7 +26,29 @@ class AddOffer extends StatefulWidget {
 class _AddOfferState extends State<AddOffer> {
   final _formKey = GlobalKey<FormState>();
   final OfferController _offerController = Get.put(OfferController());
-  bool toggleState = false;
+  final AuthController _authController = Get.put(AuthController());
+  List<DropDownValueModel> dropDownList = [
+    // DropDownValueModel(name: 'name1', value: "1"),
+  ];
+
+  @override
+  void initState() {
+    initialize();
+
+    super.initState();
+  }
+
+  void initialize() {
+    if (dropDownList.isEmpty) {
+      for (var i = 0; i < _authController.channelList.length; i++) {
+        var channelId = _authController.channelList[i].id;
+        var channelName = _authController.channelList[i].title;
+
+        dropDownList
+            .add(DropDownValueModel(name: channelName, value: channelId));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +205,7 @@ class _AddOfferState extends State<AddOffer> {
                         child: customTextField(
                             hintText: "Country",
                             isReadOnly: true,
-                            controller: _offerController.countryNameController,
+                            controller: _offerController.countryController,
                             textFieldTopHeight: 0,
                             validate: (val) {
                               return Validator.validateEmpty(val!, "Country");
@@ -194,7 +217,7 @@ class _AddOfferState extends State<AddOffer> {
                                 context: context,
                                 showPhoneCode: false,
                                 onSelect: (Country country) {
-                                  _offerController.countryNameController.text =
+                                  _offerController.countryController.text =
                                       country.name;
                                 },
                               );
@@ -212,7 +235,7 @@ class _AddOfferState extends State<AddOffer> {
                         ),
                         child: customTextField(
                           hintText: "City",
-                          controller: _offerController.cityNameController,
+                          controller: _offerController.cityController,
                           textFieldTopHeight: 0,
                         ),
                       ),
@@ -350,21 +373,13 @@ class _AddOfferState extends State<AddOffer> {
                     submitButtonTextStyle: const TextStyle(
                       color: AppColors.white,
                     ),
-                    dropDownList: const [
-                      DropDownValueModel(
-                          name: 'Mobile phones', value: "mobile_phones"),
-                      DropDownValueModel(
-                          name: 'Computer Electronics',
-                          value: "computer_electronics"),
-                      DropDownValueModel(name: 'Laptop', value: "laptop"),
-                      DropDownValueModel(
-                          name: 'Accessories', value: "accessories"),
-                    ],
+                    dropDownList: dropDownList,
                     onChanged: (val) {
                       _offerController.channelList.clear();
 
                       for (int i = 0; i < val.length; i++) {
-                        _offerController.channelList.add(val[i].value);
+                        _offerController.channelList
+                            .add({"id": val[i].value, "title": val[i].name});
                       }
 
                       print(_offerController.channelList);
@@ -402,8 +417,8 @@ class _AddOfferState extends State<AddOffer> {
                       Get.back();
                       await FirebaseUploadService
                           .uploadImagesToFirebaseStorage();
-                      await FirebaseCRUDService.createOffer();
-                      await FirebaseCRUDService.getAllMyOffers();
+                      await FirebaseOfferService.createOffer();
+                      await FirebaseOfferService.getAllMyOffers();
                       _offerController.clearAllFields();
                     }
                   },

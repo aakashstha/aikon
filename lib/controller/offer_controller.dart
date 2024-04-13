@@ -7,6 +7,9 @@ class OfferController extends GetxController {
   var loadingOtherOffers = false.obs;
   var loadingFavouriteOffers = false.obs;
 
+  var selectedChannelId = [].obs;
+  var toggleStateIsSell = false.obs;
+
   List<OfferModel> myOffersListings = [];
   List<OfferModel> otherOffersListings = [];
 
@@ -14,12 +17,12 @@ class OfferController extends GetxController {
   TextEditingController titleController = TextEditingController();
   TextEditingController subTitleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController countryNameController = TextEditingController();
-  TextEditingController cityNameController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
   var selectedImageList = <Map<String, dynamic>>[].obs;
 
   var selectedImageUrlList = [].obs;
-  List channelList = [];
+  List<Map<String, dynamic>> channelList = [];
   var postAnonymously = false.obs;
 
   // used in Update
@@ -34,8 +37,8 @@ class OfferController extends GetxController {
     titleController.clear();
     subTitleController.clear();
     descriptionController.clear();
-    countryNameController.clear();
-    cityNameController.clear();
+    countryController.clear();
+    cityController.clear();
     selectedImageList.clear();
     selectedImageUrlList.clear();
     selectedImageList.clear();

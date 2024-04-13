@@ -21,7 +21,7 @@ class AuthController extends GetxController {
   var profilePic = XFile("").obs;
   String urlProfilePic = "";
   List<ChannelModel> channelList = [];
-  List<int> channelId = [];
+  List<int> channelsId = [];
 
   // for storing user info from server
   var user = UserModel().obs;

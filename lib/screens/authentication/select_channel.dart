@@ -79,8 +79,8 @@ class _SelectChannelState extends State<SelectChannel> {
                   ),
                   onPressed: () async {
                     // print(_authController.channelList);
-                    print(_authController.channelId);
-                    if (_authController.channelId.isEmpty) {
+                    print(_authController.channelsId);
+                    if (_authController.channelsId.isEmpty) {
                       setState(() {
                         showErrorText = true;
                       });
@@ -93,7 +93,7 @@ class _SelectChannelState extends State<SelectChannel> {
 
                     Get.offAll(() => TabBarNavigation());
                     _authController.channelList.clear();
-                    _authController.channelId.clear();
+                    _authController.channelsId.clear();
                   },
                   child: _authController.loading.value
                       ? circularButtonIndicator()
@@ -146,9 +146,9 @@ class _SelectChannelState extends State<SelectChannel> {
                     toggleState = value;
                   });
                   if (value) {
-                    _authController.channelId.add(id);
+                    _authController.channelsId.add(id);
                   } else {
-                    _authController.channelId.remove(id);
+                    _authController.channelsId.remove(id);
                   }
                 },
               ),
