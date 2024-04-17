@@ -25,7 +25,7 @@ class FirebaseUploadService {
       // Create a reference for the image to be stored
       // time stamp will be same so added incrementer at the end of image name
       Reference imageUploadReference =
-          referenceRoot.child("users/$timestamp.$imageExtension");
+          referenceRoot.child("users_image/$timestamp.$imageExtension");
 
       await imageUploadReference.putFile(File(imgFile.path));
 
@@ -57,7 +57,7 @@ class FirebaseUploadService {
           // Create a reference for the image to be stored
           // time stamp will be same so added incrementer at the end of image name
           Reference imageUploadReference =
-              referenceRoot.child("images/$timestamp$i.$imageExtension");
+              referenceRoot.child("offer_image/$timestamp$i.$imageExtension");
 
           await imageUploadReference.putFile(File(imgFile.path));
 

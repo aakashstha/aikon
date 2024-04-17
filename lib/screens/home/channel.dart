@@ -59,8 +59,8 @@ class _ChannelState extends State<Channel> {
                           _authController.channelList.length,
                           (index) {
                             var channel = _authController.channelList[index];
-                            bool toggleState =
-                                _authController.channelsId.contains(channel.id);
+                            bool toggleState = _authController.subChannels
+                                .any((map) => map["id"] == channel.id);
 
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 10),
@@ -79,8 +79,6 @@ class _ChannelState extends State<Channel> {
   }
 
   Widget addChannel(int id, String title, String subtitle, bool toggleState) {
-    // bool toggleState = toggleState;
-
     return StatefulBuilder(
       builder: (BuildContext ctx, StateSetter setState) {
         return Row(
@@ -109,14 +107,15 @@ class _ChannelState extends State<Channel> {
                     toggleState = value;
                   });
                   if (value) {
-                    _authController.channelsId.add(id);
+                    _authController.subChannels.add({"id": id, "title": title});
                   } else {
-                    _authController.channelsId.remove(id);
+                    _authController.subChannels
+                        .removeWhere((element) => element["id"] == id);
                   }
                   _authController.loadingChannel.value = true;
                   await FirebaseAuthService.updateSubscribedChannels();
                   _authController.loadingChannel.value = false;
-                  print(_authController.channelsId);
+                  print(_authController.subChannels);
                 },
               ),
             ),

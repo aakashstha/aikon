@@ -376,13 +376,15 @@ class _AddOfferState extends State<AddOffer> {
                     dropDownList: dropDownList,
                     onChanged: (val) {
                       _offerController.channelList.clear();
+                      _offerController.channelsId.clear();
 
                       for (int i = 0; i < val.length; i++) {
                         _offerController.channelList
                             .add({"id": val[i].value, "title": val[i].name});
+
+                        _offerController.channelsId.add(val[i].value);
                       }
 
-                      print(_offerController.channelList);
                       _formKey.currentState!.validate();
                     },
                   ),
@@ -413,6 +415,7 @@ class _AddOfferState extends State<AddOffer> {
                 // Post/Update Button
                 TextButton(
                   onPressed: () async {
+                    print(_offerController.channelList);
                     if (_formKey.currentState!.validate()) {
                       Get.back();
                       await FirebaseUploadService

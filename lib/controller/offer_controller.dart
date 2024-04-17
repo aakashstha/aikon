@@ -6,8 +6,11 @@ class OfferController extends GetxController {
   var loadingMyOffers = false.obs;
   var loadingOtherOffers = false.obs;
   var loadingFavouriteOffers = false.obs;
+  var loadingArchiveOffers = false.obs;
 
-  var selectedChannelId = [].obs;
+  // Used for Filters
+  var selectedChannels = [].obs;
+  List<int> selectedChannelsIdFilter = [];
   var toggleStateIsSell = false.obs;
 
   List<OfferModel> myOffersListings = [];
@@ -23,6 +26,7 @@ class OfferController extends GetxController {
 
   var selectedImageUrlList = [].obs;
   List<Map<String, dynamic>> channelList = [];
+  List<int> channelsId = [];
   var postAnonymously = false.obs;
 
   // used in Update

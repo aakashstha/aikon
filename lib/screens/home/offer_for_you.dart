@@ -6,6 +6,7 @@ import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/channel_model.dart';
 import 'package:aikon/model/offer_model.dart';
+import 'package:aikon/screens/others/archive.dart';
 import 'package:aikon/screens/others/favourite.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +34,12 @@ class _OfferForYouState extends State<OfferForYou> {
 
   void initialize() async {
     _offerController.loadingOtherOffers.value = true;
-    await FirebaseOfferService.getAllOtherOffers();
+
     await FirebaseAuthService.getAllChannels();
     await FirebaseAuthService.getUserInfo();
+    await FirebaseAuthService.getUserSubscribedChannelsId();
+    await FirebaseAuthService.getUserFavouriteAndArchiveIds();
+    await FirebaseOfferService.getAllOtherOffers();
 
     _offerController.loadingOtherOffers.value = false;
   }
@@ -60,6 +64,8 @@ class _OfferForYouState extends State<OfferForYou> {
 
                           // TextButton(
                           //   onPressed: () async {
+                          //     print(_offerController.selectedChannelsIdFilter);
+                          //     // FirebaseOfferService.getAllOtherOffers();
                           //     // var a1 = await StorageGetX.readFirebaseToken();
                           //     // print(a1);
                           //     // // new token every time
@@ -117,24 +123,15 @@ class _OfferForYouState extends State<OfferForYou> {
                             alignment: Alignment.topLeft,
                             child: Wrap(
                               children: [
-                                // ...List.generate(
-                                //     _authController.channelList.length,
-                                //     (index) {
-                                //   ChannelModel channel =
-                                //       _authController.channelList[index];
+                                ...List.generate(
+                                    _authController.subChannels.length,
+                                    (index) {
+                                  Map<String, dynamic> channel =
+                                      _authController.subChannels[index];
 
-                                //   bool isChannel = _authController
-                                //       .user.value.subChannels!
-                                //       .contains(_authController
-                                //           .channelList[index].id);
-                                //   String title = channel.title;
-                                //   int channelId = channel.id;
-
-                                //   if (isChannel) {
-                                //     return selectedChannel(title, channelId);
-                                //   }
-                                //   return const SizedBox();
-                                // }),
+                                  return selectedChannel(
+                                      channel["title"], channel["id"]);
+                                }),
                               ],
                             ),
                           ),
@@ -202,7 +199,9 @@ class _OfferForYouState extends State<OfferForYou> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Get.to(() => ArchiveListing());
+                                },
                                 icon: const Icon(Icons.archive),
                               ),
                             ],
@@ -224,7 +223,10 @@ class _OfferForYouState extends State<OfferForYou> {
                         OfferModel offer =
                             _offerController.otherOffersListings[index];
 
-                        return addOffers(offer);
+                        bool isFavourite =
+                            _authController.favouriteIdList.contains(offer.id);
+
+                        return addOffers(offer, isFavourite);
                       },
                     ),
                   ],
@@ -238,20 +240,30 @@ class _OfferForYouState extends State<OfferForYou> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: Obx(() {
-        bool isChannelContains =
-            _offerController.selectedChannelId.contains(channelId);
+        bool isChannelContains = _offerController.selectedChannels
+            .any((map) => map["id"] == channelId);
 
         return InkWell(
-          onTap: () {
+          onTap: () async {
             if (isChannelContains) {
-              _offerController.selectedChannelId.remove(channelId);
+              _offerController.selectedChannelsIdFilter.remove(channelId);
+              _offerController.selectedChannels
+                  .removeWhere((element) => element["id"] == channelId);
             } else {
-              _offerController.selectedChannelId.add(channelId);
+              _offerController.selectedChannelsIdFilter.add(channelId);
+              _offerController.selectedChannels.add({
+                "id": channelId,
+                "title": title,
+              });
             }
+
+            _offerController.loadingOtherOffers.value = true;
+            await FirebaseOfferService.getAllOtherOffers();
+            _offerController.loadingOtherOffers.value = false;
 
             print(channelId);
             print(title);
-            print(_offerController.selectedChannelId);
+            print(_offerController.selectedChannels);
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
@@ -284,10 +296,10 @@ class _OfferForYouState extends State<OfferForYou> {
     );
   }
 
-  Widget addOffers(OfferModel offer) {
+  Widget addOffers(OfferModel offer, bool isFavourite) {
     return Dismissible(
       // key: UniqueKey(),
-      key: Key(offer.id!),
+      key: Key(offer.id),
       onDismissed: (direction) async {
         print(direction);
         // swipe from right to left will make it favourite
@@ -401,10 +413,21 @@ class _OfferForYouState extends State<OfferForYou> {
                   ),
                 ),
                 // time column
+
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    isFavourite
+                        ? const Align(
+                            alignment: Alignment.topRight,
+                            child: Icon(
+                              Icons.star_rounded,
+                              color: AppColors.timeGrey,
+                            ),
+                          )
+                        : const SizedBox(),
+                    const Spacer(),
                     Text(
                       "9:44 PM",
                       style: GoogleFonts.poppins(
