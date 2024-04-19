@@ -99,9 +99,9 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
                     IconButton(
                       onPressed: () {
                         print("Add Offer");
-                        Get.to(() => AddOffer());
+                        Get.toNamed("/AddOffer");
                       },
-                      icon: Icon(Icons.add, color: AppColors.white),
+                      icon: const Icon(Icons.add, color: AppColors.white),
                     ),
                     PopupMenuButton(
                       iconColor: AppColors.white,
@@ -110,11 +110,9 @@ class _TabBarNavigationState extends State<TabBarNavigation> {
                         int val = value as int;
                         setState(() {
                           if (val == 0) {
-                            // Get.toNamed("/OfferMyListing");
-                            Get.to(() => OfferMyListing());
+                            Get.toNamed("/OfferMyListing");
                           } else if (val == 1) {
-                            // Get.toNamed("/SettingScreen");
-                            Get.to(() => SettingScreen());
+                            Get.toNamed("/SettingScreen");
                           }
                         });
                       },

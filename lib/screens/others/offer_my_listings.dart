@@ -112,7 +112,7 @@ class _OfferMyListingState extends State<OfferMyListing> {
 Widget addOffers(OfferModel offer, int index) {
   return InkWell(
     onTap: () {
-      Get.to(() => OfferIndividual(offer: offer));
+      Get.toNamed("/OfferIndividual", arguments: offer);
     },
     child: Column(
       children: [

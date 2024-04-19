@@ -89,17 +89,6 @@ class _FavouriteListingState extends State<FavouriteListing> {
                 ),
               ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     _tabBarController.isAddOfferButton.value = true;
-      //     Get.to(() => AddOffer(isUpdateOffer: false));
-      //   },
-      //   backgroundColor: AppColors.blueYonder,
-      //   child: const Icon(
-      //     Icons.add,
-      //     color: AppColors.white,
-      //   ),
-      // ),
     );
   }
 }
@@ -107,7 +96,7 @@ class _FavouriteListingState extends State<FavouriteListing> {
 Widget addOffers(OfferModel offer, int index) {
   return InkWell(
     onTap: () {
-      Get.to(() => OfferIndividual(offer: offer));
+      Get.toNamed("/OfferIndividual", arguments: offer);
     },
     child: Column(
       children: [

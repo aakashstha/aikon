@@ -7,8 +7,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OfferIndividual extends StatefulWidget {
-  final OfferModel offer;
-  const OfferIndividual({super.key, required this.offer});
+  final OfferModel offer = Get.arguments;
+  OfferIndividual({
+    super.key,
+  });
 
   @override
   State<OfferIndividual> createState() => _OfferIndividualState();

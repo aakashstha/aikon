@@ -75,7 +75,7 @@ class Login extends StatelessWidget {
                               phoneNumber: _authController.phoneNumber);
                           _authController.loading.value = false;
 
-                          Get.to(() => OTPScreen());
+                          Get.toNamed("/OTPScreen");
                         }
                       },
                       style: TextButton.styleFrom(

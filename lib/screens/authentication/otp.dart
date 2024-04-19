@@ -89,7 +89,7 @@ class OTPScreen extends StatelessWidget {
                           if (response == true) {
                             await FirebaseAuthService.createUser();
                             await FirebaseAuthService.generateUsername();
-                            Get.to(() => UserInfo());
+                            Get.toNamed("/UserInfo");
                           } else if (response.code ==
                               "invalid-verification-code") {
                             showSnackBar(

@@ -138,7 +138,7 @@ class _UserInfoState extends State<UserInfo> {
                           await FirebaseAuthService.getAllChannels();
 
                           _authController.loading.value = false;
-                          Get.to(() => SelectChannel());
+                          Get.toNamed("/SelectChannel");
                         }
                       },
                       child: _authController.loading.value

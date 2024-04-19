@@ -189,7 +189,7 @@ class _OfferForYouState extends State<OfferForYou> {
                               const Spacer(),
                               IconButton(
                                 onPressed: () {
-                                  Get.to(() => FavouriteListing());
+                                  Get.toNamed("/FavouriteListing");
                                 },
                                 icon: const Icon(
                                   Icons.star_rounded,
@@ -198,7 +198,7 @@ class _OfferForYouState extends State<OfferForYou> {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  Get.to(() => ArchiveListing());
+                                  Get.toNamed("/ArchiveListing");
                                 },
                                 icon: const Icon(Icons.archive),
                               ),
