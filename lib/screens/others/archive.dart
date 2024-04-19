@@ -31,7 +31,7 @@ class _ArchiveListingState extends State<ArchiveListing> {
 
   void initialize() async {
     _offerController.loadingArchiveOffers.value = true;
-    await FirebaseAuthService.getUserFavouriteAndArchiveIds();
+    await FirebaseAuthService.getUserInfo();
     await FirebaseOfferService.getAllArchiveOffers();
     _offerController.loadingArchiveOffers.value = false;
 

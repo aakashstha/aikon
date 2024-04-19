@@ -182,6 +182,15 @@ class FirebaseAuthService {
           List<String>.from(userSnapshot['archives']);
       _authController.user.value.createdAt = userSnapshot['createdAt'];
 
+      // for adding, removing and posting in firebase
+      _authController.subChannels =
+          List<Map<String, dynamic>>.from(userSnapshot["subChannels"]);
+
+      _authController.favouriteIdList =
+          List<String>.from(userSnapshot["favourites"]);
+      _authController.archiveIdList =
+          List<String>.from(userSnapshot["archives"]);
+
       print("Getting User Info Done");
     } catch (e) {
       print("Failed to get User:  $e");
@@ -208,26 +217,8 @@ class FirebaseAuthService {
     }
   }
 
-  static Future<void> getUserSubscribedChannelsId() async {
-    _authController.subChannels.clear();
-
-    try {
-      var userSnapshot = await db
-          .collection(userCollection)
-          .doc(_authController.user.value.userId)
-          .get();
-
-      _authController.subChannels =
-          List<Map<String, dynamic>>.from(userSnapshot["subChannels"]);
-
-      print("Getting All Channel List Done");
-    } catch (e) {
-      print("Failed to get all Channel List:  $e");
-    }
-  }
-
   // Update Subscribed Channels
-  static Future<void> updateSubscribedChannels() async {
+  static Future<void> updateUserSubscribedChannels() async {
     Map<String, dynamic> userData = {
       "subChannels": _authController.subChannels,
     };
@@ -244,29 +235,8 @@ class FirebaseAuthService {
     }
   }
 
-  static Future<void> getUserFavouriteAndArchiveIds() async {
-    _authController.favouriteIdList.clear();
-    _authController.archiveIdList.clear();
-
-    try {
-      var userSnapshot = await db
-          .collection(userCollection)
-          .doc(_authController.user.value.userId)
-          .get();
-
-      _authController.favouriteIdList =
-          List<String>.from(userSnapshot["favourites"]);
-      _authController.archiveIdList =
-          List<String>.from(userSnapshot["archives"]);
-
-      print("Getting All Favourite/Archive Lists Done");
-    } catch (e) {
-      print("Failed to get all Favourite/Archive Lists List:  $e");
-    }
-  }
-
   // Update Favourite and Archive
-  static Future<void> updateFavouriteAndArchive(
+  static Future<void> updateUserFavouriteAndArchive(
       {required bool isFavourite}) async {
     late Map<String, dynamic> userData;
     if (isFavourite) {

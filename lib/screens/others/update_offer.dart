@@ -513,12 +513,14 @@ class _UpdateOfferState extends State<UpdateOffer> {
                     print(_offerController.channelList);
                     Get.back();
                     Get.back();
+                    _offerController.loadingMyOffers.value = true;
                     await FirebaseUploadService.deleteImageFromFirebaseStorage(
                         _offerController.deleteUnSelectedImageUrlList);
 
                     await FirebaseUploadService.uploadImagesToFirebaseStorage();
-                    await FirebaseOfferService.updateOffer(widget.offer!.id!);
+                    await FirebaseOfferService.updateOffer(widget.offer!.id);
                     await FirebaseOfferService.getAllMyOffers();
+                    _offerController.loadingMyOffers.value = false;
                     _offerController.clearAllFields();
                   },
                   style: TextButton.styleFrom(

@@ -1,5 +1,6 @@
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:aikon/constants/constants.dart';
+import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/firebase/upload_service.dart';
 import 'package:aikon/model/offer_model.dart';
@@ -9,6 +10,8 @@ import 'package:aikon/screens/widgets/alert_dialog.dart';
 import 'package:aikon/utilities/pick_images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+final OfferController _offerController = Get.put(OfferController());
 
 Future<void> showOfferBottomSheet(
     {required int index, required OfferModel offer}) {
@@ -54,17 +57,19 @@ Future<void> showOfferBottomSheet(
         onPressed: (context) async {
           print("object");
           deleteAlertDialog(
-            offerId: offer.id!,
+            offerId: offer.id,
             title: "Are you sure you want to delete this offer?",
             subTitle: "",
             okButton: () async {
               Get.back();
               Get.back();
 
+              _offerController.loadingMyOffers.value = true;
               await FirebaseUploadService.deleteImageFromFirebaseStorage(
                   offer.images);
-              await FirebaseOfferService.deleteOffer(offer.id!);
+              await FirebaseOfferService.deleteOffer(offer.id);
               await FirebaseOfferService.getAllMyOffers();
+              _offerController.loadingMyOffers.value = false;
             },
             secondButtonTitle: "Cancel",
             secondButton: () {

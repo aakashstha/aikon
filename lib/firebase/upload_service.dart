@@ -40,7 +40,6 @@ class FirebaseUploadService {
   }
 
   static Future<void> uploadImagesToFirebaseStorage() async {
-    _offerController.loadingOtherOffers.value = true;
     String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
     try {
@@ -69,17 +68,13 @@ class FirebaseUploadService {
           });
           print("Image Uploaded and URL got set");
         }
-        _offerController.loadingOtherOffers.value = false;
       }
     } catch (e) {
-      _offerController.loadingOtherOffers.value = false;
       print("Error: $e");
     }
   }
 
   static Future<void> deleteImageFromFirebaseStorage(List imageURLList) async {
-    _offerController.loadingMyOffers.value = true;
-
     try {
       for (var i = 0; i < imageURLList.length; i++) {
         // To get the image name from URL
@@ -96,9 +91,7 @@ class FirebaseUploadService {
         await imageDeleteReference.delete();
         print("Image Deleted from Firebase Storage");
       }
-      _offerController.loadingMyOffers.value = false;
     } catch (e) {
-      _offerController.loadingMyOffers.value = false;
       print("Error: $e");
     }
   }

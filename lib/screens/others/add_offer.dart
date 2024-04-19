@@ -417,11 +417,12 @@ class _AddOfferState extends State<AddOffer> {
                   onPressed: () async {
                     print(_offerController.channelList);
                     if (_formKey.currentState!.validate()) {
+                      _offerController.loadingOtherOffers.value = true;
                       Get.back();
                       await FirebaseUploadService
                           .uploadImagesToFirebaseStorage();
                       await FirebaseOfferService.createOffer();
-                      await FirebaseOfferService.getAllMyOffers();
+                      _offerController.loadingOtherOffers.value = false;
                       _offerController.clearAllFields();
                     }
                   },

@@ -33,10 +33,9 @@ class _OfferForYouState extends State<OfferForYou> {
   void initialize() async {
     _offerController.loadingOtherOffers.value = true;
 
-    await FirebaseAuthService.getAllChannels();
     await FirebaseAuthService.getUserInfo();
-    await FirebaseAuthService.getUserSubscribedChannelsId();
-    await FirebaseAuthService.getUserFavouriteAndArchiveIds();
+    await FirebaseAuthService.getAllChannels();
+    // await FirebaseAuthService.getUserFavouriteAndArchiveIds();
     await FirebaseOfferService.getAllOtherOffers();
 
     _offerController.loadingOtherOffers.value = false;
@@ -60,36 +59,36 @@ class _OfferForYouState extends State<OfferForYou> {
                         children: [
                           // Testing Purposes buttons
 
-                          TextButton(
-                            onPressed: () async {
-                              print(_authController.user.value.userId);
-                              print(_authController.user.value.subChannels);
-                              // FirebaseOfferService.getAllOtherOffers();
-                              // var a1 = await StorageGetX.readFirebaseToken();
-                              // print(a1);
-                              // // new token every time
-                              // final user = FirebaseAuth.instance.currentUser;
-                              // var a = await user!.getIdToken();
-                              // var b = user.refreshToken;
-                              // print(a);
-                              // print(b);
-                              // print("object");
-                            },
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: AppColors.blueYonder,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0),
-                              ),
-                              textStyle: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 28),
-                              child: Text("get token"),
-                            ),
-                          ),
+                          // TextButton(
+                          //   onPressed: () async {
+                          //     print(_authController.subChannels);
+                          //     // print(_authController.user.value.subChannels);
+                          //     // FirebaseOfferService.getAllOtherOffers();
+                          //     // var a1 = await StorageGetX.readFirebaseToken();
+                          //     // print(a1);
+                          //     // // new token every time
+                          //     // final user = FirebaseAuth.instance.currentUser;
+                          //     // var a = await user!.getIdToken();
+                          //     // var b = user.refreshToken;
+                          //     // print(a);
+                          //     // print(b);
+                          //     // print("object");
+                          //   },
+                          //   style: TextButton.styleFrom(
+                          //     foregroundColor: Colors.white,
+                          //     backgroundColor: AppColors.blueYonder,
+                          //     shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(0),
+                          //     ),
+                          //     textStyle: const TextStyle(
+                          //       fontWeight: FontWeight.w700,
+                          //     ),
+                          //   ),
+                          //   child: const Padding(
+                          //     padding: EdgeInsets.symmetric(horizontal: 28),
+                          //     child: Text("get token"),
+                          //   ),
+                          // ),
 
                           TextFormField(
                             decoration: InputDecoration(
@@ -305,15 +304,15 @@ class _OfferForYouState extends State<OfferForYou> {
         // swipe from right to left will make it favourite
         // favourite
         if (direction == DismissDirection.endToStart) {
-          _authController.favouriteIdList.add(offer.id!);
+          _authController.favouriteIdList.add(offer.id);
           _offerController.otherOffersListings.remove(offer);
 
-          await FirebaseAuthService.updateFavouriteAndArchive(
+          await FirebaseAuthService.updateUserFavouriteAndArchive(
               isFavourite: true);
           // archive
         } else if (direction == DismissDirection.startToEnd) {
-          _authController.archiveIdList.add(offer.id!);
-          await FirebaseAuthService.updateFavouriteAndArchive(
+          _authController.archiveIdList.add(offer.id);
+          await FirebaseAuthService.updateUserFavouriteAndArchive(
               isFavourite: false);
           _offerController.otherOffersListings.remove(offer);
         }

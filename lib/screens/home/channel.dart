@@ -26,7 +26,7 @@ class _ChannelState extends State<Channel> {
   void initialize() async {
     _authController.loadingHomeChannel.value = true;
     await FirebaseAuthService.getAllChannels();
-    await FirebaseAuthService.getUserSubscribedChannelsId();
+    // await FirebaseAuthService.getUserSubscribedChannelsId();
     _authController.loadingHomeChannel.value = false;
   }
 
@@ -113,7 +113,7 @@ class _ChannelState extends State<Channel> {
                         .removeWhere((element) => element["id"] == id);
                   }
                   _authController.loadingHomeChannel.value = true;
-                  await FirebaseAuthService.updateSubscribedChannels();
+                  await FirebaseAuthService.updateUserSubscribedChannels();
                   _authController.loadingHomeChannel.value = false;
                   print(_authController.subChannels);
                 },

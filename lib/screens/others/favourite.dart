@@ -32,7 +32,7 @@ class _FavouriteListingState extends State<FavouriteListing> {
 
   void initialize() async {
     _offerController.loadingFavouriteOffers.value = true;
-    await FirebaseAuthService.getUserFavouriteAndArchiveIds();
+    await FirebaseAuthService.getUserInfo();
     await FirebaseOfferService.getAllFavouriteOffers();
     _offerController.loadingFavouriteOffers.value = false;
 
