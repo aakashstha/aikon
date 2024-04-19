@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 List<String> dropList = <String>['Select channel ...', 'Mobile', 'Computer'];
 

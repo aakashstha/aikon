@@ -1,19 +1,13 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/firebase/auth_service.dart';
 import 'package:aikon/firebase/upload_service.dart';
-import 'package:aikon/screens/authentication/select_channel.dart';
-import 'package:aikon/screens/home/tabbar_navigation.dart';
 import 'package:aikon/screens/widgets/circular_indicator.dart';
 import 'package:aikon/screens/widgets/text_field.dart';
-import 'package:aikon/utilities/storage_getx.dart';
 import 'package:aikon/utilities/pick_images.dart';
 import 'package:aikon/utilities/validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';

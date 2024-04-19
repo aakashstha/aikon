@@ -1,10 +1,6 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/constants/constants.dart';
 import 'package:aikon/firebase_options.dart';
-import 'package:aikon/screens/authentication/login.dart';
-import 'package:aikon/screens/authentication/otp.dart';
-import 'package:aikon/screens/authentication/select_channel.dart';
-import 'package:aikon/screens/authentication/user_info.dart';
 import 'package:aikon/screens/home/tabbar_navigation.dart';
 import 'package:aikon/utilities/routes.dart';
 import 'package:aikon/utilities/storage_getx.dart';

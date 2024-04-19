@@ -1,15 +1,11 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/firebase/auth_service.dart';
-import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/controller/auth_controller.dart';
-import 'package:aikon/screens/authentication/user_info.dart';
 import 'package:aikon/screens/widgets/circular_indicator.dart';
 import 'package:aikon/utilities/snackbar.dart';
-import 'package:aikon/utilities/storage_getx.dart';
 import 'package:aikon/utilities/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:pinput/pinput.dart';
 
 class OTPScreen extends StatelessWidget {

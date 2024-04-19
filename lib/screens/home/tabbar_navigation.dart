@@ -3,14 +3,8 @@ import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/firebase/auth_service.dart';
 import 'package:aikon/screens/home/channel.dart';
 import 'package:aikon/screens/home/offer_for_you.dart';
-import 'package:aikon/screens/others/offer_my_listings.dart';
-import 'package:aikon/screens/others/add_offer.dart';
-import 'package:aikon/screens/others/settings.dart';
 import 'package:aikon/screens/widgets/circular_indicator.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class TabBarNavigation extends StatefulWidget {

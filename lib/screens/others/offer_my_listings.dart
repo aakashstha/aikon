@@ -2,15 +2,11 @@ import 'package:aikon/constants/colors.dart';
 import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/model/offer_model.dart';
-import 'package:aikon/screens/home/tabbar_navigation.dart';
-import 'package:aikon/screens/others/add_offer.dart';
-import 'package:aikon/screens/others/offer_individual.dart';
 import 'package:aikon/screens/widgets/bottom_sheet.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 

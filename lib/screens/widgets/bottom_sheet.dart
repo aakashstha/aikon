@@ -4,10 +4,8 @@ import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/firebase/upload_service.dart';
 import 'package:aikon/model/offer_model.dart';
-import 'package:aikon/screens/others/add_offer.dart';
 import 'package:aikon/screens/others/update_offer.dart';
 import 'package:aikon/screens/widgets/alert_dialog.dart';
-import 'package:aikon/utilities/pick_images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
