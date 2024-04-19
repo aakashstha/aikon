@@ -20,7 +20,7 @@ class AuthController extends GetxController {
   TextEditingController userNameController = TextEditingController();
   var profilePic = XFile("").obs;
   String urlProfilePic = "";
-  List<ChannelModel> channelList = [];
+  List<ChannelModel> allChannelList = [];
   List<Map<String, dynamic>> subChannels = [];
 
   // for storing user info from server

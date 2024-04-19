@@ -23,7 +23,7 @@ class OfferMyListing extends StatefulWidget {
 }
 
 class _OfferMyListingState extends State<OfferMyListing> {
-  final TabBarController _tabBarController = Get.put(TabBarController());
+  final ScrollController scrollController = ScrollController();
   // while not using permanent = true then the controller get deleted
   final OfferController _offerController =
       Get.put(OfferController(), permanent: true);
@@ -35,7 +35,16 @@ class _OfferMyListingState extends State<OfferMyListing> {
   }
 
   void initialize() async {
+    _offerController.loadingMyOffers.value = true;
     await FirebaseOfferService.getAllMyOffers();
+    _offerController.loadingMyOffers.value = false;
+
+    // scrollController.addListener(() {
+    //   if (scrollController.position.pixels ==
+    //       scrollController.position.maxScrollExtent) {
+    //     FirebaseOfferService.getAllMyOffers();
+    //   }
+    // });
   }
 
   @override
@@ -60,9 +69,9 @@ class _OfferMyListingState extends State<OfferMyListing> {
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: ListView(
+                  controller: scrollController,
                   children: [
                     const SizedBox(height: 20),
-
                     // InkWell(
                     //   onTap: () async {
                     //     print(_offerController.myOffersListings[0].imagesList);

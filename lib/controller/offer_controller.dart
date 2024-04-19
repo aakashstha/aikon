@@ -1,4 +1,5 @@
 import 'package:aikon/model/offer_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,6 +8,12 @@ class OfferController extends GetxController {
   var loadingOtherOffers = false.obs;
   var loadingFavouriteOffers = false.obs;
   var loadingArchiveOffers = false.obs;
+
+  // pagination Get All My Offers
+  DocumentSnapshot? lastDocument;
+  late QuerySnapshot offerQuerySnapshot;
+  bool isMoreData = true;
+  // pagination
 
   // Used for Filters
   var selectedChannels = [].obs;

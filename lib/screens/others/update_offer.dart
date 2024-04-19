@@ -72,9 +72,9 @@ class _UpdateOfferState extends State<UpdateOffer> {
 
   void initialize() {
     if (dropDownList.isEmpty) {
-      for (var i = 0; i < _authController.channelList.length; i++) {
-        var channelId = _authController.channelList[i].id;
-        var channelName = _authController.channelList[i].title;
+      for (var i = 0; i < _authController.allChannelList.length; i++) {
+        var channelId = _authController.allChannelList[i].id;
+        var channelName = _authController.allChannelList[i].title;
 
         dropDownList
             .add(DropDownValueModel(name: channelName, value: channelId));

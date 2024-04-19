@@ -50,8 +50,8 @@ class _SelectChannelState extends State<SelectChannel> {
             ),
             const SizedBox(height: 10),
 
-            ...List.generate(_authController.channelList.length, (index) {
-              var channel = _authController.channelList[index];
+            ...List.generate(_authController.allChannelList.length, (index) {
+              var channel = _authController.allChannelList[index];
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: addChannel(channel.id, channel.title, channel.subtitle),
@@ -92,7 +92,7 @@ class _SelectChannelState extends State<SelectChannel> {
                     _authController.loading.value = false;
 
                     Get.offAll(() => TabBarNavigation());
-                    _authController.channelList.clear();
+                    _authController.allChannelList.clear();
                     _authController.subChannels.clear();
                   },
                   child: _authController.loading.value

@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 final _offerController = Get.find<OfferController>();
 final _authController = Get.find<AuthController>();
 
+// to convert data into particular data type
+// data["imagesList"] = List<String>.from(data["imagesList"]);
 class FirebaseOfferService {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
   static String offerCollection = "offers";
@@ -49,12 +51,14 @@ class FirebaseOfferService {
 
   // Get all Offers Details
   static Future<void> getAllMyOffers() async {
-    _offerController.loadingMyOffers.value = true;
     _offerController.myOffersListings.clear();
 
     try {
-      var offerSnapshot = await db.collection(offerCollection).get();
-      _offerController.loadingMyOffers.value = false;
+      var offerSnapshot = await db
+          .collection(offerCollection)
+          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .orderBy("createdAt")
+          .get();
 
       for (var doc in offerSnapshot.docs) {
         Map<String, dynamic> data = doc.data();
@@ -68,7 +72,6 @@ class FirebaseOfferService {
 
       print("All My Offers Getting Done");
     } catch (e) {
-      _offerController.loadingMyOffers.value = false;
       print("Failed to Get All My Offers:  $e");
     }
   }
@@ -87,6 +90,7 @@ class FirebaseOfferService {
             .collection(offerCollection)
             .where("isSell",
                 isEqualTo: _offerController.toggleStateIsSell.value)
+            .orderBy("createdAt")
             .get();
       } else if (_offerController.selectedChannels.isEmpty) {
         // Filter by isSell and archive list  when channel is not selected
@@ -94,6 +98,7 @@ class FirebaseOfferService {
             .collection(offerCollection)
             .where("isSell",
                 isEqualTo: _offerController.toggleStateIsSell.value)
+            .orderBy("createdAt")
             .where("id", whereNotIn: _authController.archiveIdList)
             .get();
       } else {
@@ -105,6 +110,7 @@ class FirebaseOfferService {
                 isEqualTo: _offerController.toggleStateIsSell.value)
             .where("channelsId",
                 arrayContainsAny: _offerController.selectedChannelsIdFilter)
+            .orderBy("createdAt")
             .get();
       }
 

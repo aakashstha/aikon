@@ -56,9 +56,9 @@ class _ChannelState extends State<Channel> {
                         ),
                         const SizedBox(height: 10),
                         ...List.generate(
-                          _authController.channelList.length,
+                          _authController.allChannelList.length,
                           (index) {
-                            var channel = _authController.channelList[index];
+                            var channel = _authController.allChannelList[index];
                             bool toggleState = _authController.subChannels
                                 .any((map) => map["id"] == channel.id);
 

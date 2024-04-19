@@ -74,7 +74,7 @@ class FirebaseAuthService {
     }
   }
 
-  // Add User
+  // Add User at authentication
   static Future<void> createUser() async {
     _authController.loadingUserInfo.value = true;
 
@@ -105,7 +105,7 @@ class FirebaseAuthService {
     }
   }
 
-  // Update User
+  // Update User at authentication
   static Future<void> updateUser(String verified) async {
     late Map<String, dynamic> userData;
     if (verified == "user_info") {
@@ -134,7 +134,7 @@ class FirebaseAuthService {
     }
   }
 
-  // Generate Username
+  // Generate Username at authentication
   static Future<void> generateUsername() async {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     final random = Random();
@@ -188,8 +188,9 @@ class FirebaseAuthService {
     }
   }
 
+  // Get All Channels List to Display
   static Future<void> getAllChannels() async {
-    _authController.channelList.clear();
+    _authController.allChannelList.clear();
 
     try {
       var channelSnapshot = await db.collection(channelCollection).get();
@@ -198,7 +199,7 @@ class FirebaseAuthService {
         Map<String, dynamic> data = doc.data();
         data["id"] = int.parse(doc.id);
 
-        _authController.channelList.add(ChannelModel.fromJson(data));
+        _authController.allChannelList.add(ChannelModel.fromJson(data));
       }
 
       print("Getting All Channel List Done");
@@ -216,7 +217,7 @@ class FirebaseAuthService {
           .doc(_authController.user.value.userId)
           .get();
 
-      _authController.subChannels = 
+      _authController.subChannels =
           List<Map<String, dynamic>>.from(userSnapshot["subChannels"]);
 
       print("Getting All Channel List Done");
