@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:aikon/controller/auth_controller.dart';
-import 'package:aikon/controller/channel_controller.dart';
 import 'package:aikon/model/channel_model.dart';
 import 'package:aikon/utilities/snackbar.dart';
 import 'package:aikon/utilities/storage_getx.dart';
@@ -13,7 +12,6 @@ import 'package:get/get.dart';
 // OTP = 123456
 
 final AuthController _authController = Get.find<AuthController>();
-final ChannelController _channelController = Get.find<ChannelController>();
 
 class FirebaseAuthService {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -76,8 +74,6 @@ class FirebaseAuthService {
 
   // Add User at authentication
   static Future<void> createUser() async {
-    _authController.loadingUserInfo.value = true;
-
     var userData = {
       "userId": FirebaseAuth.instance.currentUser!.uid,
       "phoneNum": FirebaseAuth.instance.currentUser!.phoneNumber,
@@ -97,10 +93,8 @@ class FirebaseAuthService {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .set(userData);
 
-      _authController.loadingUserInfo.value = false;
       print("User Added");
     } catch (e) {
-      _authController.loadingUserInfo.value = false;
       print("Failed to Add User:  $e");
     }
   }
@@ -180,7 +174,13 @@ class FirebaseAuthService {
       _authController.user.value.fullName = userSnapshot['fullName'];
       _authController.user.value.username = userSnapshot['username'];
       _authController.user.value.profilePic = userSnapshot['profilePic'];
-      _authController.user.value.subChannels = userSnapshot['subChannels'];
+      _authController.user.value.subChannels =
+          List<Map<String, dynamic>>.from(userSnapshot['subChannels']);
+      _authController.user.value.favourites =
+          List<String>.from(userSnapshot['favourites']);
+      _authController.user.value.archives =
+          List<String>.from(userSnapshot['archives']);
+      _authController.user.value.createdAt = userSnapshot['createdAt'];
 
       print("Getting User Info Done");
     } catch (e) {

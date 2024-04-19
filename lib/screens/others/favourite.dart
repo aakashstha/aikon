@@ -3,7 +3,6 @@ import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/firebase/auth_service.dart';
 import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
-import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/offer_individual.dart';
 import 'package:aikon/screens/widgets/bottom_sheet.dart';
@@ -21,7 +20,6 @@ class FavouriteListing extends StatefulWidget {
 }
 
 class _FavouriteListingState extends State<FavouriteListing> {
-  final TabBarController _tabBarController = Get.put(TabBarController());
   // while not using permanent = true then the controller get deleted
   final OfferController _offerController = Get.put(OfferController());
   final AuthController _authController = Get.put(AuthController());

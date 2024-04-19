@@ -24,17 +24,17 @@ class _ChannelState extends State<Channel> {
   }
 
   void initialize() async {
-    _authController.loadingChannel.value = true;
+    _authController.loadingHomeChannel.value = true;
     await FirebaseAuthService.getAllChannels();
     await FirebaseAuthService.getUserSubscribedChannelsId();
-    _authController.loadingChannel.value = false;
+    _authController.loadingHomeChannel.value = false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-        () => _authController.loadingChannel.value
+        () => _authController.loadingHomeChannel.value
             ? circularCenterScreenIndicator()
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -112,9 +112,9 @@ class _ChannelState extends State<Channel> {
                     _authController.subChannels
                         .removeWhere((element) => element["id"] == id);
                   }
-                  _authController.loadingChannel.value = true;
+                  _authController.loadingHomeChannel.value = true;
                   await FirebaseAuthService.updateSubscribedChannels();
-                  _authController.loadingChannel.value = false;
+                  _authController.loadingHomeChannel.value = false;
                   print(_authController.subChannels);
                 },
               ),

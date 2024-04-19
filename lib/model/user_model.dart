@@ -5,9 +5,9 @@ class UserModel {
   String? fullName;
   String? username;
   String? profilePic;
-  List? subChannels;
-  List? favourites;
-  List? archives;
+  List<Map<String, dynamic>>? subChannels;
+  List<String>? favourites;
+  List<String>? archives;
   dynamic createdAt;
 
   UserModel({

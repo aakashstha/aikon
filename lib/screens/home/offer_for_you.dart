@@ -3,7 +3,6 @@ import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/firebase/auth_service.dart';
 import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
-import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/channel_model.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/archive.dart';
@@ -22,7 +21,6 @@ class OfferForYou extends StatefulWidget {
 }
 
 class _OfferForYouState extends State<OfferForYou> {
-  final TabBarController _tabBarController = Get.put(TabBarController());
   final OfferController _offerController = Get.put(OfferController());
   final AuthController _authController = Get.put(AuthController());
 
@@ -64,7 +62,8 @@ class _OfferForYouState extends State<OfferForYou> {
 
                           TextButton(
                             onPressed: () async {
-                              print(_offerController.selectedChannelsIdFilter);
+                              print(_authController.user.value.userId);
+                              print(_authController.user.value.subChannels);
                               // FirebaseOfferService.getAllOtherOffers();
                               // var a1 = await StorageGetX.readFirebaseToken();
                               // print(a1);
@@ -124,10 +123,10 @@ class _OfferForYouState extends State<OfferForYou> {
                             child: Wrap(
                               children: [
                                 ...List.generate(
-                                    _authController.subChannels.length,
-                                    (index) {
-                                  Map<String, dynamic> channel =
-                                      _authController.subChannels[index];
+                                    _authController.user.value.subChannels!
+                                        .length, (index) {
+                                  Map<String, dynamic> channel = _authController
+                                      .user.value.subChannels![index];
 
                                   return selectedChannel(
                                       channel["title"], channel["id"]);

@@ -5,7 +5,6 @@ import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/firebase/upload_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
-import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/widgets/dropdown_channel.dart';
 import 'package:aikon/screens/widgets/text_field.dart';

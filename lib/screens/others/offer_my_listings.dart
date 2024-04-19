@@ -1,7 +1,6 @@
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
-import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/home/tabbar_navigation.dart';
 import 'package:aikon/screens/others/add_offer.dart';

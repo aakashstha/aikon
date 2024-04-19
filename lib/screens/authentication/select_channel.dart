@@ -87,7 +87,6 @@ class _SelectChannelState extends State<SelectChannel> {
                       return;
                     }
                     _authController.loading.value = true;
-
                     await FirebaseAuthService.updateUser("subscribed_channel");
                     _authController.loading.value = false;
 

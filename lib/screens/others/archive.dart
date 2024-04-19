@@ -3,7 +3,6 @@ import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/firebase/auth_service.dart';
 import 'package:aikon/firebase/offer_service.dart';
 import 'package:aikon/controller/offer_controller.dart';
-import 'package:aikon/controller/tabbar_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:aikon/screens/others/offer_individual.dart';
 import 'package:aikon/screens/widgets/circular_indicator.dart';
@@ -20,7 +19,6 @@ class ArchiveListing extends StatefulWidget {
 }
 
 class _ArchiveListingState extends State<ArchiveListing> {
-  final TabBarController _tabBarController = Get.put(TabBarController());
   // while not using permanent = true then the controller get deleted
   final OfferController _offerController = Get.put(OfferController());
   final AuthController _authController = Get.put(AuthController());
