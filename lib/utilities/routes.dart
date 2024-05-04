@@ -4,7 +4,7 @@ import 'package:aikon/screens/authentication/select_channel.dart';
 import 'package:aikon/screens/authentication/user_info.dart';
 import 'package:aikon/screens/home/channel.dart';
 import 'package:aikon/screens/home/offer_for_you.dart';
-import 'package:aikon/screens/home/tabbar_navigation.dart';
+import 'package:aikon/screens/home/home_page_navigation.dart';
 import 'package:aikon/screens/others/add_offer.dart';
 import 'package:aikon/screens/others/archive.dart';
 import 'package:aikon/screens/others/favourite.dart';
@@ -31,8 +31,8 @@ appRoutes() => [
         page: () => const SelectChannel(),
       ),
       GetPage(
-        name: '/TabBarNavigation',
-        page: () => const TabBarNavigation(),
+        name: '/HomePageNavigation',
+        page: () => const HomePageNavigation(),
       ),
       GetPage(
         name: '/AddOffer',

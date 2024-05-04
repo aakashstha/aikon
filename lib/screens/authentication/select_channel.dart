@@ -87,7 +87,7 @@ class _SelectChannelState extends State<SelectChannel> {
                     _authController.loading.value = true;
                     await FirebaseAuthService.updateUser("subscribed_channel");
                     _authController.loading.value = false;
-                    Get.offNamedUntil("/TabBarNavigation", (route) => false);
+                    Get.offNamedUntil("/HomePageNavigation", (route) => false);
 
                     _authController.allChannelList.clear();
                     _authController.subChannels.clear();
