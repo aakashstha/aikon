@@ -50,6 +50,7 @@ dependencies:
   dropdown_textfield: ^1.0.8
   adaptive_action_sheet: ^2.0.3
   image_picker: ^1.0.7
+  cometchat_sdk: ^4.0.10
 
 
 dev_dependencies:

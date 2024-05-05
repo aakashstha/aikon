@@ -18,7 +18,7 @@ class HomePageNavigation extends StatefulWidget {
 
 class HomePageNavigationState extends State<HomePageNavigation> {
   final AuthController _authController = Get.put(AuthController());
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   final _pageOptions = <Widget>[
     OfferForYou(),

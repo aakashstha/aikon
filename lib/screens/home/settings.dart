@@ -1,4 +1,10 @@
+import 'package:aikon/cometchat/cometchat_service.dart';
+import 'package:aikon/constants/colors.dart';
+import 'package:aikon/controller/cometchat_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+final _cometChatController = Get.put(CometChatController());
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -14,8 +20,41 @@ class _SettingScreenState extends State<SettingScreen> {
       appBar: AppBar(
         title: const Text("Settings"),
       ),
-      body: const Center(
-        child: Text("Settings"),
+      body: Column(
+        children: [
+          InkWell(
+            onTap: () {
+              print("object");
+              print(_cometChatController.conversationsList);
+            },
+            child: Text("Bring all the chat"),
+          ),
+          TextButton(
+            onPressed: () async {
+              // await CometChatService.register();
+              await CometChatService.login();
+              // await CometChatService.logout();
+
+              // CometChatService.fetchConversation();
+              // CometChatService.sendMessage();
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: AppColors.blueYonder,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0),
+              ),
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 28),
+              child: Text("get token"),
+            ),
+          ),
+          Text("Settings"),
+        ],
       ),
     );
   }
