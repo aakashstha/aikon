@@ -3,8 +3,8 @@ import 'package:aikon/controller/auth_controller.dart';
 import 'package:aikon/firebase/auth_service.dart';
 import 'package:aikon/screens/home/channel.dart';
 import 'package:aikon/screens/home/offer_for_you.dart';
-import 'package:aikon/screens/others/messages.dart';
-import 'package:aikon/screens/others/settings.dart';
+import 'package:aikon/screens/home/messages.dart';
+import 'package:aikon/screens/home/settings.dart';
 import 'package:aikon/screens/widgets/circular_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,8 +22,8 @@ class HomePageNavigationState extends State<HomePageNavigation> {
 
   final _pageOptions = <Widget>[
     OfferForYou(),
-    MessagesScreen(),
     Channel(),
+    MessagesScreen(),
     SettingScreen()
   ];
 
@@ -158,12 +158,12 @@ class HomePageNavigationState extends State<HomePageNavigation> {
                             label: 'Offers',
                           ),
                           BottomNavigationBarItem(
-                            icon: Icon(Icons.message),
-                            label: 'Messages',
-                          ),
-                          BottomNavigationBarItem(
                             icon: Icon(Icons.tune),
                             label: 'Channel',
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.message),
+                            label: 'Messages',
                           ),
                           BottomNavigationBarItem(
                             icon: Icon(Icons.person),

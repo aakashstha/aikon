@@ -10,7 +10,7 @@ import 'package:aikon/screens/others/archive.dart';
 import 'package:aikon/screens/others/favourite.dart';
 import 'package:aikon/screens/others/offer_individual.dart';
 import 'package:aikon/screens/others/offer_my_listings.dart';
-import 'package:aikon/screens/others/settings.dart';
+import 'package:aikon/screens/home/settings.dart';
 import 'package:get/get.dart';
 
 appRoutes() => [
