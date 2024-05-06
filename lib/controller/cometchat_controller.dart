@@ -5,6 +5,8 @@ class CometChatController extends GetxController {
   var loadingMessages = false.obs;
   var loadingChats = false.obs;
 
+  String name = "";
+  String uid = "";
   List<Conversation> conversationsList = [];
   var messagesList = <BaseMessage>[].obs;
 }

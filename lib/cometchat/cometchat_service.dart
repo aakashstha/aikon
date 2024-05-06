@@ -60,6 +60,9 @@ class CometChatService {
         }, onError: (CometChatException e) {
           debugPrint("Login failed with exception:  ${e.message}");
         });
+      } else {
+        _cometChatController.uid = user.uid;
+        _cometChatController.name = user.name;
       }
     } catch (e) {
       print(e);
@@ -78,11 +81,14 @@ class CometChatService {
     }
   }
 
-  static Future<void> sendMessage(String uid, String message) async {
+  static Future<void> sendMessage(
+      String uid, String message, bool isUser) async {
     try {
       String receiverID = uid;
       String messageText = message;
-      String receiverType = CometChatConversationType.user;
+      String receiverType = isUser
+          ? CometChatConversationType.user
+          : CometChatConversationType.group;
       String type = CometChatMessageType.text;
 
       TextMessage textMessage = TextMessage(
@@ -122,7 +128,7 @@ class CometChatService {
     }
   }
 
-  static Future<void> fetchMessages(String uid) async {
+  static Future<void> fetchMessages(String uid, bool isUser) async {
     _cometChatController.messagesList.clear();
 
     var a = await CometChat.getLastDeliveredMessageId();
@@ -134,11 +140,21 @@ class CometChatService {
     print("object");
     print(a);
 
-    MessagesRequest messageRequest = (MessagesRequestBuilder()
-          ..uid = UID
-          ..limit = limit
-          ..messageId = lastMessageId)
-        .build();
+    MessagesRequest messageRequest;
+
+    if (isUser) {
+      messageRequest = (MessagesRequestBuilder()
+            ..uid = UID
+            ..limit = limit
+            ..messageId = lastMessageId)
+          .build();
+    } else {
+      messageRequest = (MessagesRequestBuilder()
+            ..guid = UID
+            ..limit = limit
+            ..messageId = lastMessageId)
+          .build();
+    }
 
     await messageRequest.fetchPrevious(onSuccess: (List<BaseMessage> list) {
       _cometChatController.messagesList.addAll(list);
@@ -154,5 +170,58 @@ class CometChatService {
     }, onError: (CometChatException e) {
       debugPrint("Message fetching failed with exception: ${e.message}");
     });
+  }
+
+  static Future<void> createGroup({
+    required String guid,
+    required String groupName,
+    required String memberUid,
+    required String memberName,
+  }) async {
+    try {
+      String groupType = CometChatGroupType.private;
+
+      // group Id
+      Group group = Group(guid: guid, name: groupName, type: groupType);
+
+      await CometChat.createGroup(
+          group: group,
+          onSuccess: (Group group) {
+            debugPrint("Group Created Successfully : $group ");
+            addMember(guid, memberUid, memberName);
+          },
+          onError: (CometChatException e) {
+            debugPrint("Group Creation failed with exception: ${e.message}");
+          });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<void> addMember(
+      String guid, String memberUid, String memberName) async {
+    try {
+      List<GroupMember> groupMembers = [];
+      GroupMember firstMember = GroupMember.fromUid(
+        scope: CometChatMemberScope.participant,
+        uid: memberUid,
+        name: memberName,
+      );
+
+      groupMembers = [firstMember];
+
+      await CometChat.addMembersToGroup(
+          guid: guid,
+          groupMembers: groupMembers,
+          onSuccess: (Map<String?, String?> result) {
+            debugPrint("Group Member added Successfully : $result");
+          },
+          onError: (CometChatException e) {
+            debugPrint(
+                "Group Member addition failed with exception: ${e.message}");
+          });
+    } catch (e) {
+      print(e);
+    }
   }
 }

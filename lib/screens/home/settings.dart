@@ -25,7 +25,7 @@ class _SettingScreenState extends State<SettingScreen> {
           InkWell(
             onTap: () {
               print("object");
-              print(_cometChatController.conversationsList);
+              print(_cometChatController.uid);
             },
             child: Text("Bring all the chat"),
           ),

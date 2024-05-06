@@ -94,7 +94,8 @@ class _FavouriteListingState extends State<FavouriteListing> {
 Widget addOffers(OfferModel offer, int index) {
   return InkWell(
     onTap: () {
-      Get.toNamed("/OfferIndividual", arguments: offer);
+      Map<String, dynamic> data = {"offer": offer, "isShowChat": false};
+      Get.toNamed("/OfferIndividual", arguments: data);
     },
     child: Column(
       children: [

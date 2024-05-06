@@ -42,23 +42,31 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 itemBuilder: (context, index) {
                   final conversation =
                       _cometChatController.conversationsList[index];
+                  // bool isTextMess = _cometChatController
+                  //         .conversationsList[index].lastMessage.runtimeType ==
+                  //     TextMessage;
+                  // String lastMessage = "NO_THING";
+
+                  // if (isTextMess) {
+                  //   lastMessage = _cometChatController
+                  //       .conversationsList[index].lastMessage.text;
+                  // }
 
                   if (conversation.conversationType == "user") {
                     final user = _cometChatController
                         .conversationsList[index].conversationWith as User;
 
-                    Map data = {"uid": user.uid};
+                    Map data = {"uid": user.uid, "isUser": true};
 
                     return InkWell(
                       onTap: () {
-                        Get.to(() => ChatScreen(), arguments: data);
+                        Get.to(() => const ChatScreen(), arguments: data);
                       },
                       child: ListTile(
                         leading: user.avatar == null
                             ? const CircleAvatar(child: Text('U'))
                             : CircleAvatar(child: Image.network(user.avatar!)),
                         title: Text(user.name),
-                        // subtitle: Text(user.status!),
                         subtitle: Text(conversation.conversationId!),
                         trailing: const Text("2 mins ago"),
                       ),
@@ -67,12 +75,18 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     final group = _cometChatController
                         .conversationsList[index].conversationWith as Group;
 
-                    // return Text(group.name);
-                    return ListTile(
-                      leading: const CircleAvatar(child: Text('G')),
-                      title: Text(group.name),
-                      subtitle: Text(conversation.conversationId!),
-                      trailing: const Text("2 mins ago"),
+                    Map data = {"uid": group.guid, "isUser": false};
+
+                    return InkWell(
+                      onTap: () {
+                        Get.to(() => const ChatScreen(), arguments: data);
+                      },
+                      child: ListTile(
+                        leading: const CircleAvatar(child: Text('G')),
+                        title: Text(group.name),
+                        subtitle: Text(conversation.conversationId!),
+                        trailing: const Text("2 mins ago"),
+                      ),
                     );
                   }
                   return null;

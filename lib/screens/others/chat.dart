@@ -31,7 +31,7 @@ class _ChatScreenState extends State with MessageListener {
 
     dataGetx = Get.arguments;
     print(dataGetx["uid"]);
-    await CometChatService.fetchMessages(dataGetx["uid"]);
+    await CometChatService.fetchMessages(dataGetx["uid"], dataGetx["isUser"]);
     _cometChatController.loadingChats.value = false;
   }
 
@@ -44,74 +44,91 @@ class _ChatScreenState extends State with MessageListener {
       body: Obx(
         () => _cometChatController.loadingChats.value
             ? circularCenterScreenIndicator()
-            : Column(
-                children: <Widget>[
-                  Expanded(
-                    child: SingleChildScrollView(
-                      reverse: true,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const ScrollPhysics(),
-                        itemCount: _cometChatController.messagesList.length,
-                        itemBuilder: (context, index) {
-                          BaseMessage message =
-                              _cometChatController.messagesList[index];
-                          if (message is TextMessage) {
-                            //
-                            String user = message.receiverUid;
-                            return ListTile(
-                              title: Text(
-                                message.text,
-                                textAlign: user == "aaron"
-                                    ? TextAlign.right
-                                    : TextAlign.left,
-                              ),
-                            );
-                          } else {
-                            return const ListTile(
-                              title: Text('message deleted.'),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: TextField(
-                            controller: chatController,
-                            onChanged: (value) {
-                              // messageText = value;
-                            },
-                            decoration: const InputDecoration(
-                              hintText: 'Enter your message...',
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.send),
-                          onPressed: () {
-                            TextMessage textMessage = TextMessage(
-                              text: chatController.text,
-                              receiverUid: "aaron",
-                              receiverType: CometChatConversationType.user,
-                              type: CometChatMessageType.text,
-                            );
-                            _cometChatController.messagesList.add(textMessage);
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: SingleChildScrollView(
+                        reverse: true,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const ScrollPhysics(),
+                          itemCount: _cometChatController.messagesList.length,
+                          itemBuilder: (context, index) {
+                            BaseMessage message =
+                                _cometChatController.messagesList[index];
 
-                            CometChatService.sendMessage(
-                                dataGetx["uid"], chatController.text);
+                            if (message is TextMessage) {
+                              final sender = message.sender as User;
 
-                            chatController.clear();
+                              if (sender.uid == _cometChatController.uid) {
+                                return messageTileRight(message.text);
+                              } else {
+                                return messageTileLeft(message.text);
+                              }
+                              // return ListTile(
+                              //   title: Text(
+                              //     message.text,
+                              //     textAlign:
+                              //         sender.uid == _cometChatController.uid
+                              //             ? TextAlign.right
+                              //             : TextAlign.left,
+                              //   ),
+                              // );
+                            } else {
+                              return const ListTile(
+                                title: Text('message deleted.'),
+                              );
+                            }
                           },
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(
+                              controller: chatController,
+                              onChanged: (value) {
+                                // messageText = value;
+                              },
+                              decoration: const InputDecoration(
+                                hintText: 'Enter your message...',
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.send),
+                            onPressed: () {
+                              TextMessage textMessage = TextMessage(
+                                sender: User(
+                                  name: _cometChatController.name,
+                                  uid: _cometChatController.uid,
+                                ),
+                                text: chatController.text,
+                                receiverUid: dataGetx["uid"],
+                                receiverType: dataGetx["isUser"]
+                                    ? CometChatConversationType.user
+                                    : CometChatConversationType.group,
+                                type: CometChatMessageType.text,
+                              );
+                              _cometChatController.messagesList
+                                  .add(textMessage);
+
+                              CometChatService.sendMessage(dataGetx["uid"],
+                                  chatController.text, dataGetx["isUser"]);
+
+                              chatController.clear();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
       ),
     );
@@ -147,4 +164,72 @@ class _ChatScreenState extends State with MessageListener {
 
   @override
   void onTypingEnded(TypingIndicator typingIndicator) {}
+}
+
+Widget messageTileRight(String title) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      Container(
+        margin: const EdgeInsets.only(right: 12),
+        // child: Text(
+        //   formatFirestoreTimestamp(docs[i]['createdAt'] ?? Timestamp.now()),
+        //   style: const TextStyle(fontSize: 12),
+        // ),
+      ),
+      const SizedBox(height: 4),
+      Container(
+        // margin: EdgeInsets.only(left: screenWidth / 2, right: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 227, 87, 69),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+        ),
+        child: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            height: 1.4,
+          ),
+        ),
+      ),
+      const SizedBox(height: 12),
+    ],
+  );
+}
+
+Widget messageTileLeft(String title) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        margin: const EdgeInsets.only(right: 12),
+        // child: Text(
+        //   formatFirestoreTimestamp(docs[i]['createdAt'] ?? Timestamp.now()),
+        //   style: const TextStyle(fontSize: 12),
+        // ),
+      ),
+      const SizedBox(height: 4),
+      Container(
+        // margin: EdgeInsets.only(left: screenWidth / 2, right: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 215, 229, 244),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+        ),
+        child: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            height: 1.4,
+          ),
+        ),
+      ),
+      const SizedBox(height: 12),
+    ],
+  );
 }

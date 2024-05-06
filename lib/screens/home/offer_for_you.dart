@@ -293,155 +293,161 @@ class _OfferForYouState extends State<OfferForYou> {
   }
 
   Widget addOffers(OfferModel offer, bool isFavourite) {
-    return Dismissible(
-      // key: UniqueKey(),
-      key: Key(offer.id),
-      onDismissed: (direction) async {
-        print(direction);
-        // swipe from right to left will make it favourite
-        // favourite
-        if (direction == DismissDirection.endToStart) {
-          _authController.favouriteIdList.add(offer.id);
-          _offerController.otherOffersListings.remove(offer);
-
-          await FirebaseAuthService.updateUserFavouriteAndArchive(
-              isFavourite: true);
-          // archive
-        } else if (direction == DismissDirection.startToEnd) {
-          _authController.archiveIdList.add(offer.id);
-          await FirebaseAuthService.updateUserFavouriteAndArchive(
-              isFavourite: false);
-          _offerController.otherOffersListings.remove(offer);
-        }
-
-        print(_authController.favouriteIdList);
-        print(_authController.archiveIdList);
+    return InkWell(
+      onTap: () {
+        Map<String, dynamic> data = {"offer": offer, "isShowChat": true};
+        Get.toNamed("/OfferIndividual", arguments: data);
       },
-      child: Column(
-        children: [
-          IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      height: 35,
-                      width: 35,
-                      decoration: BoxDecoration(
-                        color: offer.isSell
-                            ? AppColors.wantToSell
-                            : AppColors.wantToBuy,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Center(
-                        child: Text(
-                          offer.isSell ? "WTS" : "WTB",
-                          style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    ClipOval(
-                      clipBehavior: Clip.hardEdge,
-                      child: CountryFlag.fromCountryCode(
-                        'AT',
+      child: Dismissible(
+        // key: UniqueKey(),
+        key: Key(offer.id),
+        onDismissed: (direction) async {
+          print(direction);
+          // swipe from right to left will make it favourite
+          // favourite
+          if (direction == DismissDirection.endToStart) {
+            _authController.favouriteIdList.add(offer.id);
+            _offerController.otherOffersListings.remove(offer);
+
+            await FirebaseAuthService.updateUserFavouriteAndArchive(
+                isFavourite: true);
+            // archive
+          } else if (direction == DismissDirection.startToEnd) {
+            _authController.archiveIdList.add(offer.id);
+            await FirebaseAuthService.updateUserFavouriteAndArchive(
+                isFavourite: false);
+            _offerController.otherOffersListings.remove(offer);
+          }
+
+          print(_authController.favouriteIdList);
+          print(_authController.archiveIdList);
+        },
+        child: Column(
+          children: [
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      Container(
                         height: 35,
                         width: 35,
-                        borderRadius: 8,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        offer.title,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black,
+                        decoration: BoxDecoration(
+                          color: offer.isSell
+                              ? AppColors.wantToSell
+                              : AppColors.wantToBuy,
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                      ),
-                      Text(
-                        offer.subtitle,
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.subtitleGrey,
-                          height: 1,
-                          letterSpacing: 0,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        offer.description,
-                        style: GoogleFonts.poppins(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.black,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 3),
-                      Row(
-                        children: [
-                          Text(
-                            "${offer.country} > ${offer.city} > David Campbell",
+                        child: Center(
+                          child: Text(
+                            offer.isSell ? "WTS" : "WTB",
                             style: GoogleFonts.poppins(
                               fontSize: 10,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.subtitleGrey,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.black,
                             ),
                           ),
-                        ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      ClipOval(
+                        clipBehavior: Clip.hardEdge,
+                        child: CountryFlag.fromCountryCode(
+                          'AT',
+                          height: 35,
+                          width: 35,
+                          borderRadius: 8,
+                        ),
                       ),
                     ],
                   ),
-                ),
-                // time column
-
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    isFavourite
-                        ? const Align(
-                            alignment: Alignment.topRight,
-                            child: Icon(
-                              Icons.star_rounded,
-                              color: AppColors.timeGrey,
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          offer.title,
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black,
+                          ),
+                        ),
+                        Text(
+                          offer.subtitle,
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.subtitleGrey,
+                            height: 1,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                        const SizedBox(height: 3),
+                        Text(
+                          offer.description,
+                          style: GoogleFonts.poppins(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.black,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 3),
+                        Row(
+                          children: [
+                            Text(
+                              "${offer.country} > ${offer.city} > David Campbell",
+                              style: GoogleFonts.poppins(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.subtitleGrey,
+                              ),
                             ),
-                          )
-                        : const SizedBox(),
-                    const Spacer(),
-                    Text(
-                      "9:44 PM",
-                      style: GoogleFonts.poppins(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.timeGrey,
-                      ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                )
-              ],
+                  ),
+                  // time column
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      isFavourite
+                          ? const Align(
+                              alignment: Alignment.topRight,
+                              child: Icon(
+                                Icons.star_rounded,
+                                color: AppColors.timeGrey,
+                              ),
+                            )
+                          : const SizedBox(),
+                      const Spacer(),
+                      Text(
+                        "9:44 PM",
+                        style: GoogleFonts.poppins(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.timeGrey,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-          const Divider(
-            color: AppColors.subtitleGrey,
-            thickness: 1,
-          ),
-        ],
+            const Divider(
+              color: AppColors.subtitleGrey,
+              thickness: 1,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,5 +1,7 @@
+import 'package:aikon/cometchat/cometchat_service.dart';
 import 'package:aikon/constants/colors.dart';
 import 'package:aikon/model/offer_model.dart';
+import 'package:aikon/screens/others/chat.dart';
 import 'package:aikon/screens/widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -7,10 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OfferIndividual extends StatefulWidget {
-  final OfferModel offer = Get.arguments;
-  OfferIndividual({
-    super.key,
-  });
+  const OfferIndividual({super.key});
 
   @override
   State<OfferIndividual> createState() => _OfferIndividualState();
@@ -23,10 +22,12 @@ class _OfferIndividualState extends State<OfferIndividual> {
   TextEditingController countryController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   late OfferModel offer;
+  late bool isShowChat;
 
   @override
   void initState() {
-    offer = widget.offer;
+    offer = Get.arguments["offer"];
+    isShowChat = Get.arguments["isShowChat"];
 
     titleController.text = offer.title;
     subTitleController.text = offer.subtitle;
@@ -302,6 +303,39 @@ class _OfferIndividualState extends State<OfferIndividual> {
                 ),
               ],
             ),
+            const SizedBox(height: 10),
+
+            // Show Chat Button
+            isShowChat
+                ? TextButton(
+                    onPressed: () async {
+                      await CometChatService.createGroup(
+                        guid: offer.id,
+                        groupName: offer.title,
+                        memberUid: "aaron",
+                        memberName: "Aaron",
+                      );
+                      // only group can be created from here
+                      // uid = group uid
+                      Map data = {"uid": offer.id, "isUser": false};
+                      Get.to(() => const ChatScreen(), arguments: data);
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: AppColors.blueYonder,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 28),
+                      child: Text("Chat"),
+                    ),
+                  )
+                : SizedBox(),
 
             const SizedBox(height: 20),
           ],
