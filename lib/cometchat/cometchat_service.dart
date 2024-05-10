@@ -1,7 +1,7 @@
+import 'package:cometchat_calls_uikit/cometchat_calls_uikit.dart';
+import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:aikon/cometchat/cometchat_constants.dart';
 import 'package:aikon/controller/cometchat_controller.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cometchat_sdk/cometchat_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,58 +12,58 @@ class CometChatService {
     try {
       String region = CometChatConstants.region;
       String appId = CometChatConstants.appId;
+      String authKey = CometChatConstants.authKey;
 
-      AppSettings appSettings = (AppSettingsBuilder()
+      UIKitSettings uiKitSettings = (UIKitSettingsBuilder()
             ..subscriptionType = CometChatSubscriptionType.allUsers
+            ..autoEstablishSocketConnection = true
             ..region = region
-            ..adminHost = "" //optional
-            ..clientHost = "" //optional
-            ..autoEstablishSocketConnection = true)
+            ..appId = appId
+            ..authKey = authKey
+            ..callingExtension = CometChatCallingExtension())
           .build();
 
-      await CometChat.init(appId, appSettings,
+      CometChatUIKit.init(
+          uiKitSettings: uiKitSettings,
           onSuccess: (String successMessage) {
-        debugPrint("Initialization completed successfully  $successMessage");
-      }, onError: (CometChatException excep) {
-        debugPrint("Initialization failed with exception: ${excep.message}");
-      });
+            debugPrint(
+                "Initialization completed successfully  $successMessage");
+          },
+          onError: (CometChatException e) {
+            debugPrint("Initialization failed with exception: ${e.message}");
+          });
     } catch (e) {
       print(e);
     }
   }
 
-  static Future<void> register() async {
+  static Future<void> createUser() async {
     try {
-      String authKey = CometChatConstants.authKey;
-      User user = User(uid: "aakash", name: "Aakash Shrestha");
+      User user = User(uid: "hamronepla_ma12", name: "Nepal_India");
 
-      CometChat.createUser(user, authKey, onSuccess: (User user) {
-        debugPrint("Create User succesful ${user}");
+      await CometChatUIKit.createUser(user, onSuccess: (User user) {
+        debugPrint("User created successfully ${user.name}");
       }, onError: (CometChatException e) {
-        debugPrint("Create User Failed with exception ${e.message}");
+        debugPrint("Creating new user failed with exception: ${e.message}");
       });
     } catch (e) {
       print(e);
     }
   }
 
-  // We recommend you call the CometChat login() method once your user logs into your app. The login() method needs to be called only once.
+// If you are try to render any component from our UI Kit before CometChat is initialised and a user has
+// been logged in you will encounter errors, so please ensure doing them sequentially.
   static Future<void> login() async {
     try {
-      String UID = "aakash";
-      String authKey = CometChatConstants.authKey;
+      String uId = "aakash";
 
-      final user = await CometChat.getLoggedInUser();
-      if (user == null) {
-        await CometChat.login(UID, authKey, onSuccess: (User user) {
-          debugPrint("Login Successful : $user");
-        }, onError: (CometChatException e) {
-          debugPrint("Login failed with exception:  ${e.message}");
-        });
-      } else {
-        _cometChatController.uid = user.uid;
-        _cometChatController.name = user.name;
-      }
+      // final user = await CometChat.getLoggedInUser();
+
+      await CometChatUIKit.login(uId, onSuccess: (User user) {
+        debugPrint("User logged in successfully  ${user.name}");
+      }, onError: (CometChatException e) {
+        debugPrint("Login failed with exception: ${e.message}");
+      });
     } catch (e) {
       print(e);
     }
@@ -71,107 +71,17 @@ class CometChatService {
 
   static Future<void> logout() async {
     try {
-      await CometChat.logout(onSuccess: (successMessage) {
-        debugPrint("Logout successful with message $successMessage");
-      }, onError: (CometChatException e) {
-        debugPrint("Logout failed with exception:  ${e.message}");
+      await CometChatUIKit.logout(onSuccess: (String msg) {
+        debugPrint("user logged out successfully: $msg");
+      }, onError: (error) {
+        debugPrint("error while logging out: ${error.message}");
       });
     } catch (e) {
       print(e);
     }
   }
 
-  static Future<void> sendMessage(
-      String uid, String message, bool isUser) async {
-    try {
-      String receiverID = uid;
-      String messageText = message;
-      String receiverType = isUser
-          ? CometChatConversationType.user
-          : CometChatConversationType.group;
-      String type = CometChatMessageType.text;
-
-      TextMessage textMessage = TextMessage(
-          text: messageText,
-          receiverUid: receiverID,
-          receiverType: receiverType,
-          type: type);
-      CometChat.sendMessage(textMessage, onSuccess: (TextMessage message) {
-        debugPrint("Message sent successfully:  $message");
-      }, onError: (CometChatException e) {
-        debugPrint("Message sending failed with exception:  ${e.message}");
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  static Future<void> fetchConversation() async {
-    _cometChatController.conversationsList.clear();
-
-    try {
-      ConversationsRequest conversationRequest =
-          (ConversationsRequestBuilder()..limit = 50).build();
-
-      await conversationRequest.fetchNext(
-        onSuccess: (List<Conversation> conversations) {
-          _cometChatController.conversationsList.addAll(conversations);
-
-          for (var element in conversations) {
-            debugPrint("Conversation : ${element.toString()}");
-          }
-        },
-        onError: (CometChatException e) {},
-      );
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  static Future<void> fetchMessages(String uid, bool isUser) async {
-    _cometChatController.messagesList.clear();
-
-    var a = await CometChat.getLastDeliveredMessageId();
-
-    int limit = 30;
-    int lastMessageId = -1;
-    String UID = uid;
-
-    print("object");
-    print(a);
-
-    MessagesRequest messageRequest;
-
-    if (isUser) {
-      messageRequest = (MessagesRequestBuilder()
-            ..uid = UID
-            ..limit = limit
-            ..messageId = lastMessageId)
-          .build();
-    } else {
-      messageRequest = (MessagesRequestBuilder()
-            ..guid = UID
-            ..limit = limit
-            ..messageId = lastMessageId)
-          .build();
-    }
-
-    await messageRequest.fetchPrevious(onSuccess: (List<BaseMessage> list) {
-      _cometChatController.messagesList.addAll(list);
-
-      for (BaseMessage message in list) {
-        // _cometChatController.messagesList.add(message);
-        if (message is TextMessage) {
-          debugPrint("Text message received successfully: $message");
-        } else if (message is MediaMessage) {
-          debugPrint("Media message received successfully: $message");
-        }
-      }
-    }, onError: (CometChatException e) {
-      debugPrint("Message fetching failed with exception: ${e.message}");
-    });
-  }
-
+  // from SDK
   static Future<void> createGroup({
     required String guid,
     required String groupName,
@@ -198,6 +108,7 @@ class CometChatService {
     }
   }
 
+  // from SDK
   static Future<void> addMember(
       String guid, String memberUid, String memberName) async {
     try {
@@ -223,5 +134,80 @@ class CometChatService {
     } catch (e) {
       print(e);
     }
+  }
+
+  // CometChat Messages Screen
+  static void navigateToChatScreen({
+    required BuildContext context,
+    required String guid,
+    required String groupName,
+  }) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CometChatMessages(
+          detailsConfiguration:
+              DetailsConfiguration(addMemberConfiguration: null),
+          group: Group(
+            guid: guid,
+            name: groupName,
+            membersCount: 2,
+            hasJoined: true,
+            type: GroupTypeConstants.private,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // CometChat Conversation Screen
+  static Widget navigateToConversationsWithMessagesScreen({
+    required BuildContext context,
+  }) {
+    return CometChatConversationsWithMessages(
+      conversationsConfiguration: ConversationsConfiguration(
+        showBackButton: false,
+        title: "Your Chats",
+        disableSoundForMessages: true,
+        appBarOptions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    createNewChat(context);
+                  },
+                  icon: const Icon(Icons.message),
+                ),
+                const SizedBox(width: 8.0),
+                IconButton(
+                  onPressed: () {
+                    // createNewGroup(context);
+                  },
+                  icon: const Icon(Icons.group_add),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      messageConfiguration: const MessageConfiguration(
+        disableSoundForMessages: true,
+        hideDetails: true,
+        messageComposerConfiguration:
+            MessageComposerConfiguration(disableSoundForMessages: true),
+        messageHeaderConfiguration: MessageHeaderConfiguration(
+          statusIndicatorStyle: StatusIndicatorStyle(),
+        ),
+      ),
+    );
+  }
+
+  static void createNewChat(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const CometChatUsersWithMessages()));
   }
 }

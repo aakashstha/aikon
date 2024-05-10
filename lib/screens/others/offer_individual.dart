@@ -315,10 +315,12 @@ class _OfferIndividualState extends State<OfferIndividual> {
                         memberUid: "aaron",
                         memberName: "Aaron",
                       );
-                      // only group can be created from here
-                      // uid = group uid
-                      Map data = {"uid": offer.id, "isUser": false};
-                      Get.to(() => const ChatScreen(), arguments: data);
+
+                      CometChatService.navigateToChatScreen(
+                        context: context,
+                        guid: offer.id,
+                        groupName: offer.title,
+                      );
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,

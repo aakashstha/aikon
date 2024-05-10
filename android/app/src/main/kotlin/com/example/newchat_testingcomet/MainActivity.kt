@@ -1,4 +1,4 @@
-package com.marketplace1.aikon
+package com.example.newchat_testingcomet
 
 import io.flutter.embedding.android.FlutterActivity
 

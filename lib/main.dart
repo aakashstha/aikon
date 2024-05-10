@@ -37,6 +37,7 @@ class _MyAppState extends State<MyApp> {
 
   void initialize() async {
     await CometChatService.initialise();
+    // await CometChatService.logout();
     await CometChatService.login();
   }
 

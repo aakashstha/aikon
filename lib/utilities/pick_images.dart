@@ -1,5 +1,5 @@
-
 import 'package:aikon/controller/auth_controller.dart';
+import 'package:aikon/controller/cometchat_controller.dart';
 import 'package:aikon/controller/offer_controller.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';

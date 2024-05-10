@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.aikon</string>
+	<string>com.example.newchatTestingcomet</string>
 	<key>PROJECT_ID</key>
 	<string>aikon-dev</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:319392336761:ios:69c595df124327458f3da8</string>
+	<string>1:319392336761:ios:94bc930938360ad38f3da8</string>
 </dict>
 </plist>

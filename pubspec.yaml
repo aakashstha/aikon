@@ -44,14 +44,16 @@ dependencies:
   intl_phone_number_input: ^0.7.4
   pinput: ^4.0.0
   flutter_switch: ^0.3.2
-  google_fonts: ^6.2.1
+  # google_fonts: ^6.2.1
+  google_fonts: ^4.0.4
   country_flags: ^2.2.0
   country_picker: ^2.0.25
   dropdown_textfield: ^1.0.8
   adaptive_action_sheet: ^2.0.3
   image_picker: ^1.0.7
+  cometchat_chat_uikit: ^4.4.0
   cometchat_sdk: ^4.0.10
-
+  cometchat_calls_uikit: ^4.2.1
 
 dev_dependencies:
   flutter_test:
