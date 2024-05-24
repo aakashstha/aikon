@@ -1,0 +1,198 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red193\green193\blue193;\red70\green137\blue204;\red24\green24\blue24;
+\red194\green126\blue101;\red212\green214\blue154;\red183\green111\blue179;\red67\green192\blue160;\red140\green211\blue254;
+\red202\green202\blue202;\red89\green138\blue67;\red66\green179\blue255;\red167\green197\blue152;}
+{\*\expandedcolortbl;;\cssrgb\c80000\c80000\c80000;\cssrgb\c33725\c61176\c83922;\cssrgb\c12157\c12157\c12157;
+\cssrgb\c80784\c56863\c47059;\cssrgb\c86275\c86275\c66667;\cssrgb\c77255\c52549\c75294;\cssrgb\c30588\c78824\c69020;\cssrgb\c61176\c86275\c99608;
+\cssrgb\c83137\c83137\c83137;\cssrgb\c41569\c60000\c33333;\cssrgb\c30980\c75686\c100000;\cssrgb\c70980\c80784\c65882;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww18200\viewh15320\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs28 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \
+\cf3 \cb4 \strokec3 import\cf2 \strokec2  \cf5 \strokec5 'package:aikon/cometchat/cometchat_service.dart'\cf2 \strokec2 ;\cb1 \
+\cf3 \cb4 \strokec3 import\cf2 \strokec2  \cf5 \strokec5 'package:cometchat_sdk/cometchat_sdk.dart'\cf2 \strokec2 ;\cb1 \
+\cf3 \cb4 \strokec3 import\cf2 \strokec2  \cf5 \strokec5 'package:flutter/material.dart'\cf2 \strokec2 ;\cb1 \
+\
+\cf3 \cb4 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 main\cf2 \strokec2 () \cf7 \strokec7 async\cf2 \strokec2  \{\cb1 \
+\cb4   \cf6 \strokec6 runApp\cf2 \strokec2 (\cf3 \strokec3 const\cf2 \strokec2  \cf8 \strokec8 MyApp\cf2 \strokec2 ());\cb1 \
+\cb4 \}\cb1 \
+\
+\cf3 \cb4 \strokec3 class\cf2 \strokec2  \cf8 \strokec8 MyApp\cf2 \strokec2  \cf3 \strokec3 extends\cf2 \strokec2  \cf8 \strokec8 StatelessWidget\cf2 \strokec2  \{\cb1 \
+\cb4   \cf3 \strokec3 const\cf2 \strokec2  \cf8 \strokec8 MyApp\cf2 \strokec2 (\{\cf3 \strokec3 super\cf2 \strokec2 .\cf9 \strokec9 key\cf2 \strokec2 \});\cb1 \
+\
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf8 \strokec8 Widget\cf2 \strokec2  \cf6 \strokec6 build\cf2 \strokec2 (\cf8 \strokec8 BuildContext\cf2 \strokec2  \cf9 \strokec9 context\cf2 \strokec2 ) \{\cb1 \
+\cb4     \cf7 \strokec7 return\cf2 \strokec2  \cf8 \strokec8 MaterialApp\cf2 \strokec2 (\cb1 \
+\cb4       \cf9 \strokec9 debugShowCheckedModeBanner\cf10 \strokec10 :\cf2 \strokec2  \cf3 \strokec3 false\cf2 \strokec2 ,\cb1 \
+\cb4       \cf9 \strokec9 theme\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 ThemeData\cf2 \strokec2 (\cb1 \
+\cb4         \cf9 \strokec9 useMaterial3\cf10 \strokec10 :\cf2 \strokec2  \cf3 \strokec3 true\cf2 \strokec2 ,\cb1 \
+\cb4       ),\cb1 \
+\cb4       \cf9 \strokec9 home\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 ChatScreen\cf2 \strokec2 (),\cb1 \
+\cb4     );\cb1 \
+\cb4   \}\cb1 \
+\cb4 \}\cb1 \
+\
+\cf3 \cb4 \strokec3 class\cf2 \strokec2  \cf8 \strokec8 ChatScreen\cf2 \strokec2  \cf3 \strokec3 extends\cf2 \strokec2  \cf8 \strokec8 StatefulWidget\cf2 \strokec2  \{\cb1 \
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf8 \strokec8 _ChatScreenState\cf2 \strokec2  \cf6 \strokec6 createState\cf2 \strokec2 () \cf10 \strokec10 =>\cf2 \strokec2  \cf8 \strokec8 _ChatScreenState\cf2 \strokec2 ();\cb1 \
+\cb4 \}\cb1 \
+\
+\cf3 \cb4 \strokec3 class\cf2 \strokec2  \cf8 \strokec8 _ChatScreenState\cf2 \strokec2  \cf3 \strokec3 extends\cf2 \strokec2  \cf8 \strokec8 State\cf2 \strokec2  \cf3 \strokec3 with\cf2 \strokec2  \cf8 \strokec8 MessageListener\cf2 \strokec2  \{\cb1 \
+\cb4   \cf3 \strokec3 late\cf2 \strokec2  \cf8 \strokec8 List\cf2 \strokec2 <\cf8 \strokec8 BaseMessage\cf2 \strokec2 > \cf9 \strokec9 messagesList\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  [];\cb1 \
+\cb4   \cf3 \strokec3 late\cf2 \strokec2  \cf8 \strokec8 String\cf2 \strokec2  \cf9 \strokec9 messageText\cf2 \strokec2 ;\cb1 \
+\
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf3 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 initState\cf2 \strokec2 () \{\cb1 \
+\cb4     \cf3 \strokec3 super\cf2 \strokec2 .\cf6 \strokec6 initState\cf2 \strokec2 ();\cb1 \
+\cb4     \cf8 \strokec8 CometChatService\cf2 \strokec2 .\cf6 \strokec6 login\cf2 \strokec2 ();\cb1 \
+\cb4     \cf8 \strokec8 CometChat\cf2 \strokec2 .\cf6 \strokec6 addMessageListener\cf2 \strokec2 (\cf5 \strokec5 'listenerId'\cf2 \strokec2 , \cf3 \strokec3 this\cf2 \strokec2 );\cb1 \
+\cb4     \cf6 \strokec6 fetchMessages\cf2 \strokec2 ();\cb1 \
+\cb4   \}\cb1 \
+\
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf8 \strokec8 Widget\cf2 \strokec2  \cf6 \strokec6 build\cf2 \strokec2 (\cf8 \strokec8 BuildContext\cf2 \strokec2  \cf9 \strokec9 context\cf2 \strokec2 ) \{\cb1 \
+\cb4     \cf7 \strokec7 return\cf2 \strokec2  \cf8 \strokec8 Scaffold\cf2 \strokec2 (\cb1 \
+\cb4       \cf9 \strokec9 appBar\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 AppBar\cf2 \strokec2 (\cb1 \
+\cb4         \cf9 \strokec9 title\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 Text\cf2 \strokec2 (\cf5 \strokec5 'CometChat Chat'\cf2 \strokec2 ),\cb1 \
+\cb4       ),\cb1 \
+\cb4       \cf9 \strokec9 body\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 Column\cf2 \strokec2 (\cb1 \
+\cb4         \cf9 \strokec9 children\cf10 \strokec10 :\cf2 \strokec2  \cf10 \strokec10 <\cf8 \strokec8 Widget\cf10 \strokec10 >\cf2 \strokec2 [\cb1 \
+\cb4           \cf8 \strokec8 Expanded\cf2 \strokec2 (\cb1 \
+\cb4             \cf9 \strokec9 child\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 ListView\cf2 \strokec2 .\cf6 \strokec6 builder\cf2 \strokec2 (\cb1 \
+\cb4               \cf9 \strokec9 itemCount\cf10 \strokec10 :\cf2 \strokec2  \cf9 \strokec9 messagesList\cf2 \strokec2 .\cf9 \strokec9 length\cf2 \strokec2 ,\cb1 \
+\cb4               \cf9 \strokec9 itemBuilder\cf10 \strokec10 :\cf2 \strokec2  (\cf9 \strokec9 context\cf2 \strokec2 , \cf9 \strokec9 index\cf2 \strokec2 ) \{\cb1 \
+\cb4                 \cf8 \strokec8 BaseMessage\cf2 \strokec2  \cf9 \strokec9 message\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf9 \strokec9 messagesList\cf2 \strokec2 [\cf9 \strokec9 index\cf2 \strokec2 ];\cb1 \
+\cb4                 \cf7 \strokec7 if\cf2 \strokec2  (\cf9 \strokec9 message\cf2 \strokec2  \cf3 \strokec3 is\cf2 \strokec2  \cf8 \strokec8 TextMessage\cf2 \strokec2 ) \{\cb1 \
+\cb4                   \cf11 \strokec11 //\cf2 \cb1 \strokec2 \
+\cb4                   \cf8 \strokec8 String\cf2 \strokec2  \cf9 \strokec9 user\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf9 \strokec9 message\cf2 \strokec2 .\cf9 \strokec9 receiverUid\cf2 \strokec2 ;\cb1 \
+\cb4                   \cf7 \strokec7 return\cf2 \strokec2  \cf8 \strokec8 ListTile\cf2 \strokec2 (\cb1 \
+\cb4                     \cf9 \strokec9 title\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 Text\cf2 \strokec2 (\cb1 \
+\cb4                       \cf9 \strokec9 message\cf2 \strokec2 .\cf9 \strokec9 text\cf2 \strokec2 ,\cb1 \
+\cb4                       \cf9 \strokec9 textAlign\cf10 \strokec10 :\cf2 \cb1 \strokec2 \
+\cb4                           \cf9 \strokec9 user\cf2 \strokec2  \cf10 \strokec10 ==\cf2 \strokec2  \cf5 \strokec5 "aaron"\cf2 \strokec2  \cf10 \strokec10 ?\cf2 \strokec2  \cf8 \strokec8 TextAlign\cf2 \strokec2 .\cf12 \strokec12 right\cf2 \strokec2  \cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 TextAlign\cf2 \strokec2 .\cf12 \strokec12 left\cf2 \strokec2 ,\cb1 \
+\cb4                     ),\cb1 \
+\cb4                   );\cb1 \
+\cb4                 \} \cf7 \strokec7 else\cf2 \strokec2  \{\cb1 \
+\cb4                   \cf7 \strokec7 return\cf2 \strokec2  \cf3 \strokec3 const\cf2 \strokec2  \cf8 \strokec8 ListTile\cf2 \strokec2 (\cb1 \
+\cb4                     \cf9 \strokec9 title\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 Text\cf2 \strokec2 (\cf5 \strokec5 'message deleted.'\cf2 \strokec2 ),\cb1 \
+\cb4                   );\cb1 \
+\cb4                 \}\cb1 \
+\cb4               \},\cb1 \
+\cb4             ),\cb1 \
+\cb4           ),\cb1 \
+\cb4           \cf8 \strokec8 Padding\cf2 \strokec2 (\cb1 \
+\cb4             \cf9 \strokec9 padding\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 EdgeInsets\cf2 \strokec2 .\cf6 \strokec6 all\cf2 \strokec2 (\cf13 \strokec13 8.0\cf2 \strokec2 ),\cb1 \
+\cb4             \cf9 \strokec9 child\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 Row\cf2 \strokec2 (\cb1 \
+\cb4               \cf9 \strokec9 children\cf10 \strokec10 :\cf2 \strokec2  \cf10 \strokec10 <\cf8 \strokec8 Widget\cf10 \strokec10 >\cf2 \strokec2 [\cb1 \
+\cb4                 \cf8 \strokec8 Expanded\cf2 \strokec2 (\cb1 \
+\cb4                   \cf9 \strokec9 child\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 TextField\cf2 \strokec2 (\cb1 \
+\cb4                     \cf9 \strokec9 onChanged\cf10 \strokec10 :\cf2 \strokec2  (\cf9 \strokec9 value\cf2 \strokec2 ) \{\cb1 \
+\cb4                       \cf9 \strokec9 messageText\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf9 \strokec9 value\cf2 \strokec2 ;\cb1 \
+\cb4                     \},\cb1 \
+\cb4                     \cf9 \strokec9 decoration\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 InputDecoration\cf2 \strokec2 (\cb1 \
+\cb4                       \cf9 \strokec9 hintText\cf10 \strokec10 :\cf2 \strokec2  \cf5 \strokec5 'Enter your message...'\cf2 \strokec2 ,\cb1 \
+\cb4                     ),\cb1 \
+\cb4                   ),\cb1 \
+\cb4                 ),\cb1 \
+\cb4                 \cf8 \strokec8 IconButton\cf2 \strokec2 (\cb1 \
+\cb4                   \cf9 \strokec9 icon\cf10 \strokec10 :\cf2 \strokec2  \cf8 \strokec8 Icon\cf2 \strokec2 (\cf8 \strokec8 Icons\cf2 \strokec2 .\cf9 \strokec9 send\cf2 \strokec2 ),\cb1 \
+\cb4                   \cf9 \strokec9 onPressed\cf10 \strokec10 :\cf2 \strokec2  () \{\cb1 \
+\cb4                     \cf6 \strokec6 sendMessage\cf2 \strokec2 ();\cb1 \
+\cb4                   \},\cb1 \
+\cb4                 ),\cb1 \
+\cb4               ],\cb1 \
+\cb4             ),\cb1 \
+\cb4           ),\cb1 \
+\cb4         ],\cb1 \
+\cb4       ),\cb1 \
+\cb4     );\cb1 \
+\cb4   \}\cb1 \
+\
+\cb4   \cf3 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 fetchMessages\cf2 \strokec2 () \cf7 \strokec7 async\cf2 \strokec2  \{\cb1 \
+\cb4     \cf3 \strokec3 var\cf2 \strokec2  \cf9 \strokec9 a\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf7 \strokec7 await\cf2 \strokec2  \cf8 \strokec8 CometChat\cf2 \strokec2 .\cf6 \strokec6 getLastDeliveredMessageId\cf2 \strokec2 ();\cb1 \
+\
+\cb4     \cf8 \strokec8 int\cf2 \strokec2  \cf9 \strokec9 limit\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf13 \strokec13 30\cf2 \strokec2 ;\cb1 \
+\cb4     \cf8 \strokec8 int\cf2 \strokec2  \cf9 \strokec9 lastMessageId\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf13 \strokec13 16\cf2 \strokec2 ;\cb1 \
+\cb4     \cf8 \strokec8 String\cf2 \strokec2  \cf9 \strokec9 UID\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf5 \strokec5 "aakash01"\cf2 \strokec2 ;\cb1 \
+\
+\cb4     \cf6 \strokec6 print\cf2 \strokec2 (\cf5 \strokec5 "object"\cf2 \strokec2 );\cb1 \
+\cb4     \cf6 \strokec6 print\cf2 \strokec2 (\cf9 \strokec9 a\cf2 \strokec2 );\cb1 \
+\
+\cb4     \cf8 \strokec8 MessagesRequest\cf2 \strokec2  \cf9 \strokec9 messageRequest\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  (\cf8 \strokec8 MessagesRequestBuilder\cf2 \strokec2 ()\cb1 \
+\cb4           ..\cf9 \strokec9 uid\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf9 \strokec9 UID\cf2 \cb1 \strokec2 \
+\cb4           ..\cf9 \strokec9 limit\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf9 \strokec9 limit\cf2 \cb1 \strokec2 \
+\cb4           ..\cf9 \strokec9 messageId\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf9 \strokec9 lastMessageId\cf2 \strokec2 )\cb1 \
+\cb4         .\cf6 \strokec6 build\cf2 \strokec2 ();\cb1 \
+\
+\cb4     \cf7 \strokec7 await\cf2 \strokec2  \cf9 \strokec9 messageRequest\cf2 \strokec2 .\cf6 \strokec6 fetchPrevious\cf2 \strokec2 (\cf9 \strokec9 onSuccess\cf10 \strokec10 :\cf2 \strokec2  (\cf8 \strokec8 List\cf2 \strokec2 <\cf8 \strokec8 BaseMessage\cf2 \strokec2 > \cf9 \strokec9 list\cf2 \strokec2 ) \{\cb1 \
+\cb4       \cf7 \strokec7 for\cf2 \strokec2  (\cf8 \strokec8 BaseMessage\cf2 \strokec2  \cf9 \strokec9 message\cf2 \strokec2  \cf7 \strokec7 in\cf2 \strokec2  \cf9 \strokec9 list\cf2 \strokec2 ) \{\cb1 \
+\cb4         \cf9 \strokec9 messagesList\cf2 \strokec2 .\cf6 \strokec6 add\cf2 \strokec2 (\cf9 \strokec9 message\cf2 \strokec2 );\cb1 \
+\cb4         \cf7 \strokec7 if\cf2 \strokec2  (\cf9 \strokec9 message\cf2 \strokec2  \cf3 \strokec3 is\cf2 \strokec2  \cf8 \strokec8 TextMessage\cf2 \strokec2 ) \{\cb1 \
+\cb4           \cf9 \strokec9 debugPrint\cf2 \strokec2 (\cf5 \strokec5 "Text message received successfully: "\cf2 \strokec2  \cf10 \strokec10 +\cf2 \cb1 \strokec2 \
+\cb4               (\cf9 \strokec9 message\cf2 \strokec2  \cf3 \strokec3 as\cf2 \strokec2  \cf8 \strokec8 TextMessage\cf2 \strokec2 ).\cf6 \strokec6 toString\cf2 \strokec2 ());\cb1 \
+\cb4         \} \cf7 \strokec7 else\cf2 \strokec2  \cf7 \strokec7 if\cf2 \strokec2  (\cf9 \strokec9 message\cf2 \strokec2  \cf3 \strokec3 is\cf2 \strokec2  \cf8 \strokec8 MediaMessage\cf2 \strokec2 ) \{\cb1 \
+\cb4           \cf9 \strokec9 debugPrint\cf2 \strokec2 (\cf5 \strokec5 "Media message received successfully: "\cf2 \strokec2  \cf10 \strokec10 +\cf2 \cb1 \strokec2 \
+\cb4               (\cf9 \strokec9 message\cf2 \strokec2  \cf3 \strokec3 as\cf2 \strokec2  \cf8 \strokec8 MediaMessage\cf2 \strokec2 ).\cf6 \strokec6 toString\cf2 \strokec2 ());\cb1 \
+\cb4         \}\cb1 \
+\cb4       \}\cb1 \
+\cb4     \}, \cf9 \strokec9 onError\cf10 \strokec10 :\cf2 \strokec2  (\cf8 \strokec8 CometChatException\cf2 \strokec2  \cf9 \strokec9 e\cf2 \strokec2 ) \{\cb1 \
+\cb4       \cf9 \strokec9 debugPrint\cf2 \strokec2 (\cf5 \strokec5 "Message fetching failed with exception: \cf10 \strokec10 $\{\cf9 \strokec9 e\cf10 \strokec10 .\cf9 \strokec9 message\cf10 \strokec10 \}\cf5 \strokec5 "\cf2 \strokec2 );\cb1 \
+\cb4     \});\cb1 \
+\cb4   \}\cb1 \
+\
+\cb4   \cf3 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 sendMessage\cf2 \strokec2 () \cf7 \strokec7 async\cf2 \strokec2  \{\cb1 \
+\cb4     \cf8 \strokec8 String\cf2 \strokec2  \cf9 \strokec9 receiverID\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf5 \strokec5 "aaron"\cf2 \strokec2 ;\cb1 \
+\cb4     \cf8 \strokec8 String\cf2 \strokec2  \cf9 \strokec9 messageText\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf5 \strokec5 "lau maro mero desh ingres"\cf2 \strokec2 ;\cb1 \
+\cb4     \cf8 \strokec8 String\cf2 \strokec2  \cf9 \strokec9 receiverType\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf8 \strokec8 CometChatConversationType\cf2 \strokec2 .\cf9 \strokec9 user\cf2 \strokec2 ;\cb1 \
+\cb4     \cf8 \strokec8 String\cf2 \strokec2  \cf9 \strokec9 type\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf8 \strokec8 CometChatMessageType\cf2 \strokec2 .\cf9 \strokec9 text\cf2 \strokec2 ;\cb1 \
+\
+\cb4     \cf8 \strokec8 TextMessage\cf2 \strokec2  \cf9 \strokec9 textMessage\cf2 \strokec2  \cf10 \strokec10 =\cf2 \strokec2  \cf8 \strokec8 TextMessage\cf2 \strokec2 (\cb1 \
+\cb4       \cf9 \strokec9 text\cf10 \strokec10 :\cf2 \strokec2  \cf9 \strokec9 messageText\cf2 \strokec2 ,\cb1 \
+\cb4       \cf9 \strokec9 receiverUid\cf10 \strokec10 :\cf2 \strokec2  \cf9 \strokec9 receiverID\cf2 \strokec2 ,\cb1 \
+\cb4       \cf9 \strokec9 receiverType\cf10 \strokec10 :\cf2 \strokec2  \cf9 \strokec9 receiverType\cf2 \strokec2 ,\cb1 \
+\cb4       \cf9 \strokec9 type\cf10 \strokec10 :\cf2 \strokec2  \cf9 \strokec9 type\cf2 \strokec2 ,\cb1 \
+\cb4     );\cb1 \
+\
+\cb4     \cf7 \strokec7 await\cf2 \strokec2  \cf8 \strokec8 CometChat\cf2 \strokec2 .\cf6 \strokec6 sendMessage\cf2 \strokec2 (\cf9 \strokec9 textMessage\cf2 \strokec2 , \cf9 \strokec9 onSuccess\cf10 \strokec10 :\cf2 \strokec2  (\cf8 \strokec8 TextMessage\cf2 \strokec2  \cf9 \strokec9 message\cf2 \strokec2 ) \{\cb1 \
+\cb4       \cf9 \strokec9 debugPrint\cf2 \strokec2 (\cf5 \strokec5 "Message sent successfully:  \cf10 \strokec10 $\cf9 \strokec9 message\cf5 \strokec5 "\cf2 \strokec2 );\cb1 \
+\cb4     \}, \cf9 \strokec9 onError\cf10 \strokec10 :\cf2 \strokec2  (\cf8 \strokec8 CometChatException\cf2 \strokec2  \cf9 \strokec9 e\cf2 \strokec2 ) \{\cb1 \
+\cb4       \cf9 \strokec9 debugPrint\cf2 \strokec2 (\cf5 \strokec5 "Message sending failed with exception:  \cf10 \strokec10 $\{\cf9 \strokec9 e\cf10 \strokec10 .\cf9 \strokec9 message\cf10 \strokec10 \}\cf5 \strokec5 "\cf2 \strokec2 );\cb1 \
+\cb4     \});\cb1 \
+\cb4   \}\cb1 \
+\
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf3 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 dispose\cf2 \strokec2 () \{\cb1 \
+\cb4     \cf8 \strokec8 CometChat\cf2 \strokec2 .\cf6 \strokec6 removeMessageListener\cf2 \strokec2 (\cf5 \strokec5 'listenerId'\cf2 \strokec2 );\cb1 \
+\cb4     \cf3 \strokec3 super\cf2 \strokec2 .\cf6 \strokec6 dispose\cf2 \strokec2 ();\cb1 \
+\cb4   \}\cb1 \
+\
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf3 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 onTextMessageReceived\cf2 \strokec2 (\cf8 \strokec8 TextMessage\cf2 \strokec2  \cf9 \strokec9 textMessage\cf2 \strokec2 ) \{\cb1 \
+\cb4     \cf6 \strokec6 setState\cf2 \strokec2 (() \{\cb1 \
+\cb4       \cf9 \strokec9 messagesList\cf2 \strokec2 .\cf6 \strokec6 add\cf2 \strokec2 (\cf9 \strokec9 textMessage\cf2 \strokec2 );\cb1 \
+\cb4     \});\cb1 \
+\cb4   \}\cb1 \
+\
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf3 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 onMediaMessageReceived\cf2 \strokec2 (\cf8 \strokec8 MediaMessage\cf2 \strokec2  \cf9 \strokec9 mediaMessage\cf2 \strokec2 ) \{\}\cb1 \
+\
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf3 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 onCustomMessageReceived\cf2 \strokec2 (\cf8 \strokec8 CustomMessage\cf2 \strokec2  \cf9 \strokec9 customMessage\cf2 \strokec2 ) \{\}\cb1 \
+\
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf3 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 onMessageEdited\cf2 \strokec2 (\cf8 \strokec8 BaseMessage\cf2 \strokec2  \cf9 \strokec9 message\cf2 \strokec2 ) \{\}\cb1 \
+\
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf3 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 onMessageDeleted\cf2 \strokec2 (\cf8 \strokec8 BaseMessage\cf2 \strokec2  \cf9 \strokec9 message\cf2 \strokec2 ) \{\}\cb1 \
+\
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf3 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 onTypingStarted\cf2 \strokec2 (\cf8 \strokec8 TypingIndicator\cf2 \strokec2  \cf9 \strokec9 typingIndicator\cf2 \strokec2 ) \{\}\cb1 \
+\
+\cb4   \cf9 \strokec9 @override\cf2 \cb1 \strokec2 \
+\cb4   \cf3 \strokec3 void\cf2 \strokec2  \cf6 \strokec6 onTypingEnded\cf2 \strokec2 (\cf8 \strokec8 TypingIndicator\cf2 \strokec2  \cf9 \strokec9 typingIndicator\cf2 \strokec2 ) \{\}\cb1 \
+\cb4 \}\cb1 \
+\
+}

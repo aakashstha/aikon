@@ -84,12 +84,14 @@ class HomePageNavigationState extends State<HomePageNavigation> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _authController.user.value.fullName!,
+                              // _authController.user.value.fullName!,
+                              "Aakash Shrestha",
                               style: const TextStyle(
                                   fontSize: 20, color: AppColors.white),
                             ),
                             Text(
-                              _authController.user.value.phoneNum!,
+                              // _authController.user.value.phoneNum!,
+                              "9869265654",
                               style: const TextStyle(
                                   fontSize: 11, color: AppColors.white),
                             ),

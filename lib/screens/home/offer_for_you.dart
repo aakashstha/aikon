@@ -6,6 +6,7 @@ import 'package:aikon/controller/offer_controller.dart';
 import 'package:aikon/model/offer_model.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -56,39 +57,10 @@ class _OfferForYouState extends State<OfferForYou> {
                         children: [
                           // Testing Purposes buttons
 
-                          // TextButton(
-                          //   onPressed: () async {
-                          //     print(_authController.subChannels);
-                          //     // print(_authController.user.value.subChannels);
-                          //     // FirebaseOfferService.getAllOtherOffers();
-                          //     // var a1 = await StorageGetX.readFirebaseToken();
-                          //     // print(a1);
-                          //     // // new token every time
-                          //     // final user = FirebaseAuth.instance.currentUser;
-                          //     // var a = await user!.getIdToken();
-                          //     // var b = user.refreshToken;
-                          //     // print(a);
-                          //     // print(b);
-                          //     // print("object");
-                          //   },
-                          //   style: TextButton.styleFrom(
-                          //     foregroundColor: Colors.white,
-                          //     backgroundColor: AppColors.blueYonder,
-                          //     shape: RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.circular(0),
-                          //     ),
-                          //     textStyle: const TextStyle(
-                          //       fontWeight: FontWeight.w700,
-                          //     ),
-                          //   ),
-                          //   child: const Padding(
-                          //     padding: EdgeInsets.symmetric(horizontal: 28),
-                          //     child: Text("get token"),
-                          //   ),
-                          // ),
-
                           TextFormField(
                             decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 12.0),
                               prefix: const SizedBox(width: 2),
                               filled: true,
                               fillColor: AppColors.searchBackground,
